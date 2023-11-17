@@ -4,8 +4,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
-
 from upcoming.steam.scrollScrap import scroll_scrap
+from upcoming.steam.detailScrap import detail_scrap
 from selenium import webdriver
 
 # 전략
@@ -23,9 +23,8 @@ LOADING_PAGE = 2
 
 def steam_upcoming(driver):
     
-
-    # 이 태그가 들어간 친구들은 수집 금지
-    adultTag = ['헨타이','후방주의','선정적인 내용']
+    detailList = []
+    
     
     # 인기 찜 목록
     driver.get("https://store.steampowered.com//search/?supportedlang=koreana%2Cenglish&category1=998&filter=popularwishlist&ndl=1")
@@ -40,9 +39,14 @@ def steam_upcoming(driver):
     gameList = scroll_scrap(driver)
     
     
-       
+    print('detail scrap start')
+    for i in range(len(gameList)):
+        result = detail_scrap(driver, gameList[i]['url'])
         
-   
+        if result != None:
+            detailList.append(result)
+        
+        
         
         
     
@@ -51,6 +55,12 @@ def steam_upcoming(driver):
     time.sleep(5)
     f = open('./test/test.txt','w')
     for i in gameList:
+        data = "%s\n" % i
+        f.write(data)
+    f.close()
+    
+    f = open('./test/test_detail.txt','w')
+    for i in detailList:
         data = "%s\n" % i
         f.write(data)
     f.close()

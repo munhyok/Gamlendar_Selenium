@@ -17,4 +17,4 @@ driver = webdriver.Chrome(options=options)
 
 steam_upcoming(driver)
 
-#driver.quit()
+driver.quit()

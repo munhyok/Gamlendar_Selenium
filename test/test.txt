@@ -137,8 +137,8 @@
 {'title': 'Winter Survival', 'url': 'https://store.steampowered.com/app/1394960/Winter_Survival/?snr=1_7_7_popularwishlist_150_3', 'date': '2024년 2월 29일'}
 {'title': 'Chef RPG', 'url': 'https://store.steampowered.com/app/1796790/Chef_RPG/?snr=1_7_7_popularwishlist_150_3', 'date': '발표 예정'}
 {'title': 'Earth From Another Sun', 'url': 'https://store.steampowered.com/app/1067360/Earth_From_Another_Sun/?snr=1_7_7_popularwishlist_150_3', 'date': '2024년'}
-{'title': 'Sandwalkers', 'url': 'https://store.steampowered.com/app/1639080/Sandwalkers/?snr=1_7_7_popularwishlist_150_3', 'date': '2024년 1분기'}
 {'title': 'Kitori Academy', 'url': 'https://store.steampowered.com/app/1340380/Kitori_Academy/?snr=1_7_7_popularwishlist_150_3', 'date': '출시 예정 게임'}
+{'title': 'Sandwalkers', 'url': 'https://store.steampowered.com/app/1639080/Sandwalkers/?snr=1_7_7_popularwishlist_150_3', 'date': '2024년 1분기'}
 {'title': 'ROUTINE', 'url': 'https://store.steampowered.com/app/606160/ROUTINE/?snr=1_7_7_popularwishlist_150_3', 'date': '발표 예정'}
 {'title': 'Bodycam', 'url': 'https://store.steampowered.com/app/2406770/Bodycam/?snr=1_7_7_popularwishlist_150_3', 'date': '출시 예정 게임'}
 {'title': 'Expeditions: A MudRunner Game', 'url': 'https://store.steampowered.com/app/2477340/Expeditions_A_MudRunner_Game/?snr=1_7_7_popularwishlist_150_3', 'date': '2024년'}
@@ -253,8 +253,8 @@
 {'title': 'Corsairs Legacy - Pirate Action RPG & Sea Battles', 'url': 'https://store.steampowered.com/app/1594880/Corsairs_Legacy__Pirate_Action_RPG__Sea_Battles/?snr=1_7_7_popularwishlist_150_6', 'date': '2023년'}
 {'title': 'Blade Runner 2033: Labyrinth', 'url': 'https://store.steampowered.com/app/2012260/Blade_Runner_2033_Labyrinth/?snr=1_7_7_popularwishlist_150_6', 'date': '발표 예정'}
 {'title': '별이되어라2: 베다의 기사들', 'url': 'https://store.steampowered.com/app/2484250/2/?snr=1_7_7_popularwishlist_150_6', 'date': '출시 예정 게임'}
-{'title': 'Mirthwood', 'url': 'https://store.steampowered.com/app/2272900/Mirthwood/?snr=1_7_7_popularwishlist_150_6', 'date': '2024년'}
 {'title': 'Tiny Bookshop', 'url': 'https://store.steampowered.com/app/2133760/Tiny_Bookshop/?snr=1_7_7_popularwishlist_150_6', 'date': '발표 예정'}
+{'title': 'Mirthwood', 'url': 'https://store.steampowered.com/app/2272900/Mirthwood/?snr=1_7_7_popularwishlist_150_6', 'date': '2024년'}
 {'title': 'The Inquisitor', 'url': 'https://store.steampowered.com/app/1880470/The_Inquisitor/?snr=1_7_7_popularwishlist_150_6', 'date': '2024년 2월 9일'}
 {'title': 'D.O.R.F. Real-Time Strategic Conflict', 'url': 'https://store.steampowered.com/app/2388620/DORF_RealTime_Strategic_Conflict/?snr=1_7_7_popularwishlist_150_6', 'date': '발표 예정'}
 {'title': 'Tank Squad', 'url': 'https://store.steampowered.com/app/1498130/Tank_Squad/?snr=1_7_7_popularwishlist_150_6', 'date': '2024년 1분기'}
@@ -879,11 +879,11 @@
 {'title': 'Phantom Doctrine: The Cabal', 'url': 'https://store.steampowered.com/app/1345450/Phantom_Doctrine_The_Cabal/?snr=1_7_7_popularwishlist_150_18', 'date': '출시 예정 게임'}
 {'title': 'Flyout', 'url': 'https://store.steampowered.com/app/777390/Flyout/?snr=1_7_7_popularwishlist_150_18', 'date': '출시 예정 게임'}
 {'title': 'Stories from Sol: The Gun-Dog', 'url': 'https://store.steampowered.com/app/2118420/Stories_from_Sol_The_GunDog/?snr=1_7_7_popularwishlist_150_18', 'date': '출시 예정 게임'}
+{'title': 'Everholm', 'url': 'https://store.steampowered.com/app/2312520/Everholm/?snr=1_7_7_popularwishlist_150_18', 'date': '2024년'}
 {'title': 'Headquarters: World War II', 'url': 'https://store.steampowered.com/app/1840800/Headquarters_World_War_II/?snr=1_7_7_popularwishlist_150_18', 'date': '출시 예정 게임'}
 {'title': 'Rosewater', 'url': 'https://store.steampowered.com/app/1226670/Rosewater/?snr=1_7_7_popularwishlist_150_18', 'date': '출시 예정 게임'}
 {'title': 'Elsie', 'url': 'https://store.steampowered.com/app/1515570/Elsie/?snr=1_7_7_popularwishlist_150_18', 'date': '출시 예정 게임'}
 {'title': "Kokopa's Atlas", 'url': 'https://store.steampowered.com/app/1412810/Kokopas_Atlas/?snr=1_7_7_popularwishlist_150_18', 'date': '출시 예정 게임'}
-{'title': 'Everholm', 'url': 'https://store.steampowered.com/app/2312520/Everholm/?snr=1_7_7_popularwishlist_150_18', 'date': '2024년'}
 {'title': 'Arvita', 'url': 'https://store.steampowered.com/app/1033540/Arvita/?snr=1_7_7_popularwishlist_150_18', 'date': '2023년 4분기'}
 {'title': 'Airtight City 2.0', 'url': 'https://store.steampowered.com/app/1692120/Airtight_City_20/?snr=1_7_7_popularwishlist_150_18', 'date': '출시 예정 게임'}
 {'title': 'Neverlooted Dungeon', 'url': 'https://store.steampowered.com/app/1171980/Neverlooted_Dungeon/?snr=1_7_7_popularwishlist_150_18', 'date': '2024년'}
@@ -942,8 +942,8 @@
 {'title': 'Lost Twins II', 'url': 'https://store.steampowered.com/app/1752540/Lost_Twins_II/?snr=1_7_7_popularwishlist_150_19', 'date': '2024년'}
 {'title': 'Black Finger JET', 'url': 'https://store.steampowered.com/app/2415500/Black_Finger_JET/?snr=1_7_7_popularwishlist_150_19', 'date': '발표 예정'}
 {'title': 'Lumbermill', 'url': 'https://store.steampowered.com/app/1151300/Lumbermill/?snr=1_7_7_popularwishlist_150_19', 'date': '출시 예정 게임'}
-{'title': 'AIKODE', 'url': 'https://store.steampowered.com/app/2406140/AIKODE/?snr=1_7_7_popularwishlist_150_19', 'date': '출시 예정 게임'}
 {'title': 'Kandyland', 'url': 'https://store.steampowered.com/app/2501620/Kandyland/?snr=1_7_7_popularwishlist_150_19', 'date': '발표 예정'}
+{'title': 'AIKODE', 'url': 'https://store.steampowered.com/app/2406140/AIKODE/?snr=1_7_7_popularwishlist_150_19', 'date': '출시 예정 게임'}
 {'title': 'Swordcery', 'url': 'https://store.steampowered.com/app/1817030/Swordcery/?snr=1_7_7_popularwishlist_150_19', 'date': '출시 예정 게임'}
 {'title': 'Henry Halfhead', 'url': 'https://store.steampowered.com/app/2058140/Henry_Halfhead/?snr=1_7_7_popularwishlist_150_19', 'date': '발표 예정'}
 {'title': 'News Tower', 'url': 'https://store.steampowered.com/app/1649950/News_Tower/?snr=1_7_7_popularwishlist_150_19', 'date': '2024년 1분기'}
@@ -1205,8 +1205,8 @@
 {'title': 'eXpanSIM', 'url': 'https://store.steampowered.com/app/1015370/eXpanSIM/?snr=1_7_7_popularwishlist_150_25', 'date': '출시 예정 게임'}
 {'title': 'VergeWorld', 'url': 'https://store.steampowered.com/app/1975790/VergeWorld/?snr=1_7_7_popularwishlist_150_25', 'date': '2023년'}
 {'title': 'Pope Simulator', 'url': 'https://store.steampowered.com/app/1221260/Pope_Simulator/?snr=1_7_7_popularwishlist_150_25', 'date': '발표 예정'}
-{'title': 'Death Trick: Double Blind', 'url': 'https://store.steampowered.com/app/2254710/Death_Trick_Double_Blind/?snr=1_7_7_popularwishlist_150_25', 'date': '2024년 1분기'}
 {'title': 'HoloParade', 'url': 'https://store.steampowered.com/app/2647230/HoloParade/?snr=1_7_7_popularwishlist_150_25', 'date': '출시 예정 게임'}
+{'title': 'Death Trick: Double Blind', 'url': 'https://store.steampowered.com/app/2254710/Death_Trick_Double_Blind/?snr=1_7_7_popularwishlist_150_25', 'date': '2024년 1분기'}
 {'title': 'Bloom: Memories', 'url': 'https://store.steampowered.com/app/1145440/Bloom_Memories/?snr=1_7_7_popularwishlist_150_25', 'date': '출시 예정 게임'}
 {'title': 'Renaine', 'url': 'https://store.steampowered.com/app/662340/Renaine/?snr=1_7_7_popularwishlist_150_25', 'date': '출시 예정 게임'}
 {'title': 'Mythwrecked: Ambrosia Island', 'url': 'https://store.steampowered.com/app/2000210/Mythwrecked_Ambrosia_Island/?snr=1_7_7_popularwishlist_150_25', 'date': '2024년 3분기'}
@@ -1669,8 +1669,8 @@
 {'title': 'Terra Memoria', 'url': 'https://store.steampowered.com/app/1912750/Terra_Memoria/?snr=1_7_7_popularwishlist_150_34', 'date': '출시 예정 게임'}
 {'title': 'Time Survivors', 'url': 'https://store.steampowered.com/app/2211390/Time_Survivors/?snr=1_7_7_popularwishlist_150_34', 'date': '2024년 1월'}
 {'title': '닌자 일섬 (Ninja Issen)', 'url': 'https://store.steampowered.com/app/1714550/__Ninja_Issen/?snr=1_7_7_popularwishlist_150_34', 'date': '2023년 11월 24일'}
-{'title': 'WitchHand', 'url': 'https://store.steampowered.com/app/2420880/WitchHand/?snr=1_7_7_popularwishlist_150_34', 'date': '2024년'}
 {'title': 'Neo Junk City', 'url': 'https://store.steampowered.com/app/2378230/Neo_Junk_City/?snr=1_7_7_popularwishlist_150_34', 'date': '2025년 4분기'}
+{'title': 'WitchHand', 'url': 'https://store.steampowered.com/app/2420880/WitchHand/?snr=1_7_7_popularwishlist_150_34', 'date': '2024년'}
 {'title': 'Criminals Within', 'url': 'https://store.steampowered.com/app/2358120/Criminals_Within/?snr=1_7_7_popularwishlist_150_34', 'date': '출시 예정 게임'}
 {'title': 'Twilight Wars', 'url': 'https://store.steampowered.com/app/1396540/Twilight_Wars/?snr=1_7_7_popularwishlist_150_34', 'date': '2024년 2월 27일'}
 {'title': 'Spirit of the North 2', 'url': 'https://store.steampowered.com/app/1778840/Spirit_of_the_North_2/?snr=1_7_7_popularwishlist_150_34', 'date': '출시 예정 게임'}
@@ -1755,8 +1755,8 @@
 {'title': 'Toroa', 'url': 'https://store.steampowered.com/app/2003490/Toroa/?snr=1_7_7_popularwishlist_150_36', 'date': '출시 예정 게임'}
 {'title': 'Sheepy: A Short Adventure', 'url': 'https://store.steampowered.com/app/1568400/Sheepy_A_Short_Adventure/?snr=1_7_7_popularwishlist_150_36', 'date': '출시 예정 게임'}
 {'title': 'Duster', 'url': 'https://store.steampowered.com/app/1257370/Duster/?snr=1_7_7_popularwishlist_150_36', 'date': '출시 예정 게임'}
-{'title': "Dragon's Wandering Tavern", 'url': 'https://store.steampowered.com/app/1672180/Dragons_Wandering_Tavern/?snr=1_7_7_popularwishlist_150_36', 'date': '출시 예정 게임'}
 {'title': 'Mini Settlers', 'url': 'https://store.steampowered.com/app/2521630/Mini_Settlers/?snr=1_7_7_popularwishlist_150_36', 'date': '발표 예정'}
+{'title': "Dragon's Wandering Tavern", 'url': 'https://store.steampowered.com/app/1672180/Dragons_Wandering_Tavern/?snr=1_7_7_popularwishlist_150_36', 'date': '출시 예정 게임'}
 {'title': 'ShapeHero Factory', 'url': 'https://store.steampowered.com/app/2389040/ShapeHero_Factory/?snr=1_7_7_popularwishlist_150_36', 'date': '2024년 1분기'}
 {'title': 'Awkward 2: The Party Game of Savage Secrets', 'url': 'https://store.steampowered.com/app/1682690/Awkward_2_The_Party_Game_of_Savage_Secrets/?snr=1_7_7_popularwishlist_150_36', 'date': '2024년 1분기'}
 {'title': 'VED', 'url': 'https://store.steampowered.com/app/1182420/VED/?snr=1_7_7_popularwishlist_150_36', 'date': '2024년'}

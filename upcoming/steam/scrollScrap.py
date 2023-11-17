@@ -4,7 +4,14 @@ from selenium.webdriver.common.by import By
 import time
 
 
-LOADING_PAGE = 2
+# 스크롤하고 데이터 파싱까지 합니다 :)
+
+# 페이지가 좀 많아지면 위가 짤리는 경우가 많아
+# 페이지 하단으로 이동 -> 로딩 후 데이터를 가져오는 방식
+# 게임의 수가 많아도 상관없이 크롤링 가능
+# 
+
+LOADING_PAGE = 2 # 데이터 로딩 2초
 
 def scroll_scrap(driver):
     gameList = list()
@@ -19,9 +26,6 @@ def scroll_scrap(driver):
         time.sleep(LOADING_PAGE)
         
         newPageHeight = driver.execute_script("return Math.max( document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight );")
-        
-        
-        
 
         if oldPageHeight == newPageHeight:
             doScroll = False
@@ -29,7 +33,6 @@ def scroll_scrap(driver):
             break
 
         oldPageHeight = newPageHeight
-        
         
         
         gameRows = driver.find_element(By.ID, 'search_resultsRows')
@@ -50,4 +53,5 @@ def scroll_scrap(driver):
             gameList.append(my_game)
 
         print(len(gameList))
+        
     return gameList
