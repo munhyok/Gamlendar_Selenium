@@ -5,7 +5,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
 from upcoming.steam.scrollScrap import scroll_scrap
-from upcoming.steam.detailScrap import detail_scrap
+from upcoming.steam.detailScrap import detail_scrap, pass_adult
 from selenium import webdriver
 
 # 전략
@@ -21,7 +21,7 @@ from selenium import webdriver
 LOADING_PAGE = 2
 
 
-def steam_upcoming(driver):
+def steam_upcoming(driver, driver_english):
     
     detailList = []
     
@@ -36,12 +36,16 @@ def steam_upcoming(driver):
     print("Text Changed, Scroll Down Start")
     time.sleep(1)
     
+    
     gameList = scroll_scrap(driver)
     
     
+    print('성인 인증 페이지')
+    pass_adult(driver, driver_english)
+    
     print('detail scrap start')
     for i in range(len(gameList)):
-        result = detail_scrap(driver, gameList[i]['url'])
+        result = detail_scrap(driver, driver_english, gameList[i]['url'])
         
         if result != None:
             detailList.append(result)

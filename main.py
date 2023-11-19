@@ -14,7 +14,9 @@ options.add_argument('--no-sandbox')
 options.add_argument('--disable-dev-shm-usage')
 
 driver = webdriver.Chrome(options=options)
+driver_english = webdriver.Chrome(options=options)
 
-steam_upcoming(driver)
+steam_upcoming(driver, driver_english)
 
 driver.quit()
+driver_english.quit()

@@ -6,17 +6,43 @@ import time
 
 # 수집 목록
 # Thum, description, company, tag, screenshot, english name
+# 한국어, 영어 별도로 driver를 만들어서 2개 돌려야 수집 속도가 올라갈듯..
 
 
-#driver = webdriver.Chrome()
+
 LOADING_PAGE = 2
 
-def pass_adult(driver):
+
+
+
+def pass_adult(driver, driver_english):
+    # 어차피 한 번만 인증하면 되기 때문에 GTA5에서 미리 인증을 거치고
+    # 추후 게임 데이터 수집을 시작
     
-    pass
+    driver.get('https://store.steampowered.com/agecheck/app/271590/')
+    driver_english.get('https://store.steampowered.com/agecheck/app/271590/')
+
+    time.sleep(1)
+    driver.find_element(By.ID, 'ageYear').click()
+    driver_english.find_element(By.ID, 'ageYear').click()
+    time.sleep(0.5)
+    
+    
+    driver.find_element(By.XPATH, '/html/body/div[1]/div[7]/div[6]/div/div[2]/div/div[1]/div[3]/select[3]/option[91]').click()
+    driver_english.find_element(By.XPATH, '/html/body/div[1]/div[7]/div[6]/div/div[2]/div/div[1]/div[3]/select[3]/option[91]').click()
+    
+    
+    time.sleep(0.5)
+    
+    driver.find_element(By.ID, 'view_product_page_btn').click()
+    driver_english.find_element(By.ID, 'view_product_page_btn').click()
+    
+    
 
 
-def detail_scrap(driver, url):
+def detail_scrap(driver, driver_english, url):
+    
+    
     
     autokwdSet = set()
     screenList = []
@@ -24,10 +50,10 @@ def detail_scrap(driver, url):
     detailList = []
     
     driver.get(url)
-    #time.sleep(5)
-    driver.execute_script('ChangeLanguage("koreana")')
+    driver_english.get(url)
+
     
-    time.sleep(5)
+    time.sleep(3)
     
     
     tags = driver.find_element(By.CLASS_NAME, 'glance_tags.popular_tags').find_elements(By.CLASS_NAME,'app_tag')
@@ -61,14 +87,14 @@ def detail_scrap(driver, url):
     autokwdSet.add(title)
     
     
-    driver.execute_script('ChangeLanguage("english")')
     
     
-    time.sleep(5)
     
     
-    title = driver.find_element(By.ID, 'appHubAppName').text
-    autokwdSet.add(title)
+    
+    
+    title_english = driver_english.find_element(By.ID, 'appHubAppName').text
+    autokwdSet.add(title_english)
     
     autokwd = list(autokwdSet)
     
@@ -88,4 +114,10 @@ def detail_scrap(driver, url):
     
     return detail_dict
     
-#detail_scrap(driver, 'https://store.steampowered.com/app/1061280/Plastic_Love/?snr=1_7_7_popularwishlist_150_12') #testMode
+    
+# testMode
+#driver = webdriver.Chrome()
+#driver_english = webdriver.Chrome()
+
+#detail_scrap(driver,driver_english, 'https://store.steampowered.com/agecheck/app/553850/')
+#pass_adult(driver, driver_english)
