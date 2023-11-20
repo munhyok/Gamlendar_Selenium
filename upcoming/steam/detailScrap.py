@@ -7,6 +7,8 @@ import time
 # 수집 목록
 # Thum, description, company, tag, screenshot, english name
 # 한국어, 영어 별도로 driver를 만들어서 2개 돌려야 수집 속도가 올라갈듯..
+# try accept를 사용하고 싶지만
+# 무지성으로 사용하면 코드가 더러워보여서.. 최대한 통제 가능한 부분은 None으로 처리
 
 
 
@@ -16,7 +18,7 @@ LOADING_PAGE = 2
 
 
 def pass_adult(driver, driver_english):
-    # 어차피 한 번만 인증하면 되기 때문에 GTA5에서 미리 인증을 거치고
+    # 한 번만 인증하면 되기 때문에 GTA5에서 미리 인증을 거치고
     # 추후 게임 데이터 수집을 시작
     
     driver.get('https://store.steampowered.com/agecheck/app/271590/')
@@ -36,26 +38,28 @@ def pass_adult(driver, driver_english):
     
     driver.find_element(By.ID, 'view_product_page_btn').click()
     driver_english.find_element(By.ID, 'view_product_page_btn').click()
+
+    time.sleep(3)
     
     
 
 
 def detail_scrap(driver, driver_english, url):
     
-    
+    # 이 태그가 들어간 친구들은 수집 금지
+    adultTag = ['헨타이','후방주의','선정적인 내용']
     
     autokwdSet = set()
     screenList = []
     tagList = []
     detailList = []
     
+    driver.implicitly_wait(10)
+    driver_english.implicitly_wait(10)
+    
     driver.get(url)
     driver_english.get(url)
 
-    
-    time.sleep(3)
-    
-    
     tags = driver.find_element(By.CLASS_NAME, 'glance_tags.popular_tags').find_elements(By.CLASS_NAME,'app_tag')
     
     for tag in tags:
@@ -65,8 +69,7 @@ def detail_scrap(driver, driver_english, url):
     tagList.remove('+')
         
         
-    # 이 태그가 들어간 친구들은 수집 금지
-    adultTag = ['헨타이','후방주의','선정적인 내용']
+   
     
     for adult in adultTag:
         if adult in tagList:
@@ -77,6 +80,11 @@ def detail_scrap(driver, driver_english, url):
         
         
     title = driver.find_element(By.ID, 'appHubAppName').text
+    
+    if title == '(Old steam page)': 
+        print("Old Steam Page")
+        return None
+    
     thum = driver.find_element(By.CLASS_NAME, 'game_header_image_full').get_attribute('src')
     description = driver.find_element(By.ID, 'game_area_description').text
     company = driver.find_element(By.ID, 'developers_list').text
@@ -87,12 +95,7 @@ def detail_scrap(driver, driver_english, url):
     autokwdSet.add(title)
     
     
-    
-    
-    
-    
-    
-    
+
     title_english = driver_english.find_element(By.ID, 'appHubAppName').text
     autokwdSet.add(title_english)
     
@@ -109,8 +112,7 @@ def detail_scrap(driver, driver_english, url):
     }
     
     print(detail_dict)
-    
-    #detailList.append(detail_dict)
+
     
     return detail_dict
     
@@ -120,4 +122,5 @@ def detail_scrap(driver, driver_english, url):
 #driver_english = webdriver.Chrome()
 
 #detail_scrap(driver,driver_english, 'https://store.steampowered.com/agecheck/app/553850/')
+#detail_scrap(driver,driver_english, 'https://store.steampowered.com/app/1737960/Old_steam_page/')
 #pass_adult(driver, driver_english)
