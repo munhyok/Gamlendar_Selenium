@@ -2,7 +2,9 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from selenium.common.exceptions import NoSuchElementException
 import time
+
 
 # 수집 목록
 # Thum, description, company, tag, screenshot, english name
@@ -12,8 +14,15 @@ import time
 
 
 
-LOADING_PAGE = 2
 
+FAILEDLIST = []
+
+def failed_log(collection, title, log):
+    
+    if collection == True:
+        FAILEDLIST.append([title,log])
+        
+    else: return FAILEDLIST
 
 
 
@@ -46,6 +55,8 @@ def pass_adult(driver, driver_english):
 
 def detail_scrap(driver, driver_english, url):
     
+    
+    
     # 이 태그가 들어간 친구들은 수집 금지
     adultTag = ['헨타이','후방주의','선정적인 내용']
     
@@ -53,6 +64,8 @@ def detail_scrap(driver, driver_english, url):
     screenList = []
     tagList = []
     detailList = []
+    
+    
     
     driver.implicitly_wait(10)
     driver_english.implicitly_wait(10)
@@ -86,8 +99,18 @@ def detail_scrap(driver, driver_english, url):
         return None
     
     thum = driver.find_element(By.CLASS_NAME, 'game_header_image_full').get_attribute('src')
-    description = driver.find_element(By.ID, 'game_area_description').text
     company = driver.find_element(By.ID, 'developers_list').text
+    
+    try:
+        description = driver.find_element(By.ID, 'game_area_description').text
+    except NoSuchElementException:
+        description = 'description parsing failed :('
+        
+        failed_log(True,title,'description parsing failed')
+        
+        
+        
+    
     screenshot = driver.find_elements(By.CLASS_NAME, 'highlight_strip_item.highlight_strip_screenshot')
     for scr in screenshot:
         screenList.append(scr.find_element(By.TAG_NAME, 'img').get_attribute('src'))
@@ -112,6 +135,19 @@ def detail_scrap(driver, driver_english, url):
     }
     
     print(detail_dict)
+    
+    
+    failed_test = failed_log(False, None, None)
+    print(failed_test)
+    
+    
+    
+    #Log TestMode
+    #f = open('./upcoming/steam/log/tested_failed_log.txt','w')
+    #for i in FAILEDLIST:
+    #    data = "%s\n" % i
+    #    f.write(data)
+    #f.close()
 
     
     return detail_dict
@@ -120,7 +156,7 @@ def detail_scrap(driver, driver_english, url):
 # testMode
 #driver = webdriver.Chrome()
 #driver_english = webdriver.Chrome()
-
-#detail_scrap(driver,driver_english, 'https://store.steampowered.com/agecheck/app/553850/')
+#
+#detail_scrap(driver,driver_english, 'https://store.steampowered.com/app/1781190/IMMORTAL_And_the_Death_that_Follows/')
 #detail_scrap(driver,driver_english, 'https://store.steampowered.com/app/1737960/Old_steam_page/')
 #pass_adult(driver, driver_english)

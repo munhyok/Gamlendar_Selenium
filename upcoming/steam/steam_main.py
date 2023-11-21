@@ -5,8 +5,9 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
 from upcoming.steam.scrollScrap import scroll_scrap
-from upcoming.steam.detailScrap import detail_scrap, pass_adult
+from upcoming.steam.detailScrap import detail_scrap, pass_adult, failed_log
 from selenium import webdriver
+from datetime import datetime
 
 # 전략
 # 출시 게임을 전부하기엔 게임의 수가 너무 많고 (약 4000개)
@@ -18,7 +19,10 @@ from selenium import webdriver
 # (데이터 관리 추후 관리자 페이지가 필요할 것 같아서.. 미리 작업)
 # 
 
+NOW = time.time()
 LOADING_PAGE = 2
+
+DATE = datetime.fromtimestamp(NOW).strftime('%Y-%m-%d %H:%M:%S')
 
 
 def steam_upcoming(driver, driver_english):
@@ -51,6 +55,7 @@ def steam_upcoming(driver, driver_english):
             detailList.append(result)
         
         
+    failedList = failed_log(False, None, None)
         
         
     
@@ -65,6 +70,12 @@ def steam_upcoming(driver, driver_english):
     
     f = open('./test/test_detail.txt','w')
     for i in detailList:
+        data = "%s\n" % i
+        f.write(data)
+    f.close()
+    
+    f = open('./upcoming/steam/log/'+DATE+'_failed_log.txt','w')
+    for i in failedList:
         data = "%s\n" % i
         f.write(data)
     f.close()
