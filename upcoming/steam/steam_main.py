@@ -6,6 +6,7 @@ from selenium.webdriver.common.by import By
 
 from upcoming.steam.scrollScrap import scroll_scrap
 from upcoming.steam.detailScrap import detail_scrap, pass_adult, failed_log
+from core.data.concatData import concat_data
 from selenium import webdriver
 from datetime import datetime
 
@@ -57,7 +58,7 @@ def steam_upcoming(driver, driver_english):
         
     failedList = failed_log(False, None, None)
         
-        
+    concat_data(gameList, detailList, DATE)
     
     
     # 수집 데이터 TEST 저장 실제로 사용할 땐 없앨 예정
