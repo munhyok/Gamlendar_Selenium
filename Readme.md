@@ -5,11 +5,15 @@
 잘 만들어서 Github Action으로 자동화 시켜보자!
 
 ## 수집할 게임 사이트
+
+
+
 ### 1. Steam ✅
 
 ### 수집 전략
+
 1. [Steam upcoming](https://store.steampowered.com//search/?filter=popularwishlist&os=win) 중 인기찜 목록만 수집 ✅
-2. 특정 태그가 있는 성인게임은 수집 금지(최대한 보수적으로 수집) ✅
+2. 특정 태그가 있는 성인 게임 수집 금지(최대한 보수적으로 수집) ✅
 3. Upcoming 리스트 수집, 상세 페이지(detail) 수집 ✅
 
    
@@ -26,11 +30,9 @@
 
 ### 수집 전략
 
-1. [플레이스테이션 출시 목록](https://store.playstation.com/ko-kr/pages/browse/1?next_thirty_days=conceptReleaseDate)을 수집
-2. 특정 장르가 "성인"이 들어가있는 게임은 수집 금지
+1. [플레이스테이션 출시 목록](https://store.playstation.com/ko-kr/pages/browse/1?next_thirty_days=conceptReleaseDate) 수집
+2. 특정 장르가 "성인"이 들어가있는 게임 수집 금지
 3. Upcoming 리스트, 상세 페이지(detail) 수집
-
-4. 
 
 ### 3. Xbox
 
