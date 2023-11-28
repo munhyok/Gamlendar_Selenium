@@ -5,8 +5,9 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
 from upcoming.steam.scrollScrap import scroll_scrap
-from upcoming.steam.detailScrap import detail_scrap, pass_adult, failed_log
+from upcoming.steam.detailScrap import detail_scrap, pass_adult
 from core.data.concatData import concat_data
+from core.logs.failedLog import failed_log
 from selenium import webdriver
 from datetime import datetime
 
@@ -56,7 +57,7 @@ def steam_upcoming(driver, driver_english):
             detailList.append(result)
         
         
-    failedList = failed_log(False, None, None)
+    failedList = failed_log(False, None, None, None)
         
     concat_data(gameList, detailList, DATE)
     

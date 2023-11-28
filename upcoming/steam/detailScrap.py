@@ -3,6 +3,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
+from core.logs.failedLog import failed_log
 import time
 
 
@@ -15,14 +16,7 @@ import time
 
 
 
-FAILEDLIST = []
 
-def failed_log(collection, title, log):
-    
-    if collection == True:
-        FAILEDLIST.append([title,log])
-        
-    else: return FAILEDLIST
 
 
 
@@ -106,7 +100,7 @@ def detail_scrap(driver, driver_english, url):
     except NoSuchElementException:
         description = 'description parsing failed :('
         
-        failed_log(True,title,'description parsing failed')
+        failed_log(True,title,'description parsing failed','pc')
         
         
         
@@ -137,7 +131,7 @@ def detail_scrap(driver, driver_english, url):
     print(detail_dict)
     
     
-    failed_test = failed_log(False, None, None)
+    failed_test = failed_log(False, None, None, None)
     print(failed_test)
     
     

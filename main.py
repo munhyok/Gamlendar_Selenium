@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from upcoming.steam.steam_main import steam_upcoming
+from upcoming.playstation.playstation_main import playstation_upcoming
 
 import time
 
@@ -12,12 +13,13 @@ options.add_argument("lang=ko_KR")
 options.add_argument("--disable-gpu")
 options.add_argument('--no-sandbox')
 options.add_argument('--disable-dev-shm-usage')
-options.add_argument('--headless=new')
+#options.add_argument('--headless=new')
 
 driver = webdriver.Chrome(options=options)
 driver_english = webdriver.Chrome(options=options)
 
-steam_upcoming(driver, driver_english)
+#steam_upcoming(driver, driver_english)
+playstation_upcoming(driver, driver_english)
 
 driver.quit()
 driver_english.quit()
