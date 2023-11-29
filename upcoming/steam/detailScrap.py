@@ -83,7 +83,7 @@ def detail_scrap(driver, driver_english, url):
             print("adult game")
             
             detail_dict = {
-                'imageurl': None,
+                'imageurl': '',
                 'description': "Adult Game",
                 'autokwd': [],
                 'company': "",
@@ -101,7 +101,18 @@ def detail_scrap(driver, driver_english, url):
     
     if title == '(Old steam page)': 
         print("Old Steam Page")
-        return None
+        
+        detail_dict = {
+                'imageurl': '',
+                'description': "Old Steam Page",
+                'autokwd': [],
+                'company': "",
+                'screenshot': [],
+                'tag':[],
+                'platform': []
+        }
+        
+        return detail_dict
     
     thum = driver.find_element(By.CLASS_NAME, 'game_header_image_full').get_attribute('src')
     company = driver.find_element(By.ID, 'developers_list').text
