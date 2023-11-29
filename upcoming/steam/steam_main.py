@@ -62,8 +62,20 @@ def steam_upcoming(driver, driver_english):
     concat_data(gameList, detailList, DATE)
     
     
-    # 수집 데이터 TEST 저장 실제로 사용할 땐 없앨 예정
+    
     time.sleep(5)
+    
+    
+    f = open('./upcoming/steam/log/'+DATE+'_failed_log.txt','w')
+    for i in failedList:
+        data = "%s\n" % i
+        f.write(data)
+    f.close()
+    
+    
+    
+    
+    # 수집 데이터 TEST 저장 실제로 사용할 땐 없앨 예정
     f = open('./test/test.txt','w')
     for i in gameList:
         data = "%s\n" % i
@@ -72,12 +84,6 @@ def steam_upcoming(driver, driver_english):
     
     f = open('./test/test_detail.txt','w')
     for i in detailList:
-        data = "%s\n" % i
-        f.write(data)
-    f.close()
-    
-    f = open('./upcoming/steam/log/'+DATE+'_failed_log.txt','w')
-    for i in failedList:
         data = "%s\n" % i
         f.write(data)
     f.close()

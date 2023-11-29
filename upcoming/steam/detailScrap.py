@@ -81,7 +81,18 @@ def detail_scrap(driver, driver_english, url):
     for adult in adultTag:
         if adult in tagList:
             print("adult game")
-            return None
+            
+            detail_dict = {
+                'imageurl': None,
+                'description': "Adult Game",
+                'autokwd': [],
+                'company': "",
+                'screenshot': [],
+                'tag':[],
+                'platform': []
+            }
+            
+            return detail_dict
             
         
         
