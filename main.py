@@ -16,10 +16,10 @@ options.add_argument('--disable-dev-shm-usage')
 #options.add_argument('--headless=new')
 
 driver = webdriver.Chrome(options=options)
-driver_english = webdriver.Chrome(options=options)
+driver_eng = webdriver.Chrome(options=options)
 
-#steam_upcoming(driver, driver_english)
-playstation_upcoming(driver, driver_english)
+#steam_upcoming(driver, driver_eng)
+playstation_upcoming(driver, driver_eng)
 
 driver.quit()
-driver_english.quit()
+driver_eng.quit()

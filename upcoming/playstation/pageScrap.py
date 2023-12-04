@@ -31,7 +31,7 @@ def page_scrap(driver, driver_english, pageNumber):
         
         print(pageList)
         
-        nextBtn = driver.find_element(By.XPATH, '/html/body/div[3]/main/div/section/div/div/div/div[2]/div[2]/div/nav/button[2]/span').click()
+        nextBtn = driver.find_element(By.CLASS_NAME, 'psw-icon.psw-icon--chevron-right.psw-icon.psw-icon-size-2.psw-icon--chevron-right').click()
         print('nextBtn clicked!')
         
             

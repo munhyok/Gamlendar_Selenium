@@ -27,7 +27,7 @@ LOADING_PAGE = 2
 DATE = datetime.fromtimestamp(NOW).strftime('%Y-%m-%d %H:%M:%S')
 
 
-def steam_upcoming(driver, driver_english):
+def steam_upcoming(driver, driver_eng):
     
     detailList = []
     
@@ -47,11 +47,11 @@ def steam_upcoming(driver, driver_english):
     
     
     print('성인 인증 페이지')
-    pass_adult(driver, driver_english)
+    pass_adult(driver, driver_eng)
     
     print('detail scrap start')
     for i in range(len(gameList)):
-        result = detail_scrap(driver, driver_english, gameList[i]['url'])
+        result = detail_scrap(driver, driver_eng, gameList[i]['url'])
         
         if result != None:
             detailList.append(result)

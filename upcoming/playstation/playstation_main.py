@@ -5,6 +5,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 
 from upcoming.playstation.pageScrap import page_scrap
+from upcoming.playstation.detailScrap import detail_scrap
 from core.data.concatData import concat_data
 from core.logs.failedLog import failed_log
 from selenium import webdriver
@@ -15,11 +16,12 @@ LOADING_PAGE = 2
 
 DATE = datetime.fromtimestamp(NOW).strftime('%Y-%m-%d %H:%M:%S')
 
-def playstation_upcoming(driver, driver_english):
+def playstation_upcoming(driver, driver_eng):
     
+    detailList = list()
     pageCount = 0
     
-    driver.get('https://store.playstation.com/ko-kr/pages/browse/1?next_thirty_days=conceptReleaseDate')
+    driver.get('https://store.playstation.com/ko-kr/category/82ced94c-ed3f-4d81-9b50-4d4cf1da170b/1?next_thirty_days=conceptReleaseDate')
     
     wait = WebDriverWait(driver, 10)
     
@@ -38,7 +40,11 @@ def playstation_upcoming(driver, driver_english):
     print(f'총 {count}개 게임 수집 시작')
     
     
-    page_scrap(driver, driver_english, pageCount)
+    gameList = page_scrap(driver, driver_eng, pageCount)
+    
+    for i in range(0, len(gameList)):
+        detail_scrap(driver, driver_eng, gameList[i]['url'], gameList[i]['url'].replace('ko-kr','en-us'))
+    
     
     
     

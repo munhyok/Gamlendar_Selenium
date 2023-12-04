@@ -47,7 +47,7 @@ def pass_adult(driver, driver_english):
     
 
 
-def detail_scrap(driver, driver_english, url):
+def detail_scrap(driver, driver_eng, url):
     
     
     
@@ -62,10 +62,10 @@ def detail_scrap(driver, driver_english, url):
     
     
     driver.implicitly_wait(10)
-    driver_english.implicitly_wait(10)
+    driver_eng.implicitly_wait(10)
     
     driver.get(url)
-    driver_english.get(url)
+    driver_eng.get(url)
 
     tags = driver.find_element(By.CLASS_NAME, 'glance_tags.popular_tags').find_elements(By.CLASS_NAME,'app_tag')
     
@@ -135,7 +135,7 @@ def detail_scrap(driver, driver_english, url):
     
     
 
-    title_english = driver_english.find_element(By.ID, 'appHubAppName').text
+    title_english = driver_eng.find_element(By.ID, 'appHubAppName').text
     autokwdSet.add(title_english)
     
     autokwd = list(autokwdSet)
