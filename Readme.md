@@ -20,11 +20,11 @@
 ### Progress
 - 2023-11-21 1차 테스트 수집 완료
 - 2023-11-24 2차 수집 & 백업 및 Log 기록 성공
-- 
+- 2023-12-03 3차 수집 2023-11-29 디버깅 검증 완료
 
 
 ### Bug Note
-- 2023-11-29 **[Critical]**
+- 2023-11-29 **[Critical]** **FIXED!**
   - 성인 게임 인식 후 None으로 생략해버려 생긴 gameList와 detailList 싱크 오류 수정
 
 ---
@@ -35,7 +35,7 @@
 
 1. [플레이스테이션 출시 목록](https://store.playstation.com/ko-kr/pages/browse/1?next_thirty_days=conceptReleaseDate) 수집 ✅
 2. 특정 장르가 "성인"이 들어가있는 게임 수집 금지
-3. Upcoming 리스트, 상세 페이지(detail) 수집
+3. Upcoming 리스트, 상세 페이지(detail) 수집 ✅
 
 
 
