@@ -43,9 +43,18 @@ def playstation_upcoming(driver, driver_eng):
     gameList = page_scrap(driver, driver_eng, pageCount)
     
     for i in range(0, len(gameList)):
-        detail_scrap(driver, driver_eng, gameList[i]['url'], gameList[i]['url'].replace('ko-kr','en-us'))
+        result = detail_scrap(driver, driver_eng, gameList[i]['url'], gameList[i]['url'].replace('ko-kr','en-us'))
+        detailList.append(result)
     
+    failedList = failed_log(False, None, None, None)
+        
+    concat_data(gameList, detailList, DATE, 'playstation')
     
+    f = open('./upcoming/playstation/log/'+DATE+'_failed_log.txt','w')
+    for i in failedList:
+        data = "%s\n" % i
+        f.write(data)
+    f.close()    
     
     
 

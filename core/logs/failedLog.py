@@ -1,10 +1,15 @@
 # 수집 실패 로그입니다. Exception Handling 할 때 활용합니다.
 
-FAILEDLIST = []
+failedList = []
 
 def failed_log(collect, title, log, platform):
+    global failedList
     
     if collect == True:
-        FAILEDLIST.append([title,log,platform])
+        failedList.append([title,log,platform])
         
-    else: return FAILEDLIST
+    else:
+        tmp = failedList
+        failedList = []
+        return tmp
+    

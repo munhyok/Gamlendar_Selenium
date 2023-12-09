@@ -2,7 +2,7 @@
 
 ### 겜린더의 게임 데이터를 자동으로 수집하기 위한 스크래핑 봇
 
-잘 만들어서 Github Action으로 자동화 시켜보자!
+잘 만들어서 자동화 시켜보자!
 
 
 ## 1. Steam ✅
@@ -34,7 +34,7 @@
 ### 수집 전략
 
 1. [플레이스테이션 출시 목록](https://store.playstation.com/ko-kr/pages/browse/1?next_thirty_days=conceptReleaseDate) 수집 ✅
-2. 특정 장르가 "성인"이 들어가있는 게임 수집 금지
+2. 특정 장르가 "성인"이 들어가있는 게임 수집 금지 ✅
 3. Upcoming 리스트, 상세 페이지(detail) 수집 ✅
 
 
@@ -58,6 +58,7 @@
 ### Logs
 로그 관리를 위한 기능
 - Exception Handling을 통해 수집 실패한 데이터는 Log 수집 ✅
+- Platform마다 log를 분류
 
 
 

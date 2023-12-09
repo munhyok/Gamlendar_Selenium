@@ -17,7 +17,7 @@ from datetime import datetime
 # 최대한 보수적으로 데이터 수집 *성인게임 수집 금지...
 # listup -> detail game data -> POST DB
 # 추후 출시 날짜가 변경될 수도 있으니 DB 이용해야할까...?
-# pandas로 정리 CONCAT -> postgreSQL 테이블 추가
+# pandas로 정리 CONCAT -> MariaDB 테이블 추가
 # (데이터 관리 추후 관리자 페이지가 필요할 것 같아서.. 미리 작업)
 # 
 
@@ -59,9 +59,7 @@ def steam_upcoming(driver, driver_eng):
         
     failedList = failed_log(False, None, None, None)
         
-    concat_data(gameList, detailList, DATE)
-    
-    
+    concat_data(gameList, detailList, DATE, 'steam')
     
     time.sleep(5)
     

@@ -6,7 +6,7 @@ from datetime import datetime
 #NOW = time.time()
 #DATE = datetime.fromtimestamp(NOW).strftime('%Y-%m-%d %H:%M:%S')
 
-def concat_data(gameList, detailList, date):
+def concat_data(gameList, detailList, date, platform):
     
     #test
     #gameList = [
@@ -38,9 +38,9 @@ def concat_data(gameList, detailList, date):
     
     
     concatResult = pd.concat([gameList_df, detailList_df], axis=1, join='inner')
-    concatResult.to_csv('./upcoming/steam/backup/'+date+'_backup'+ '.csv', index=False)
+    concatResult.to_csv('./upcoming/'+platform+'/backup/'+date+'_backup'+ '.csv', index=False)
     
     #print(concatResult)
     return concatResult
 
-#concat_data(None, None)
+#concat_data(None, None, DATE, 'playstation')

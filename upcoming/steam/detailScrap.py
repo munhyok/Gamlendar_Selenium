@@ -82,6 +82,8 @@ def detail_scrap(driver, driver_eng, url):
         if adult in tagList:
             print("adult game")
             
+            failed_log(True,title,'filtering Adult game','pc')
+            
             detail_dict = {
                 'imageurl': '',
                 'description': "Adult Game",
@@ -99,7 +101,8 @@ def detail_scrap(driver, driver_eng, url):
         
     title = driver.find_element(By.ID, 'appHubAppName').text
     
-    if title == '(Old steam page)': 
+    if title == '(Old steam page)':
+        # 사실 Old steam page는 개발자가 그렇게 만든 페이지 같아서 나중에 별도로 예외처리를 만들어야함
         print("Old Steam Page")
         
         detail_dict = {
@@ -135,8 +138,8 @@ def detail_scrap(driver, driver_eng, url):
     
     
 
-    title_english = driver_eng.find_element(By.ID, 'appHubAppName').text
-    autokwdSet.add(title_english)
+    engTitle = driver_eng.find_element(By.ID, 'appHubAppName').text
+    autokwdSet.add(engTitle)
     
     autokwd = list(autokwdSet)
     
@@ -153,8 +156,7 @@ def detail_scrap(driver, driver_eng, url):
     print(detail_dict)
     
     
-    failed_test = failed_log(False, None, None, None)
-    print(failed_test)
+    
     
     
     
