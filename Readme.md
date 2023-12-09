@@ -34,7 +34,7 @@
 ### 수집 전략
 
 1. [플레이스테이션 출시 목록](https://store.playstation.com/ko-kr/pages/browse/1?next_thirty_days=conceptReleaseDate) 수집 ✅
-2. 특정 장르가 "성인"이 들어가있는 게임 수집 금지 ✅
+2. 게임 장르 중 "성인"이 들어가있는 게임 수집 금지 ✅
 3. Upcoming 리스트, 상세 페이지(detail) 수집 ✅
 
 
