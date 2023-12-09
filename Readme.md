@@ -29,7 +29,7 @@
 
 ---
 
-## 2. Playstation
+## 2. Playstation ✅
 
 ### 수집 전략
 
