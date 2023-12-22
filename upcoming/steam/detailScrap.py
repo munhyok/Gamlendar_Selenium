@@ -67,6 +67,8 @@ def detail_scrap(driver, driver_eng, url):
     driver.get(url)
     driver_eng.get(url)
 
+    
+    # 태그 수집
     tags = driver.find_element(By.CLASS_NAME, 'glance_tags.popular_tags').find_elements(By.CLASS_NAME,'app_tag')
     
     for tag in tags:
@@ -117,9 +119,12 @@ def detail_scrap(driver, driver_eng, url):
         
         return detail_dict
     
+    # 썸네일, 개발사
     thum = driver.find_element(By.CLASS_NAME, 'game_header_image_full').get_attribute('src')
     company = driver.find_element(By.ID, 'developers_list').text
     
+    
+    # 게임 상세 정보
     try:
         description = driver.find_element(By.ID, 'game_area_description').text
     except NoSuchElementException:
@@ -129,7 +134,7 @@ def detail_scrap(driver, driver_eng, url):
         
         
         
-    
+    # 스크린샷
     screenshot = driver.find_elements(By.CLASS_NAME, 'highlight_strip_item.highlight_strip_screenshot')
     for scr in screenshot:
         screenList.append(scr.find_element(By.TAG_NAME, 'img').get_attribute('src'))
@@ -137,7 +142,7 @@ def detail_scrap(driver, driver_eng, url):
     autokwdSet.add(title)
     
     
-
+    # 영문 이름
     engTitle = driver_eng.find_element(By.ID, 'appHubAppName').text
     autokwdSet.add(engTitle)
     

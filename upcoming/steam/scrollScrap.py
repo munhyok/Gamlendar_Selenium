@@ -17,7 +17,7 @@ def scroll_scrap(driver):
     gameList = list()
     doScroll = True
     
-    oldPageHeight = driver.execute_script("return Math.max( document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight );")
+    currentPageHeight = driver.execute_script("return Math.max( document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight );")
     
     while(doScroll):
         
@@ -27,12 +27,12 @@ def scroll_scrap(driver):
         
         newPageHeight = driver.execute_script("return Math.max( document.body.scrollHeight, document.body.offsetHeight, document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight );")
 
-        if oldPageHeight == newPageHeight:
+        if currentPageHeight == newPageHeight:
             doScroll = False
             print("Page End")
             break
 
-        oldPageHeight = newPageHeight
+        currentPageHeight = newPageHeight
         
         
         gameRows = driver.find_element(By.ID, 'search_resultsRows')
