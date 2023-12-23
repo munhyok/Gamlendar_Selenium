@@ -43,14 +43,14 @@ def scroll_scrap(driver):
             url = games[i].get_attribute('href')
             releaseDate = games[i].find_element(By.CLASS_NAME, 'col.search_released.responsive_secondrow').text
 
-            my_game = {
+            pageGame = {
                 'title': title,
                 'url': url,
                 'date': releaseDate
 
 
             }
-            gameList.append(my_game)
+            gameList.append(pageGame)
 
         print(len(gameList))
         

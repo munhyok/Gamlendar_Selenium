@@ -6,16 +6,15 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
-
-from scrollScrap import scroll_scrap
 from selenium import webdriver
 from datetime import datetime
 
 from dotenv import load_dotenv
+from upcoming.xbox.pageScrap import page_scrap
 
 load_dotenv()
 
-driver = webdriver.Chrome()
+#driver = webdriver.Chrome()
 # 설계 정리
 # xbox는 게관위의 등급분류 시스템을 거친 게임을 가져오기 때문에
 # 등급이 없는 게임은 웬만해서 등록 안하는 것 같기 때문에
@@ -25,6 +24,7 @@ driver = webdriver.Chrome()
 # 로그인 -> upcoming 페이지 -> 상세 페이지 -> 이름, 설명, 스크린샷, 태그(x)
 # 디럭스, Deluxe, 프리미엄, Premium, 얼티밋, Ultimate, 컴플리트, Complete, 디피니티브, Definitive, 
 # 위 에디션 물품은 제외시켜서..
+
 def xbox_login(driver):
     xbox_account = os.getenv('XBOXACCOUNT')
     xbox_password = os.getenv('XBOXPASSWORD')
@@ -74,12 +74,10 @@ def xbox_upcoming(driver, driver_eng):
     menu = driver.find_element(By.CSS_SELECTOR, "li[id='unique-id-for-paglist-generated-select-menu-3']")
     menu.click()
     print("Xbox Login Complete")
-    #time.sleep(15)
     
-    scroll_scrap(driver)
+    page_scrap(driver)
     
     
 
 
 
-xbox_upcoming(driver, None)

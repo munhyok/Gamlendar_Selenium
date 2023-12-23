@@ -159,12 +159,7 @@ def detail_scrap(driver, driver_eng, url):
     }
     
     print(detail_dict)
-    
-    
-    
-    
-    
-    
+
     #Log TestMode
     #f = open('./upcoming/steam/log/tested_failed_log.txt','w')
     #for i in FAILEDLIST:
