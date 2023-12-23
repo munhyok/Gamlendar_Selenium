@@ -25,6 +25,10 @@ load_dotenv()
 # 디럭스, Deluxe, 프리미엄, Premium, 얼티밋, Ultimate, 컴플리트, Complete, 디피니티브, Definitive, 
 # 위 에디션 물품은 제외시켜서..
 
+# 그냥 Edition 키워드를 가져다가 필터링 거치면 되지않을까?
+# 라고 고민했지만 생각보다 Edition이란 게임이 뒤에 들어가는 게임도 많고
+# 뭔가 게임 패키지가 꼬여있다...
+
 def xbox_login(driver):
     xbox_account = os.getenv('XBOXACCOUNT')
     xbox_password = os.getenv('XBOXPASSWORD')
