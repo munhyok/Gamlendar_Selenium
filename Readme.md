@@ -55,7 +55,7 @@
 
 1. 로그인 ✅
 2. [Xbox 출시 목록](https://www.xbox.com/ko-kr/games/all-games?cat=upcoming) 수집 ✅
-3. Upcoming 리스트, 상세 페이지(detail) 수집
+3. Upcoming 리스트, 상세 페이지(detail) 수집 ✅
 
 
 ## 4. Nintendo Switch
