@@ -11,6 +11,7 @@ from datetime import datetime
 
 from dotenv import load_dotenv
 from upcoming.xbox.pageScrap import page_scrap
+from upcoming.xbox.detailScrap import detail_scrap
 
 load_dotenv()
 
@@ -70,7 +71,8 @@ def xbox_login(driver):
         
 
 def xbox_upcoming(driver, driver_eng):
-    
+    gameList = []
+    detailList = []
     xbox_login(driver)
     pageList = driver.find_element(By.CSS_SELECTOR, "button[id='unique-id-for-paglist-generated-select-menu-trigger']")
     pageList.click()
@@ -79,7 +81,18 @@ def xbox_upcoming(driver, driver_eng):
     menu.click()
     print("Xbox Login Complete")
     
-    page_scrap(driver)
+    gameList = page_scrap(driver)
+    
+    for count in range(len(gameList)):
+        kor = gameList[count]['url']
+        eng = gameList[count]['url'].replace('ko-kr','en-us')
+        
+        result = detail_scrap(driver, driver_eng, kor, eng)
+        detailList.append(result)
+        
+    
+        
+    
     
     
 
