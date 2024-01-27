@@ -1,15 +1,22 @@
 # 수집 실패 로그입니다. Exception Handling 할 때 활용합니다.
+# logging 사용해서 로그 수집
+import logging
 
-failedList = []
+failedLogs = {
+    'pc': [],
+    'xbox': [],
+    'playstation': [],
+    'switch': []
+}
+
 
 def failed_log(collect, title, log, platform):
-    global failedList
+    
     
     if collect == True:
-        failedList.append([title,log,platform])
+        failedLogs[platform].append([title,log])
         
     else:
-        tmp = failedList
-        failedList = []
+        tmp = failedLogs[platform]
         return tmp
     

@@ -4,7 +4,10 @@
 
 잘 만들어서 자동화 시켜보자!
 
-**robots.txt에 준수해 수집이 불가능한 페이지는 수집하지 않습니다.**
+**robots.txt에 준수하여 수집이 불가능한 페이지는 수집하지 않습니다.**
+
+구조와 코드를 최대한 일관성있게 구성하여 이해하기 쉽게 작성하려고 노력합니다.
+
 
 
 ## 1. Steam ✅
@@ -39,7 +42,6 @@
 2. 게임 장르 중 "성인"이 들어가있는 게임 수집 금지 ✅
 3. Upcoming 리스트, 상세 페이지(detail) 수집 ✅
 
-
 ### Progress
 - 2023-12-10 테스트 수집 완료
 - 2023-12-10 백업 및 Log 기록 성공
@@ -56,9 +58,34 @@
 1. 로그인 ✅
 2. [Xbox 출시 목록](https://www.xbox.com/ko-kr/games/all-games?cat=upcoming) 수집 ✅
 3. Upcoming 리스트, 상세 페이지(detail) 수집 ✅
+4. 스크린샷 수집 로직 작성 ✅
 
 
-## 4. Nintendo Switch
+## 4. Nintendo Switch ✅
+
+### 수집 전략
+
+1. [Nintendo Switch](https://store.nintendo.co.kr/games/all-released-games) 수집 ✅
+2. Upcoming 리스트, 상세 페이지(detail) 수집 ✅
+3. popup close, Screenshot next 로직 작성 ✅
+
+#### 난제
+스위치는 한국어 페이지와 북미 페이지의 디자인과 구조가 완전 달라 어떻게 수집해야할 지 전략 구상 중
+
+생각해 본 방법들
+1. GPT를 사용해서 게임 이름 영문 번역
+  - 이게 제일 합리적인 수단이라고 판단 중
+  돈이 들긴해도... 😂
+2. 구글 번역기를 사용
+  - 일부 단어가 제대로 번역이 되질 않음
+3. 직접 단어를 수집해 매칭하는 방법
+  - 시간이 너무 오래걸린다.
+
+
+여러가지 난제로 인해 한국어 페이지부터 수집
+
+
+
 
 
 
@@ -81,7 +108,8 @@ Data Cleaning Text Data를 겜린더에 맞게 수정하는 과정
 - Platform마다 log를 분류 ✅
 
 
-
+### 공통 고려사항..(우선 순위 낮음)
+- autokwd plain 데이터 포함시켜보기
 
 
 

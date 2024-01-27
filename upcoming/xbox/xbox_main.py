@@ -12,10 +12,13 @@ from datetime import datetime
 from dotenv import load_dotenv
 from upcoming.xbox.pageScrap import page_scrap
 from upcoming.xbox.detailScrap import detail_scrap
+from core.logs.failedLog import failed_log
+from core.data.concatData import concat_data
+
 
 load_dotenv()
 
-#driver = webdriver.Chrome()
+
 # 설계 정리
 # xbox는 게관위의 등급분류 시스템을 거친 게임을 가져오기 때문에
 # 등급이 없는 게임은 웬만해서 등록 안하는 것 같기 때문에
@@ -29,6 +32,10 @@ load_dotenv()
 # 그냥 Edition 키워드를 가져다가 필터링 거치면 되지않을까?
 # 라고 고민했지만 생각보다 Edition이란 게임이 뒤에 들어가는 게임도 많고
 # 뭔가 게임 패키지가 꼬여있다...
+
+
+NOW = time.time()
+DATE = datetime.fromtimestamp(NOW).strftime('%Y-%m-%d %H:%M:%S')
 
 def xbox_login(driver):
     xbox_account = os.getenv('XBOXACCOUNT')
@@ -90,6 +97,18 @@ def xbox_upcoming(driver, driver_eng):
         result = detail_scrap(driver, driver_eng, kor, eng)
         detailList.append(result)
         
+
+
+
+    failedList = failed_log(False, None, None, None)
+        
+    concat_data(gameList, detailList, DATE, 'xbox')
+    
+    f = open('./upcoming/xbox/log/'+DATE+'_failed_log.txt','w')
+    for i in failedList:
+        data = "%s\n" % i
+        f.write(data)
+    f.close()    
     
         
     

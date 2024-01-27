@@ -70,7 +70,7 @@ def detail_scrap(driver, driver_eng, url, url_eng):
     driver_eng.get(url_eng)
     
     title = driver.find_element(By.CSS_SELECTOR, "h1[data-testid='ProductDetailsHeaderProductTitle']").text
-    engTitle = driver.find_element(By.CSS_SELECTOR, "h1[data-testid='ProductDetailsHeaderProductTitle']").text
+    engTitle = driver_eng.find_element(By.CSS_SELECTOR, "h1[data-testid='ProductDetailsHeaderProductTitle']").text
     
     autokwdSet.add(title)
     autokwdSet.add(engTitle)

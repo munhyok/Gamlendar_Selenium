@@ -3,6 +3,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 import time
 
+from core.logs.failedLog import failed_log
 
 FILTERWORDS = [
     '디럭스','Deluxe',
@@ -40,6 +41,10 @@ def page_scrap(driver):
             }
             
             gameList.append(pageGame)
+        else: 
+            failed_log(True, title, "Detected Filter Words", "xbox")
+            
+        
             
     print(gameList)
     return gameList

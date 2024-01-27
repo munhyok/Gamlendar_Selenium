@@ -54,6 +54,7 @@ def detail_scrap(driver, driver_eng, url, url_eng):
             failed_log(True,title,'filtering Adult game','playstation')
 
             detail_dict = {
+                'date': releaseDate,
                 'imageurl': '',
                 'description': "Adult Game",
                 'autokwd': [],
@@ -67,6 +68,7 @@ def detail_scrap(driver, driver_eng, url, url_eng):
         
     
     detail_dict = {
+        'date': releaseDate,
         'imageurl': thum,
         'description': description,
         'autokwd': autokwd,

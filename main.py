@@ -3,6 +3,7 @@ from selenium.webdriver.chrome.options import Options
 from upcoming.steam.steam_main import steam_upcoming
 from upcoming.playstation.playstation_main import playstation_upcoming
 from upcoming.xbox.xbox_main import xbox_upcoming
+from upcoming.switch.switch_main import switch_upcoming
 
 import time
 
@@ -21,8 +22,8 @@ driver_eng = webdriver.Chrome(options=options)
 
 #steam_upcoming(driver, driver_eng)
 #playstation_upcoming(driver, driver_eng)
-xbox_upcoming(driver, driver_eng)
-
+#xbox_upcoming(driver, driver_eng)
+switch_upcoming(driver, driver_eng)
 
 driver.quit()
 driver_eng.quit()

@@ -11,9 +11,10 @@ from core.logs.failedLog import failed_log
 from selenium import webdriver
 from datetime import datetime
 
-NOW = time.time()
+
 LOADING_PAGE = 2
 
+NOW = time.time()
 DATE = datetime.fromtimestamp(NOW).strftime('%Y-%m-%d %H:%M:%S')
 
 def playstation_upcoming(driver, driver_eng):
