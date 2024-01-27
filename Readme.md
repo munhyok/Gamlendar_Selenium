@@ -9,8 +9,37 @@
 구조와 코드를 최대한 일관성있게 구성하여 이해하기 쉽게 작성하려고 노력합니다.
 
 
+## CheckList Table
+
+### 수집 페이지
+|수집 페이지|완료|비고
+|:---:|:---:|:---:|
+|Steam|✅|
+|Playstation|✅|
+|Xbox|✅|
+|Switch|✅|Selenium 화면 상단에 띄우지 않으면 터짐|
+
+
+### Core
+|Core|완료|비고|
+|:---:|:---:|:---:|
+|concatData|✅|
+|failedLog|✅|각 플랫폼별로 로그 생성
+|Database|⛔️|
+|DataCleaning|⛔️|
+
+
+-----
+
 
 ## 1. Steam ✅
+### 요약 테이블
+|기능|완료|
+|:---:|:---:|
+|Scroll Scrap|✅|
+|Detail Scrap|✅|
+|Adult Pass|✅|
+|Adult Game Filtering|✅|
 
 ### 수집 전략
 
@@ -35,6 +64,13 @@
 ---
 
 ## 2. Playstation ✅
+### 요약 테이블
+|기능|완료|
+|:---:|:---:|
+|Page Scrap|✅|
+|Detail Scrap|✅|
+|Adult Game Filtering|✅|
+
 
 ### 수집 전략
 
@@ -53,6 +89,14 @@
 
 ## 3. Xbox
 
+### 요약 테이블
+|기능|완료|
+|:---:|:---:|
+|Page Scrap|✅|
+|Detail Scrap|✅|
+|Screenshot Controler|✅|
+|Tag Spliter|✅|
+
 ### 수집 전략
 
 1. 로그인 ✅
@@ -62,6 +106,14 @@
 
 
 ## 4. Nintendo Switch ✅
+
+|기능|완료|
+|:---:|:---:|
+|Page Scrap|✅|
+|Detail Scrap|✅|
+|Screenshot Controler|✅|
+|Tag Spliter|✅|
+|Eng_Translator|⛔️|
 
 ### 수집 전략
 

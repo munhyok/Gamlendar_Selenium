@@ -7,8 +7,14 @@ import time
 from core.logs.failedLog import failed_log
 
 def get_description(driver):
+    rawTextList = []
+    description = None
     try:
-        description = driver.find_element(By.CLASS_NAME, 'product.attribute.mfr_description').find_element(By.CLASS_NAME, 'value').find_element(By.TAG_NAME,'p').text
+        descRaw = driver.find_element(By.CLASS_NAME, 'product.attribute.mfr_description').find_element(By.CLASS_NAME, 'value').find_elements(By.TAG_NAME,'p')
+        for rawText in descRaw:
+            rawTextList.append(rawText.text)
+            description = "\n".join(rawTextList)
+        
     except NoSuchElementException:
         description = driver.find_element(By.CLASS_NAME, 'product.attribute.mfr_description').find_element(By.CLASS_NAME, 'value').text
 
