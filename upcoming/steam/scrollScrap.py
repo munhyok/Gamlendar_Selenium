@@ -1,6 +1,7 @@
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from core.data_cleaning.DataCleaning import DataCleaning
 import time
 
 
@@ -14,6 +15,9 @@ import time
 LOADING_PAGE = 2 # 데이터 로딩 2초
 
 def scroll_scrap(driver):
+    
+    dateReformat = DataCleaning('steam')
+    
     gameList = list()
     doScroll = True
     
@@ -46,7 +50,7 @@ def scroll_scrap(driver):
             pageGame = {
                 'title': title,
                 'url': url,
-                'date': releaseDate
+                'date': dateReformat.formatDate(releaseDate)
 
 
             }

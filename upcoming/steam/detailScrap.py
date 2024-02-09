@@ -4,6 +4,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 from core.logs.failedLog import failed_log
+
 import time
 
 
@@ -155,7 +156,7 @@ def detail_scrap(driver, driver_eng, url):
         'company': company,
         'screenshot': screenList,
         'tag':tagList,
-        'platform': ["PC"]
+        'platform': ["steam"]
     }
     
     print(detail_dict)

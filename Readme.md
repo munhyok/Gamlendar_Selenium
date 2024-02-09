@@ -6,7 +6,7 @@
 
 **robots.txt에 준수하여 수집이 불가능한 페이지는 수집하지 않습니다.**
 
-구조와 코드를 최대한 일관성있게 구성하여 이해하기 쉽게 작성하려고 노력합니다.
+구조와 코드를 최대한 일관성 있게 구성하여 이해하기 쉽게 작성하려고 노력합니다.
 
 
 ## CheckList Table
@@ -24,9 +24,9 @@
 |Core|완료|비고|
 |:---:|:---:|:---:|
 |concatData|✅|
-|failedLog|✅|각 플랫폼별로 로그 생성
+|failedLog|✅|각 플랫폼별로 로그 생성 추후 코드 Refactoring하기
 |Database|⛔️|
-|DataCleaning|⛔️|
+|DataCleaning|✅|겜린더에 맞는 Date형태로 완성
 
 
 -----
@@ -162,6 +162,8 @@ Data Cleaning Text Data를 겜린더에 맞게 수정하는 과정
 
 ### 공통 고려사항..(우선 순위 낮음)
 - autokwd plain 데이터 포함시켜보기
+- 근데 출시 날짜가 미정인 게임이 출시하면 어떻게 판별해야할까? hashcode가 서로 다르면 교체하는 방식..?
+- 중복체크는 hashcode를 사용할 예정(checksum)
 
 
 

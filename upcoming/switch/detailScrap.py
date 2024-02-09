@@ -5,6 +5,7 @@ from selenium.common.exceptions import NoSuchElementException
 import time
 
 from core.logs.failedLog import failed_log
+from core.data_cleaning.DataCleaning import DataCleaning
 
 def get_description(driver):
     rawTextList = []
@@ -61,6 +62,10 @@ def get_tag(driver):
 def detail_scrap(driver, driver_eng, url, url_eng):
     # 스위치의 상세 정보 페이지의 첫 스크린샷 이미지는 썸네일
     
+    dateReformat = DataCleaning('switch')
+    
+    
+    
     autokwdSet = set()
         
     driver.implicitly_wait(60)
@@ -75,7 +80,7 @@ def detail_scrap(driver, driver_eng, url, url_eng):
     
     autokwd = list(autokwdSet)
     
-    releaseDate = driver.find_element(By.CLASS_NAME, 'product-attribute.release_date').text
+    releaseDate = driver.find_element(By.CLASS_NAME, 'product-attribute.release_date').find_element(By.CLASS_NAME, 'product-attribute-val').text
     description = get_description(driver)
     company = driver.find_element(By.CLASS_NAME,'product-page-pusblisher-attr').text
     screenList = get_image(driver)
@@ -86,7 +91,7 @@ def detail_scrap(driver, driver_eng, url, url_eng):
     
     
     detail_dict = {
-        'date': releaseDate,
+        'date': dateReformat.formatDate(releaseDate),
         'imageurl': thum,
         'description': description,
         'autokwd': autokwd,
