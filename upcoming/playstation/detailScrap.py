@@ -3,7 +3,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 import time
-
+from core.data_cleaning.DataCleaning import DataCleaning
 from core.logs.failedLog import failed_log
 
 LOADING_PAGE = 2
@@ -14,6 +14,8 @@ LOADING_PAGE = 2
 
 
 def detail_scrap(driver, driver_eng, url, url_eng):
+    
+    dc = DataCleaning('playstation')
     
     adultTag = ['성인']
     autokwdSet = set()
@@ -35,11 +37,13 @@ def detail_scrap(driver, driver_eng, url, url_eng):
     
     
     title = driver.find_element(By.CSS_SELECTOR, "h1[data-qa='mfe-game-title#name']").text
-    autokwdSet.add(title)
+    autokwdSet.add(dc.cleanKeyword(title))
+    
+    
     # 한국에는 출시하지만 미국에선 출시하지 않을 때의 예외 처리
     try:
         engTitle = driver_eng.find_element(By.CSS_SELECTOR, "h1[data-qa='mfe-game-title#name']").text
-        autokwdSet.add(engTitle)
+        autokwdSet.add(dc.cleanKeyword(engTitle))
     except NoSuchElementException:
         engTitle = None
         
@@ -54,7 +58,7 @@ def detail_scrap(driver, driver_eng, url, url_eng):
             failed_log(True,title,'filtering Adult game','playstation')
 
             detail_dict = {
-                'date': releaseDate,
+                'date': dc.formatDate(releaseDate),
                 'imageurl': '',
                 'description': "Adult Game",
                 'autokwd': [],
@@ -68,7 +72,7 @@ def detail_scrap(driver, driver_eng, url, url_eng):
         
     
     detail_dict = {
-        'date': releaseDate,
+        'date': dc.formatDate(releaseDate),
         'imageurl': thum,
         'description': description,
         'autokwd': autokwd,
@@ -84,6 +88,7 @@ def detail_scrap(driver, driver_eng, url, url_eng):
     print(company)
     print(description)
     print(releaseDate)
+    print(dc.formatDate(releaseDate))
     print()
     print(title)
     print(engTitle)

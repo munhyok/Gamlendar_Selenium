@@ -62,7 +62,7 @@ def get_tag(driver):
 def detail_scrap(driver, driver_eng, url, url_eng):
     # 스위치의 상세 정보 페이지의 첫 스크린샷 이미지는 썸네일
     
-    dateReformat = DataCleaning('switch')
+    dc = DataCleaning('switch')
     
     
     
@@ -91,7 +91,7 @@ def detail_scrap(driver, driver_eng, url, url_eng):
     
     
     detail_dict = {
-        'date': dateReformat.formatDate(releaseDate),
+        'date': dc.formatDate(releaseDate),
         'imageurl': thum,
         'description': description,
         'autokwd': autokwd,

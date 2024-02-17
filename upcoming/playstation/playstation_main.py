@@ -47,7 +47,7 @@ def playstation_upcoming(driver, driver_eng):
         result = detail_scrap(driver, driver_eng, gameList[i]['url'], gameList[i]['url'].replace('ko-kr','en-us'))
         detailList.append(result)
     
-    failedList = failed_log(False, None, None, None)
+    failedList = failed_log(False, None, None, 'playstation')
         
     concat_data(gameList, detailList, DATE, 'playstation')
     

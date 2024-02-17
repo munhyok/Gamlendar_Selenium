@@ -13,6 +13,22 @@ class DataCleaning:
         self._platform = platform
     
     
+    def __title_clean(self, raw_data):
+        
+        if self._platform == 'xbox':
+            pass
+        elif self._platform == 'playstation':
+            
+            # 괄호를 포함한 괄호안에 있는 텍스트를 제거하지만
+            # 괄호안에 괄호가 있는 경우가 있다 ex) 게임 (한국어, 중국어(간체자), 일본어) 이런식으로...
+            # 그래서 2중으로 제거하는 방법으로 해결
+            re_str = re.sub(r'\([^()]*\)', '', raw_data) 
+            re_str = re.sub(r'\([^()]*\)', '', re_str)
+            
+            result = re_str.rstrip()
+            
+            return result
+    
     
     def __date_clean(self, raw_data):
         
@@ -60,7 +76,12 @@ class DataCleaning:
             
             return formatDate
         
-        else: return None
+        
         
     def formatDate(self, date):
-        self.__date_clean(date)
+        format_date = self.__date_clean(date)
+        return format_date
+    
+    def cleanKeyword(self, raw_data):
+        cleanKwd = self.__title_clean(raw_data)
+        return cleanKwd
