@@ -55,8 +55,9 @@ def xbox_login(driver):
         
         
         time.sleep(3)
-        loginState = driver.find_element(By.CSS_SELECTOR, "input[id='idBtn_Back']")
-        loginState.click()
+        driver.get("https://www.xbox.com/ko-kr/games/all-games?cat=upcoming")
+        #loginState = driver.find_element(By.CSS_SELECTOR, "input[id='idBtn_Back']")
+        #loginState.click()
         
 
     driver.get("https://www.xbox.com/ko-kr/games/all-games?cat=upcoming")
@@ -100,7 +101,7 @@ def xbox_upcoming(driver, driver_eng):
 
 
 
-    failedList = failed_log(False, None, None, None)
+    failedList = failed_log(False, None, None, 'xbox')
         
     concat_data(gameList, detailList, DATE, 'xbox')
     

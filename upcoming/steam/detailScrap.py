@@ -77,9 +77,9 @@ def detail_scrap(driver, driver_eng, url):
         if not plain == '':
             tagList.append(plain)
     tagList.remove('+')
+ 
         
-        
-   
+    title = driver.find_element(By.ID, 'appHubAppName').text
     
     for adult in adultTag:
         if adult in tagList:
@@ -98,11 +98,6 @@ def detail_scrap(driver, driver_eng, url):
             }
             
             return detail_dict
-            
-        
-        
-        
-    title = driver.find_element(By.ID, 'appHubAppName').text
     
     if title == '(Old steam page)':
         # 사실 Old steam page는 개발자가 그렇게 만든 페이지 같아서 나중에 별도로 예외처리를 만들어야함

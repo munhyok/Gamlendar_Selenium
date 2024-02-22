@@ -57,7 +57,7 @@ def steam_upcoming(driver, driver_eng):
             detailList.append(result)
         
         
-    failedList = failed_log(False, None, None, None)
+    failedList = failed_log(False, None, None, 'pc')
         
     concat_data(gameList, detailList, DATE, 'steam')
     

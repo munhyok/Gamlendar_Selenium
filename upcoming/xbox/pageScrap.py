@@ -9,8 +9,12 @@ FILTERWORDS = [
     '디럭스','Deluxe',
     '프리미엄','Premium',
     '얼티밋','Ultimate',
+    '얼티메이트',
     '컴플리트', 'Complete',
-    '디피니티브', 'Definitive'
+    '디피니티브', 'Definitive',
+    '다운로드', 'Download',
+    '스페셜', 'Special'
+    
     ]
 
 def page_scrap(driver):

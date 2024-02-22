@@ -1,12 +1,14 @@
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from core.data_cleaning.DataCleaning import DataCleaning
 import time
 
 LOADING_PAGE = 2
 
 def page_scrap(driver, driver_english, pageNumber):
     
+    dc = DataCleaning('playstation')
     pageList = list()
     
     for _ in range(1, pageNumber+1):
@@ -22,7 +24,7 @@ def page_scrap(driver, driver_english, pageNumber):
             url = game.find_element(By.TAG_NAME, 'div').find_element(By.TAG_NAME, 'a').get_attribute('href')
 
             pageGame = {
-                'title': title,
+                'title': dc.cleanKeyword(title),
                 'url': url,
                 
             }
