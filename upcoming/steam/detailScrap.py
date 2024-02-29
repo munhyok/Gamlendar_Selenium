@@ -70,7 +70,10 @@ def detail_scrap(driver, driver_eng, url):
 
     
     # 태그 수집
-    tags = driver.find_element(By.CLASS_NAME, 'glance_tags.popular_tags').find_elements(By.CLASS_NAME,'app_tag')
+    try:
+        tags = driver.find_element(By.CLASS_NAME, 'glance_tags.popular_tags').find_elements(By.CLASS_NAME,'app_tag')
+    except NoSuchElementException:
+        tags = None
     
     for tag in tags:
         plain = tag.text

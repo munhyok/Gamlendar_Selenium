@@ -6,9 +6,55 @@ from selenium.common.exceptions import NoSuchElementException
 #from core.logs.failedLog import failed_log
 import time
 
+
 # 태그 관련 함수 제작
 # 고해상도의 이미지 링크를 얻기 위한 작업이 복잡해
 # 별도의 get_image 함수로 분류
+# 번들 중에 게임 이름이 제일 짧
+
+def find_bundle(driver, driver_eng):
+    bundleList = []
+    tmp_title = ''
+    tmp_url = ''
+    try:
+        bundleList = driver.find_element(By.CSS_SELECTOR,"section[aria-label='이 번들']").find_element(By.CSS_SELECTOR, "div[class='ModuleRow-module__row___N1V3E']").find_element(By.CSS_SELECTOR, "ol[class='ItemsSlider-module__wrapper___nAi6y']").find_elements(By.TAG_NAME, 'li')
+
+        bundleList.pop()
+        print(bundleList)
+        
+        print(len(bundleList))
+        for titles in bundleList:
+            title = titles.find_element(By.TAG_NAME, 'span').find_element(By.TAG_NAME,'div').find_element(By.TAG_NAME,'a').get_attribute('title')
+            link = titles.find_element(By.TAG_NAME, 'span').find_element(By.TAG_NAME,'div').find_element(By.TAG_NAME,'a').get_attribute('href')
+
+
+            title = title.replace('Xbox Series X|S용 ','').replace('Xbox One용 ','').replace(' Xbox One', '').replace(' Xbox Series X|S','')
+
+            print(title)
+            if tmp_title == '':
+                tmp_title = title
+                tmp_url = link
+                
+
+            elif len(title) < len(tmp_title):
+                
+                tmp_title = title
+                tmp_url = link
+            
+            print(tmp_title)
+            
+        print(tmp_title)
+        print(tmp_url)
+        driver.get(tmp_url)
+        driver_eng.get(tmp_url.replace('ko-KR', 'en-us'))
+        time.sleep(10)
+        
+        
+        
+    except NoSuchElementException:
+        print("this is not bundle")
+        
+        return None
 
 def get_tag(driver):
     ele = driver.find_element(By.CSS_SELECTOR, "div[class='typography-module__xdsSubTitle1___N02-X ProductDetailsHeader-module__productInfoLine___W-v+p']")
@@ -69,25 +115,34 @@ def detail_scrap(driver, driver_eng, url, url_eng):
     driver.get(url)
     driver_eng.get(url_eng)
     
+    
+    find_bundle(driver,driver_eng)
+    
     title = driver.find_element(By.CSS_SELECTOR, "h1[data-testid='ProductDetailsHeaderProductTitle']").text
+    
+    
     
     try:
         engTitle = driver_eng.find_element(By.CSS_SELECTOR, "h1[data-testid='ProductDetailsHeaderProductTitle']").text
     except NoSuchElementException:
         engTitle = None
-        
-    autokwdSet.add(title)
-    autokwdSet.add(engTitle)
+
+    autokwdSet.add(engTitle.replace(' for Xbox One','').replace(' for Xbox Series X|S',''))
+    autokwdSet.add(title.replace('Xbox Series X|S용 ','').replace('Xbox One용 ',''))
+    
     
     autokwd = list(autokwdSet)
     
     
-    thum = driver.find_element(By.CSS_SELECTOR, "img[class='ProductDetailsHeader-module__backgroundImage___34Nro img-fluid']").get_attribute('src')
+        
     description = driver.find_element(By.CSS_SELECTOR, "p[class='Description-module__description___ylcn4 typography-module__xdsBody2___RNdGY ExpandableText-module__container___Uc17O']").text
     company = driver.find_element(By.CSS_SELECTOR, "div[class='typography-module__xdsBody2___RNdGY']").text
     tagList = get_tag(driver)
     screenList = get_image(driver)
-    
+    try:
+        thum = driver.find_element(By.CSS_SELECTOR, "img[class='ProductDetailsHeader-module__backgroundImage___34Nro img-fluid']").get_attribute('src')
+    except NoSuchElementException:
+        thum = screenList[0]
     
     detail_dict = {
         'imageurl': thum,

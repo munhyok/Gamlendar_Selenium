@@ -13,7 +13,9 @@ FILTERWORDS = [
     '컴플리트', 'Complete',
     '디피니티브', 'Definitive',
     '다운로드', 'Download',
-    '스페셜', 'Special'
+    '스페셜', 'Special',
+    '번들', 'Bundle',
+    '애드온', 'Add-On'
     
     ]
 
