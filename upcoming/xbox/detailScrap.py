@@ -5,6 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 #from core.logs.failedLog import failed_log
 import time
+from core.data_cleaning.DataCleaning import DataCleaning
 
 
 # 태그 관련 함수 제작
@@ -75,7 +76,8 @@ def get_tag(driver):
 def get_image(driver):
     imgList = []
     
-    wait = WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button[class='ItemsSlider-module__arrowButton___ZH7Ek commonStyles-module__basicButton___go-bX Button-module__iconButtonBase___uzoKc Button-module__basicBorderRadius___TaX9J Button-module__sizeIconButtonMedium___WJrxo Button-module__buttonBase___olICK Button-module__textNoUnderline___kHdUB Button-module__typeBrand___MMuct Button-module__overlayModeSolid___v6EcO']")))
+    #wait = WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button[class='ItemsSlider-module__arrowButton___ZH7Ek commonStyles-module__basicButton___go-bX Button-module__iconButtonBase___uzoKc Button-module__basicBorderRadius___TaX9J Button-module__sizeIconButtonMedium___WJrxo Button-module__buttonBase___olICK Button-module__textNoUnderline___kHdUB Button-module__typeBrand___MMuct Button-module__overlayModeSolid___v6EcO']")))
+    wait = WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "ol[class='ItemsSlider-module__wrapper___nAi6y']")))
     
     gallery = driver.find_elements(By.CSS_SELECTOR, "ol[class='ItemsSlider-module__wrapper___nAi6y']")
     
@@ -106,6 +108,8 @@ def get_image(driver):
 
 def detail_scrap(driver, driver_eng, url, url_eng):
     
+    dc = DataCleaning('xbox')
+    
     autokwdSet = set()
     
     driver.implicitly_wait(10)
@@ -127,8 +131,10 @@ def detail_scrap(driver, driver_eng, url, url_eng):
     except NoSuchElementException:
         engTitle = None
 
-    autokwdSet.add(engTitle.replace(' for Xbox One','').replace(' for Xbox Series X|S',''))
-    autokwdSet.add(title.replace('Xbox Series X|S용 ','').replace('Xbox One용 ',''))
+
+    autokwdSet.add(dc.cleanKeyword(engTitle))
+    autokwdSet.add(dc.cleanKeyword(title))
+    
     
     
     autokwd = list(autokwdSet)
@@ -139,10 +145,13 @@ def detail_scrap(driver, driver_eng, url, url_eng):
     company = driver.find_element(By.CSS_SELECTOR, "div[class='typography-module__xdsBody2___RNdGY']").text
     tagList = get_tag(driver)
     screenList = get_image(driver)
+    
     try:
         thum = driver.find_element(By.CSS_SELECTOR, "img[class='ProductDetailsHeader-module__backgroundImage___34Nro img-fluid']").get_attribute('src')
     except NoSuchElementException:
         thum = screenList[0]
+        
+        
     
     detail_dict = {
         'imageurl': thum,

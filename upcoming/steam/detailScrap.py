@@ -138,12 +138,14 @@ def detail_scrap(driver, driver_eng, url):
     for scr in screenshot:
         screenList.append(scr.find_element(By.TAG_NAME, 'img').get_attribute('src'))
     
-    autokwdSet.add(title)
+    
     
     
     # 영문 이름
     engTitle = driver_eng.find_element(By.ID, 'appHubAppName').text
+    
     autokwdSet.add(engTitle)
+    autokwdSet.add(title)
     
     autokwd = list(autokwdSet)
     

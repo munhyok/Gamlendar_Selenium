@@ -37,16 +37,18 @@ def detail_scrap(driver, driver_eng, url, url_eng):
     
     
     title = driver.find_element(By.CSS_SELECTOR, "h1[data-qa='mfe-game-title#name']").text
-    autokwdSet.add(dc.cleanKeyword(title))
+    
     
     
     # 한국에는 출시하지만 미국에선 출시하지 않을 때의 예외 처리
     try:
         engTitle = driver_eng.find_element(By.CSS_SELECTOR, "h1[data-qa='mfe-game-title#name']").text
-        autokwdSet.add(dc.cleanKeyword(engTitle))
+        
     except NoSuchElementException:
         engTitle = None
-        
+    
+    autokwdSet.add(dc.cleanKeyword(engTitle))
+    autokwdSet.add(dc.cleanKeyword(title))
         
     autokwd = list(autokwdSet)
     screenList.append(thum)

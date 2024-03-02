@@ -15,8 +15,26 @@ class DataCleaning:
     
     def __title_clean(self, raw_data):
         
+        wordList = [
+            'PS4 & PS5',
+            'PS4® & PS5®',
+            'Xbox Series X|S용',
+            'Xbox One용',
+            'Xbox Series X|S',
+            'Xbox One'
+            
+        ]
+        
         if self._platform == 'xbox':
-            pass
+            re_str = re.sub(r'\([^()]*\)', '', raw_data) 
+            re_str = re.sub(r'\([^()]*\)', '', re_str)
+            
+            for word in wordList:
+                re_str = re_str.replace(word,'')
+            
+            result = re_str.rstrip()
+            
+            return result
         elif self._platform == 'playstation':
             
             # 괄호를 포함한 괄호안에 있는 텍스트를 제거하지만
@@ -24,6 +42,9 @@ class DataCleaning:
             # 그래서 2중으로 제거하는 방법으로 해결
             re_str = re.sub(r'\([^()]*\)', '', raw_data) 
             re_str = re.sub(r'\([^()]*\)', '', re_str)
+            
+            for word in wordList:
+                re_str = re_str.replace(word,'')
             
             result = re_str.rstrip()
             
