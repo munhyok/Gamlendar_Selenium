@@ -25,7 +25,7 @@
 |:---:|:---:|:---:|
 |concatData|✅|
 |failedLog|✅|각 플랫폼별로 로그 생성 추후 코드 Refactoring하기
-|Database|⛔️|
+|Database|⛔️|DB 테이블 생성 완료
 |DataCleaning|✅|겜린더에 맞는 Date형태로 완성
 |DataCleaning|🟡|게임 이름 통일시키기
 
@@ -146,14 +146,26 @@
 자주 사용하게 될 기능을 Core로 분리
 
 ### Data
-데이터 통합을 위한 Pandas 활용
+데이터 통합(CONCAT)을 위한 Pandas 활용
 - Backup 목적의 csv 형태의 파일 저장 ✅
   
 Data Cleaning Text Data를 겜린더에 맞게 수정하는 과정
-- 날짜, 특정 단어 수정 및 제외 같은 필터링 작업
+- 날짜, 특정 단어 수정 및 제외 같은 필터링 작업 ✅
 
 ### Database
 통합한 데이터를 MariaDB에 전송
+
+#### DB ERD
+![](/DB_ERD.png)
+title에 의존하는 관계...
+어쩔 수 없다고 생각하긴한데..
+
+어차피 MongoDB에 저장하기 때문에
+
+일종의 백업과 파편화된 데이터 정리를 위한 DB
+
+
+최적화 할 부분이 있다면 적극적으로 할 예정
 
 ### Logs
 로그 관리를 위한 기능
@@ -164,7 +176,8 @@ Data Cleaning Text Data를 겜린더에 맞게 수정하는 과정
 ### 공통 고려사항..(우선 순위 낮음)
 - autokwd plain 데이터 포함시켜보기
 - 근데 출시 날짜가 미정인 게임이 출시하면 어떻게 판별해야할까? hashcode가 서로 다르면 교체하는 방식..?
-- 중복체크는 hashcode를 사용할 예정(checksum)
+- 중복 체크는 DB의 Unique 사용
+
 
 
 
