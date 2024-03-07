@@ -94,11 +94,11 @@ def detail_scrap(driver, driver_eng, url, url_eng):
         'date': dc.formatDate(releaseDate),
         'imageurl': thum,
         'description': description,
-        'autokwd': autokwd,
+        'autokwd': ",".join(autokwd),
         'company': company,
-        'screenshot': screenList,
-        'tag':tagList,
-        'platform': ["switch"]
+        'screenshot': ",".join(screenList),
+        'tag':",".join(tagList),
+        'platform': "switch"
     }
     
     print(detail_dict)

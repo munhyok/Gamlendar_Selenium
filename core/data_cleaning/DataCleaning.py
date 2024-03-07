@@ -21,7 +21,8 @@ class DataCleaning:
             'Xbox Series X|S용',
             'Xbox One용',
             'Xbox Series X|S',
-            'Xbox One'
+            'Xbox One',
+            'for'
             
         ]
         
@@ -32,7 +33,7 @@ class DataCleaning:
             for word in wordList:
                 re_str = re_str.replace(word,'')
             
-            result = re_str.rstrip()
+            result = re_str.strip()
             
             return result
         elif self._platform == 'playstation':
@@ -46,7 +47,7 @@ class DataCleaning:
             for word in wordList:
                 re_str = re_str.replace(word,'')
             
-            result = re_str.rstrip()
+            result = re_str.strip()
             
             return result
     

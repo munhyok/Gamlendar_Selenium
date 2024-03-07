@@ -158,7 +158,6 @@ Data Cleaning Text Data를 겜린더에 맞게 수정하는 과정
 #### DB ERD
 ![](/DB_ERD.png)
 title에 의존하는 관계...
-어쩔 수 없다고 생각하긴한데..
 
 어차피 MongoDB에 저장하기 때문에
 

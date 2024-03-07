@@ -152,11 +152,11 @@ def detail_scrap(driver, driver_eng, url):
     detail_dict = {
         'imageurl': thum,
         'description': description,
-        'autokwd': autokwd,
+        'autokwd': ",".join(autokwd),
         'company': company,
-        'screenshot': screenList,
-        'tag':tagList,
-        'platform': ["steam"]
+        'screenshot': ",".join(screenList),
+        'tag':",".join(tagList),
+        'platform': "steam"
     }
     
     print(detail_dict)

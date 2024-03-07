@@ -129,7 +129,7 @@ def detail_scrap(driver, driver_eng, url, url_eng):
     try:
         engTitle = driver_eng.find_element(By.CSS_SELECTOR, "h1[data-testid='ProductDetailsHeaderProductTitle']").text
     except NoSuchElementException:
-        engTitle = None
+        engTitle = title
 
 
     autokwdSet.add(dc.cleanKeyword(engTitle))
@@ -151,17 +151,18 @@ def detail_scrap(driver, driver_eng, url, url_eng):
     except NoSuchElementException:
         thum = screenList[0]
         
-        
     
     detail_dict = {
         'imageurl': thum,
         'description': description,
-        'autokwd': autokwd,
+        'autokwd': ",".join(autokwd),
         'company': company,
-        'screenshot': screenList,
-        'tag':tagList,
-        'platform': ["xbox"]
+        'screenshot': ",".join(screenList),
+        'tag':",".join(tagList),
+        'platform': 'xbox'
     }
+    
+    
     
     print(detail_dict)
     
