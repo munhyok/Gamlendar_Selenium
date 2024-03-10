@@ -56,7 +56,7 @@ class DataCleaning:
         
         if self._platform == 'steam':
             
-            if raw_data == "발표 예정" or raw_data == "출시 예정 게임":
+            if raw_data == "발표 예정" or raw_data == "출시 예정 게임" or len(raw_data) < 10:
                 return '1985-09-13'
             
             quarter_str = re.sub(r'\b[1-4]분기\b', '', raw_data)
@@ -69,10 +69,13 @@ class DataCleaning:
                 
             formatDate = '-'.join(splitDate)
             
+            
+            
             return formatDate
             
         elif self._platform == 'playstation':
             
+
             splitDate = raw_data.split('/')
             
             for i in range(len(splitDate)):
@@ -80,11 +83,15 @@ class DataCleaning:
                 
             formatDate = '-'.join(splitDate)
             
+            if len(formatDate) < 10:
+                return '1985-09-13'
+            
             return formatDate
         
         elif self._platform == 'xbox':
             # xbox는 겜린더에 맞는 date형태로 되어있어 일단 보류..
-            pass
+            if len(raw_data) < 10:
+                return '1985-09-13'
         
         elif self._platform == 'switch':
             
@@ -95,6 +102,9 @@ class DataCleaning:
                 splitDate[i] = splitDate[i].zfill(2)
                 
             formatDate = '-'.join(splitDate)
+            
+            if len(raw_data) < 10:
+                return '1985-09-13'
             
             return formatDate
         

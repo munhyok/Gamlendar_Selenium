@@ -17,8 +17,9 @@ def detail_scrap(driver, driver_eng, url, url_eng):
     
     dc = DataCleaning('playstation')
     
+    autokwd = list()
     adultTag = ['성인']
-    autokwdSet = set()
+    
     screenList = []
     
     driver.get(url)
@@ -49,10 +50,10 @@ def detail_scrap(driver, driver_eng, url, url_eng):
     
     
     
-    autokwdSet.add(dc.cleanKeyword(engTitle))
-    autokwdSet.add(dc.cleanKeyword(title))
+    autokwd.append(dc.cleanKeyword(engTitle))
+    autokwd.append(dc.cleanKeyword(title))
         
-    autokwd = list(autokwdSet)
+    autokwd = sorted(set(autokwd), key=lambda x: autokwd.index(x))
     screenList.append(thum)
     
     for adult in adultTag:
@@ -65,11 +66,11 @@ def detail_scrap(driver, driver_eng, url, url_eng):
                 'date': dc.formatDate(releaseDate),
                 'imageurl': '',
                 'description': "Adult Game",
-                'autokwd': [],
+                'autokwd': '',
                 'company': "",
-                'screenshot': [],
-                'tag':[],
-                'platform': []
+                'screenshot': '',
+                'tag':'',
+                'platform': "playstation"
             }
             
             return detail_dict

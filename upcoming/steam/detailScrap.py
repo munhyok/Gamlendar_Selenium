@@ -55,7 +55,7 @@ def detail_scrap(driver, driver_eng, url):
     # 이 태그가 들어간 친구들은 수집 금지
     adultTag = ['헨타이','후방주의','선정적인 내용']
     
-    autokwdSet = set()
+    autokwd = list()
     screenList = []
     tagList = []
     detailList = []
@@ -93,11 +93,11 @@ def detail_scrap(driver, driver_eng, url):
             detail_dict = {
                 'imageurl': '',
                 'description': "Adult Game",
-                'autokwd': [],
+                'autokwd': '',
                 'company': "",
-                'screenshot': [],
-                'tag':[],
-                'platform': []
+                'screenshot': '',
+                'tag':'',
+                'platform': 'steam'
             }
             
             return detail_dict
@@ -109,11 +109,11 @@ def detail_scrap(driver, driver_eng, url):
         detail_dict = {
                 'imageurl': '',
                 'description': "Old Steam Page",
-                'autokwd': [],
+                'autokwd': '',
                 'company': "",
-                'screenshot': [],
-                'tag':[],
-                'platform': []
+                'screenshot': '',
+                'tag':'',
+                'platform': 'steam'
         }
         
         return detail_dict
@@ -144,10 +144,10 @@ def detail_scrap(driver, driver_eng, url):
     # 영문 이름
     engTitle = driver_eng.find_element(By.ID, 'appHubAppName').text
     
-    autokwdSet.add(engTitle)
-    autokwdSet.add(title)
+    autokwd.append(engTitle)
+    autokwd.append(title)
     
-    autokwd = list(autokwdSet)
+    autokwd = sorted(set(autokwd), key=lambda x: autokwd.index(x))
     
     detail_dict = {
         'imageurl': thum,

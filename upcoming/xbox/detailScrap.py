@@ -110,7 +110,7 @@ def detail_scrap(driver, driver_eng, url, url_eng):
     
     dc = DataCleaning('xbox')
     
-    autokwdSet = set()
+    autokwd = list()
     
     driver.implicitly_wait(10)
     driver_eng.implicitly_wait(10)
@@ -132,12 +132,12 @@ def detail_scrap(driver, driver_eng, url, url_eng):
         engTitle = title
 
 
-    autokwdSet.add(dc.cleanKeyword(engTitle))
-    autokwdSet.add(dc.cleanKeyword(title))
+    autokwd.append(dc.cleanKeyword(engTitle))
+    autokwd.append(dc.cleanKeyword(title))
     
     
     
-    autokwd = list(autokwdSet)
+    autokwd = sorted(set(autokwd), key= lambda x: autokwd.index(x))
     
     
         

@@ -2,6 +2,8 @@ import pymysql.cursors
 import pymysql.err
 import mariadb
 import os
+import json
+import requests
 from dotenv import load_dotenv
 import pandas as pd
 
@@ -9,9 +11,8 @@ import pandas as pd
 class Database:
     load_dotenv()
     
-    def __init__(self, csv):
-        
-        
+    def __init__(self):
+
         
         try:
             self.connection = pymysql.connect(
@@ -26,9 +27,10 @@ class Database:
             print(f"Error connecting to MariaDB: {e}")
             
         self.curr = self.connection.cursor()
-        self.df = pd.read_csv(csv, encoding='utf-8', header=0)
     
-    def __insert__(self):
+    def __insert__(self, csv):
+        
+        self.df = pd.read_csv(csv, encoding='utf-8', header=0)
         
         df = self.df
         
@@ -66,10 +68,105 @@ class Database:
                
         self.connection.commit()
         print('OK')
-        self.connection.close()
+        
+        cursor.close()
+        
+        
+        
     
-    def insert(self):
-        self.__insert__()
+    
+    
+        
+    def __saveIndex__(self,index, filename):
+        with open(filename, 'r+') as file:
+            data = json.load(file)
+            data["index"] = index
+
+        
+        json_file = open(filename, 'w', encoding='utf-8')
+        json.dump(data, json_file)
+        json_file.close()
+            
+        
+    def __loadIndex__(self, filename):
+        with open(filename, 'r') as f:
+            data = json.load(f)
+        return data["index"]
+    
+    
+    def __migrateMongo__(self):
+        
+        self.index = self.__loadIndex__('./core/database/db_index.json')
+        
+
+        
+        cursor = self.connection.cursor()
+        
+        sql = f"SELECT name, date, company, description, imageurl, tag, screenshots, autokwd, platform FROM v_gameData ORDER BY id ASC"
+        
+        cursor.execute(sql)
+        rows = cursor.fetchall()
+        cursor.close()
+
+        
+        
+
+        result_raw = json.dumps(rows, ensure_ascii=False)
+        result = json.loads(result_raw)
+
+
+        for i in range(len(result)):
+            screenshot_list = result[i]['screenshots'].split(', ')
+            platform_list = result[i]['platform'].split(', ')
+            autokwd_list = result[i]['autokwd'].split(', ')
+            result[i]["screenshots"] = screenshot_list
+            result[i]['platform'] = platform_list
+            result[i]['autokwd'] = autokwd_list
+
+            result[i]['path'] = 'games'
+            result[i]['gindie'] = 'game'
+            result[i]['yearmonth'] = result[i]['date'][:-3]
+            result[i]['gameurl'] = ''
+            result[i]['yturl'] = ''
+            result[i]['adult'] = False
+
+
+        
+        #games = json.dumps(result, ensure_ascii=False)
+        
+        
+        self.__saveIndex__(len(result), './core/database/db_index.json')
+
+        
+        
+        return result
+        
+        
+        
+        
+    def __postMongo__(self, result):
+        index = self.index
+        url = os.getenv("APILOCAL_POST")
+        headers = {"Content-Type": "Application/json"}
+
+        
+        
+        for i in range(index, len(result)): # ex) index = 51 len(result) = 58
+            data = json.dumps(result[i])
+            #print(data)
+            response = requests.post(url = url, data = data, headers=headers)
+
+            print(response)
+    
+    
+    def migrateMongo(self):
+        games = self.__migrateMongo__()
+        self.__postMongo__(games)
+    
+    def insert(self, csv):
+        self.__insert__(csv)
+        
+        self.migrateMongo()
         #self.connection.close()
         
         

@@ -23,7 +23,7 @@ def concat_data(gameList, detailList, date, platform):
     
     concatResult.to_csv('./upcoming/'+platform+'/backup/'+date+'_backup'+ '.csv', index=False)
     
-    db = Database('./upcoming/'+platform+'/backup/'+date+'_backup'+ '.csv')
-    db.insert()
+    db = Database()
+    db.insert('./upcoming/'+platform+'/backup/'+date+'_backup'+ '.csv')
     
     return concatResult

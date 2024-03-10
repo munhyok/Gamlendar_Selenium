@@ -1,1 +1,2 @@
-from selenium.webdriver.chrome.options import Options
+
+driver = webdriver.Chrome(options=options)

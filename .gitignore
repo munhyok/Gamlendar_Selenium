@@ -6,3 +6,6 @@
 # dotenv environment variable files
 .env
 
+#db_index
+db_index.json
+
