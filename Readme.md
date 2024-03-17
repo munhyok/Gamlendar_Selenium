@@ -6,8 +6,9 @@
 
 **robots.txt에 준수하여 수집이 불가능한 페이지는 수집하지 않습니다.**
 
-구조와 코드를 최대한 일관성 있게 구성하여 이해하기 쉽게 작성하려고 노력합니다.
-
+구조와 코드를 최대한 일관성 있게 구성하여 이해하기 쉽게 작성하려고 노력했습니다... 
+## Architecture
+![](/image/Pipeline.png)
 
 ## CheckList Table
 
@@ -97,6 +98,7 @@
 |Detail Scrap|✅|
 |Screenshot Controler|✅|
 |Tag Spliter|✅|
+|Bundle Detector|✅|
 
 ### 수집 전략
 
@@ -115,15 +117,20 @@
 |Screenshot Controler|✅|
 |Tag Spliter|✅|
 |Eng_Translator|⛔️|
+|Title Extractor|✅|
 
 ### 수집 전략
 
 1. [Nintendo Switch](https://store.nintendo.co.kr/games/all-released-games) 수집 ✅
 2. Upcoming 리스트, 상세 페이지(detail) 수집 ✅
 3. popup close, Screenshot next 로직 작성 ✅
+4. Extract Title을 통해 한글 영문 이름 분리 추출 ✅
+   1. 괄호 안에 있는 영문 & 한글 이름을 같이 수집
+   2. 괄호 안 문자열이 한글인지 영문인지 판단
+   3. kor,eng 변수에 각각 저장 
 
 #### 난제
-스위치는 한국어 페이지와 북미 페이지의 디자인과 구조가 완전 달라 어떻게 수집해야할 지 전략 구상 중
+스위치는 한국어 페이지와 북미 페이지의 디자인과 디렉터리 구조가 완전 달라 어떻게 수집해야할 지 전략 구상 중
 
 생각해 본 방법들
 1. GPT를 사용해서 게임 이름 영문 번역
@@ -136,7 +143,14 @@
 
 
 여러가지 난제로 인해 한국어 페이지부터 수집
+#### 차선책
+일부 게임 타이틀에 한국어와 영어를 합쳐 나온 타이틀이 있다.
 
+Ex. 유니콘 오버로드 (Unicorn Overlord)
+
+이런 구조의 게임들은 한글과 영문 이름을 각각 추출해 해결
+
+하지만 완벽하진 않다...
 
 
 
@@ -156,7 +170,7 @@ Data Cleaning Text Data를 겜린더에 맞게 수정하는 과정
 통합한 데이터를 MariaDB에 전송
 
 #### DB ERD
-![](/DB_ERD.png)
+![](/image/DB_ERD.png)
 title에 의존하는 관계...
 
 어차피 MongoDB에 저장하기 때문에
@@ -174,8 +188,8 @@ title에 의존하는 관계...
 
 ### 공통 고려사항..(우선 순위 낮음)
 - autokwd plain 데이터 포함시켜보기
-- 근데 출시 날짜가 미정인 게임이 출시하면 어떻게 판별해야할까? hashcode가 서로 다르면 교체하는 방식..?
-- 중복 체크는 DB의 Unique 사용
+- 근데 출시 날짜가 미정인 게임이 출시하면 어떻게 판별해야할까? hashcode가 서로 다르면 교체하는 방식..? (일단 미정)
+- 중복 체크는 DB의 Unique 사용 ✅
 
 
 

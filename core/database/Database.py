@@ -30,6 +30,9 @@ class Database:
     
     def __insert__(self, csv):
         
+        filterList = ['Adult Game', 'Old Steam Page']
+        
+        
         self.df = pd.read_csv(csv, encoding='utf-8', header=0)
         
         df = self.df
@@ -41,30 +44,33 @@ class Database:
         
         
         with self.curr as cursor:
+            
+            
             for index, row in df.iterrows():
-                autokwds = row['autokwd'].split(',')
-                screenshots = row['screenshot'].split(',')
-                platforms = row['platform'].split(',')
-                
-                print(autokwds)
-                
-                try:
-                    cursor.execute(sql_game,(row['title'], row['date'], row['company'], row['description'], row['imageurl'], row['tag']))
-                except pymysql.err.IntegrityError as e:
-                    print(e)
-                
-                try:
-                    for autokwd in autokwds:
-                        cursor.execute(sql_autokwd, (row['title'], autokwd))
-                except pymysql.err.IntegrityError as e:
-                    print(e)
-                
-                for screenshot in screenshots:
-                    cursor.execute(sql_screenshot, (row['title'], screenshot))
-                
-                
-                for platform in platforms:
-                    cursor.execute(sql_platform, (row['title'], platform))
+                if row['description'] not in filterList:
+                    autokwds = row['autokwd'].split(',')
+                    screenshots = row['screenshot'].split(',')
+                    platforms = row['platform'].split(',')
+
+                    print(autokwds)
+
+                    try:
+                        cursor.execute(sql_game,(row['title'], row['date'], row['company'], row['description'], row['imageurl'], row['tag']))
+                    except pymysql.err.IntegrityError as e:
+                        print(e)
+
+                    try:
+                        for autokwd in autokwds:
+                            cursor.execute(sql_autokwd, (row['title'], autokwd))
+                    except pymysql.err.IntegrityError as e:
+                        print(e)
+
+                    for screenshot in screenshots:
+                        cursor.execute(sql_screenshot, (row['title'], screenshot))
+
+
+                    for platform in platforms:
+                        cursor.execute(sql_platform, (row['title'], platform))
                
         self.connection.commit()
         print('OK')
@@ -151,9 +157,9 @@ class Database:
 
         
         
-        for i in range(index, len(result)): # ex) index = 51 len(result) = 58
+        for i in range(index, len(result)):
             data = json.dumps(result[i])
-            #print(data)
+            
             response = requests.post(url = url, data = data, headers=headers)
 
             print(response)
@@ -166,7 +172,7 @@ class Database:
     def insert(self, csv):
         self.__insert__(csv)
         
-        self.migrateMongo()
+        
         #self.connection.close()
         
         

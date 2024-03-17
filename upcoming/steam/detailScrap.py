@@ -5,6 +5,8 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 from core.logs.failedLog import failed_log
 
+from core.data_cleaning.DataCleaning import DataCleaning
+
 import time
 
 
@@ -24,6 +26,8 @@ import time
 def pass_adult(driver, driver_english):
     # 한 번만 인증하면 되기 때문에 GTA5에서 미리 인증을 거치고
     # 추후 게임 데이터 수집을 시작
+    
+    
     
     driver.get('https://store.steampowered.com/agecheck/app/271590/')
     driver_english.get('https://store.steampowered.com/agecheck/app/271590/')
@@ -50,7 +54,7 @@ def pass_adult(driver, driver_english):
 
 def detail_scrap(driver, driver_eng, url):
     
-    
+    dc = DataCleaning('steam')
     
     # 이 태그가 들어간 친구들은 수집 금지
     adultTag = ['헨타이','후방주의','선정적인 내용']
@@ -93,7 +97,7 @@ def detail_scrap(driver, driver_eng, url):
             detail_dict = {
                 'imageurl': '',
                 'description': "Adult Game",
-                'autokwd': '',
+                'autokwd': 'Adult Game',
                 'company': "",
                 'screenshot': '',
                 'tag':'',
@@ -109,7 +113,7 @@ def detail_scrap(driver, driver_eng, url):
         detail_dict = {
                 'imageurl': '',
                 'description': "Old Steam Page",
-                'autokwd': '',
+                'autokwd': 'Adult Game',
                 'company': "",
                 'screenshot': '',
                 'tag':'',

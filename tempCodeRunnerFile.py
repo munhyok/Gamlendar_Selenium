@@ -1,2 +1,1 @@
-
-driver = webdriver.Chrome(options=options)
+from selenium import webdriver

@@ -20,7 +20,7 @@ def page_scrap(driver, driver_eng):
     games = driver.find_elements(By.CLASS_NAME, 'category-product-item')
     
     
-    for game in games[:101]:
+    for game in games[:51]:
         
         title = game.find_element(By.CLASS_NAME, 'category-product-item-title-link').text
         url = game.find_element(By.CLASS_NAME, 'category-product-item-title-link').get_attribute('href')

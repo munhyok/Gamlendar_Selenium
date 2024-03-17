@@ -109,6 +109,15 @@ class DataCleaning:
             return formatDate
         
         
+    def __company_clean(self, raw_data):
+        
+        cleanText = raw_data.replace('.','')
+        return cleanText
+        
+        
+    def cleanCompany(self, raw_data):
+        cleanComp = self.__company_clean
+        return cleanComp
         
     def formatDate(self, date):
         format_date = self.__date_clean(date)

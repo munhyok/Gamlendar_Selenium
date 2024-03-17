@@ -9,6 +9,7 @@ from core.logs.failedLog import failed_log
 from core.data_cleaning.DataCleaning import DataCleaning
 
 def extract_title(raw_title):
+    raw_title = raw_title.replace('（','(').replace('）',')')
     eng_title = ''
     kor_title = ''
     match = re.search(r'\((.*?)\)', raw_title)
@@ -33,16 +34,17 @@ def extract_title(raw_title):
 def get_description(driver):
     rawTextList = []
     description = None
-    try:
-        descRaw = driver.find_element(By.CLASS_NAME, 'product.attribute.mfr_description').find_element(By.CLASS_NAME, 'value').find_elements(By.TAG_NAME,'p')
+    descRaw = driver.find_element(By.CLASS_NAME, 'product.attribute.mfr_description').find_element(By.CLASS_NAME, 'value').find_elements(By.TAG_NAME,'p')
+    
+    if descRaw != []:
         for rawText in descRaw:
             rawTextList.append(rawText.text)
             description = "\n".join(rawTextList)
-        
-    except NoSuchElementException:
+            
+            return description
+    else:  
         description = driver.find_element(By.CLASS_NAME, 'product.attribute.mfr_description').find_element(By.CLASS_NAME, 'value').text
-
-    return description
+        return description
 
 def get_image(driver):
     # 아.. before-active-after 슬라이더 구조 넘어갈때마다 이벤트 발생

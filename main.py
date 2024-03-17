@@ -5,8 +5,11 @@ from upcoming.playstation.playstation_main import playstation_upcoming
 from upcoming.xbox.xbox_main import xbox_upcoming
 from upcoming.switch.switch_main import switch_upcoming
 
+from core.database.Database import Database
+
 import time
 
+db = Database()
 userAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36"
 
 options = Options()
@@ -22,8 +25,10 @@ driver_eng = webdriver.Chrome(options=options)
 
 #steam_upcoming(driver, driver_eng)
 #playstation_upcoming(driver, driver_eng)
-xbox_upcoming(driver, driver_eng)
-#switch_upcoming(driver, driver_eng)
+#xbox_upcoming(driver, driver_eng)
+switch_upcoming(driver, driver_eng)
+
+db.migrateMongo()
 
 driver.quit()
 driver_eng.quit()
