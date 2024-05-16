@@ -58,7 +58,7 @@ def find_bundle(driver, driver_eng):
         return None
 
 def get_tag(driver):
-    ele = driver.find_element(By.CSS_SELECTOR, "div[class='typography-module__xdsSubTitle1___N02-X ProductDetailsHeader-module__productInfoLine___W-v+p']")
+    ele = driver.find_element(By.CSS_SELECTOR, "div[class='typography-module__xdsSubTitle1___N02-X ProductInfoLine-module__productInfoLine___Jw2cv']")
     tagRaw = ele.find_element(By.TAG_NAME, "span").text
     
     tagRaw = tagRaw.replace('및', '•').replace(' ','')

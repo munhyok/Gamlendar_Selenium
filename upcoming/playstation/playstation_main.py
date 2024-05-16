@@ -29,8 +29,12 @@ def playstation_upcoming(driver, driver_eng):
     
     time.sleep(LOADING_PAGE)
     count = driver.find_element(By.CLASS_NAME, 'psw-t-body.psw-c-t-2').text
-    count = int(count[:3].replace('/',''))
+    count = count.split('/')
+    count = count[1]
+    count = int(count[:2])
     
+    
+    print(count)
     
     # 한 페이지에 최대 24개의 게임 타이틀 노출
     if count % 24 == 0: # count가 0으로 딱 떨어지지 않은 경우는 전부 pageCount에 + 1

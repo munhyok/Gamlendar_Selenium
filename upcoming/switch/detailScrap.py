@@ -2,6 +2,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver import ActionChains
 import time
 import re
 
@@ -34,42 +35,51 @@ def extract_title(raw_title):
 def get_description(driver):
     rawTextList = []
     description = None
-    descRaw = driver.find_element(By.CLASS_NAME, 'product.attribute.mfr_description').find_element(By.CLASS_NAME, 'value').find_elements(By.TAG_NAME,'p')
+    descRaw = driver.find_element(By.CLASS_NAME, 'product-attribute-content.expanded').find_elements(By.TAG_NAME,'p')
+    
     
     if descRaw != []:
-        for rawText in descRaw:
-            rawTextList.append(rawText.text)
-            description = "\n".join(rawTextList)
-            
-            return description
-    else:  
-        description = driver.find_element(By.CLASS_NAME, 'product.attribute.mfr_description').find_element(By.CLASS_NAME, 'value').text
+        for raw in descRaw:
+            rawTextList.append(raw.text)
+            description = "\n\n".join(rawTextList)
+        
         return description
+    else:
+        description = driver.find_element(By.CLASS_NAME, 'product-attribute-content.expanded').text
+        return description
+    
 
 def get_image(driver):
-    # 아.. before-active-after 슬라이더 구조 넘어갈때마다 이벤트 발생
-    # dot length 구하고 length - 1 next 클릭
-    # active 된 이미지만 href 링크 받아오기 (aria-hidden = false -> acitve image)
+    # 홈페이지 리뉴얼로 인한 로직 변경
+    # 스크린화면 클릭
+    # 스크린샷 리스트 나오면 갯수 구하고
+    # 이미지 수집 후 다음 버튼 클릭
     imgList = []
     
-    dotNumber = driver.find_element(By.CLASS_NAME,'fotorama__nav__shaft').find_elements(By.CLASS_NAME,'fotorama__nav__frame.fotorama__nav__frame--dot')
-    nextBtn = driver.find_element(By.CLASS_NAME,'fotorama__arr.fotorama__arr--next')
     
-
-    for _ in range(len(dotNumber)):
-        imgs = driver.find_element(By.CLASS_NAME,'fotorama__stage__shaft.fotorama__grab').find_elements(By.TAG_NAME, 'div')
+    driver.find_element(By.CLASS_NAME,'fotorama__img').click()
+    
+    
+    imgNumber = driver.find_elements(By.CLASS_NAME, 'fotorama__nav__frame.fotorama__nav__frame--thumb')
+    print(len(imgNumber))
+    
         
+    if len(imgNumber) == 0:
+        img = driver.find_element(By.CLASS_NAME, 'fotorama__img--full').get_attribute('src')
+        imgList.append(img)
+        return imgList
         
-        for img in imgs:
-            if img.get_attribute('aria-hidden') == 'false':
-                imgList.append(img.get_attribute('href'))
-                
-                
-        time.sleep(2)
+    nextBtn = driver.find_element(By.CLASS_NAME, 'fotorama__arr.fotorama__arr--next')
+    action = ActionChains(driver)
+    for _ in range(len(imgNumber)):
+        img = driver.find_element(By.CLASS_NAME, 'fotorama__img--full').get_attribute('src')
+        imgList.append(img)
+        action.move_to_element(nextBtn).perform()
         nextBtn.click()
-        
-    #print(imgList)
+        time.sleep(2)
+    
     return imgList
+    
 
 def get_tag(driver):
     
@@ -90,14 +100,15 @@ def detail_scrap(driver, driver_eng, url, url_eng):
     dc = DataCleaning('switch')
     
     autokwd = list()
-
+    
     driver.implicitly_wait(60)
     
     driver.get(url)
     
-    wait = WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.CLASS_NAME, "fotorama__nav__shaft")))
+    #wait = WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.CLASS_NAME, "fotorama__stage__frame fotorama__active fotorama_vertical_ratio fotorama__loaded fotorama__loaded--img")))
+    #wait = WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.CLASS_NAME, "fotorama__nav__shaft")))
     
-    title = driver.find_element(By.CLASS_NAME, 'page-title').find_element(By.TAG_NAME,'span').text
+    title = driver.find_element(By.CLASS_NAME, 'page-title').find_element(By.TAG_NAME,'span').find_element(By.TAG_NAME,'span').text
     
     eng_title, kor_title = extract_title(title)
     
@@ -106,9 +117,12 @@ def detail_scrap(driver, driver_eng, url, url_eng):
     
     autokwd = sorted(set(autokwd), key= lambda x: autokwd.index(x))
     
+    #gameDetailSector = driver.find_elements(By.CLASS_NAME, 'product-attributes-all-item')
+    
     releaseDate = driver.find_element(By.CLASS_NAME, 'product-attribute.release_date').find_element(By.CLASS_NAME, 'product-attribute-val').text
+    print(releaseDate)
     description = get_description(driver)
-    company = driver.find_element(By.CLASS_NAME,'product-page-pusblisher-attr').text
+    company = driver.find_element(By.CLASS_NAME,'product-attribute.publisher').find_element(By.CLASS_NAME, 'product-attribute-val').text
     screenList = get_image(driver)
     
     thum = screenList[0]

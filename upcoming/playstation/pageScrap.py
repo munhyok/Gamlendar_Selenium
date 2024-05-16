@@ -31,7 +31,7 @@ def page_scrap(driver, driver_english, pageNumber):
             
             pageList.append(pageGame)
         
-        print(pageList)
+        print(len(pageList))
         
         
         nextBtn = driver.find_element(By.CLASS_NAME, 'psw-icon.psw-icon--chevron-right.psw-icon.psw-icon-size-2.psw-icon--chevron-right').click()
@@ -39,6 +39,6 @@ def page_scrap(driver, driver_english, pageNumber):
         
             
         
-        return pageList
+    return pageList
         
         

@@ -8,12 +8,26 @@ from dotenv import load_dotenv
 import pandas as pd
 
 
+#   Workflow
+#   CSV파일을 MariaDB로 옮기기
+#   옮긴 MariaDB를 JSON 형태로 변환
+#   변환 후 MongoDB로 이동
+#   
+#   SQL의 COUNT를 사용해 기존에 있는 테이블의 ROW를 수집하고
+#
+#   Commit후의 테이블 ROW 수집
+#   그 다음 업로드
+
+
 class Database:
     load_dotenv()
     
+    
     def __init__(self):
-
         
+        self.before_count = 0
+        self.after_count = 0
+
         try:
             self.connection = pymysql.connect(
                 host= os.getenv('DBHOST'),
@@ -27,11 +41,15 @@ class Database:
             print(f"Error connecting to MariaDB: {e}")
             
         self.curr = self.connection.cursor()
+        
     
     def __insert__(self, csv):
         
         filterList = ['Adult Game', 'Old Steam Page']
         
+        sql_tableRow = """SELECT COUNT(*) FROM gamlendarDB.v_gameData"""
+        
+        self.before_count = self.curr.execute(sql_tableRow)
         
         self.df = pd.read_csv(csv, encoding='utf-8', header=0)
         
@@ -47,7 +65,8 @@ class Database:
             
             
             for index, row in df.iterrows():
-                if row['description'] not in filterList:
+                
+                if row['description'] not in filterList: 
                     autokwds = row['autokwd'].split(',')
                     screenshots = row['screenshot'].split(',')
                     platforms = row['platform'].split(',')
@@ -75,49 +94,46 @@ class Database:
         self.connection.commit()
         print('OK')
         
+        self.after_count = self.curr.execute(sql_tableRow)
+        
         cursor.close()
         
-        
-        
-    
-    
-    
-        
-    def __saveIndex__(self,index, filename):
-        with open(filename, 'r+') as file:
-            data = json.load(file)
-            data["index"] = index
 
         
-        json_file = open(filename, 'w', encoding='utf-8')
-        json.dump(data, json_file)
-        json_file.close()
-            
-        
-    def __loadIndex__(self, filename):
-        with open(filename, 'r') as f:
-            data = json.load(f)
-        return data["index"]
+    #def __saveIndex__(self,index, filename):
+    #    with open(filename, 'r+') as file:
+    #        data = json.load(file)
+    #        data["index"] = index
+#
+    #    
+    #    json_file = open(filename, 'w', encoding='utf-8')
+    #    json.dump(data, json_file)
+    #    json_file.close()
+    #        
+    #    
+    #def __loadIndex__(self, filename):
+    #    with open(filename, 'r') as f:
+    #        data = json.load(f)
+    #    return data["index"]
     
     
     def __migrateMongo__(self):
         
-        self.index = self.__loadIndex__('./core/database/db_index.json')
-        
+        #self.index = self.__loadIndex__('./core/database/db_index.json')
 
+        self.index = self.after_count - self.before_count
+        
         
         cursor = self.connection.cursor()
         
-        sql = f"SELECT name, date, company, description, imageurl, tag, screenshots, autokwd, platform FROM v_gameData ORDER BY id ASC"
+        new_game_sql = f"SELECT name, date, company, description, imageurl, tag, screenshots, autokwd, platform FROM v_gameData ORDER BY id DESC LIMIT {self.index}"
         
-        cursor.execute(sql)
-        rows = cursor.fetchall()
+        new_data = cursor.execute(new_game_sql)
+        
         cursor.close()
 
-        
-        
 
-        result_raw = json.dumps(rows, ensure_ascii=False)
+        result_raw = json.dumps(new_data, ensure_ascii=False)
         result = json.loads(result_raw)
 
 
@@ -141,7 +157,7 @@ class Database:
         #games = json.dumps(result, ensure_ascii=False)
         
         
-        self.__saveIndex__(len(result), './core/database/db_index.json')
+        #self.__saveIndex__(len(result), './core/database/db_index.json')
 
         
         
@@ -150,15 +166,15 @@ class Database:
         
         
         
-    def __postMongo__(self, result):
-        index = self.index
+    def __postMongo__(self, raw_json):
+        #index = self.index
         url = os.getenv("APILOCAL_POST")
         headers = {"Content-Type": "Application/json"}
 
         
         
-        for i in range(index, len(result)):
-            data = json.dumps(result[i])
+        for i in range(len(raw_json)):
+            data = json.dumps(raw_json[i])
             
             response = requests.post(url = url, data = data, headers=headers)
 

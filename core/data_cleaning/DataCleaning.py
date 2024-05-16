@@ -95,15 +95,14 @@ class DataCleaning:
         
         elif self._platform == 'switch':
             
-            raw_data = raw_data[:-1]
-            splitDate = raw_data.split('. ')
+            splitDate = raw_data.split('/')
             
             for i in range(len(splitDate)):
                 splitDate[i] = splitDate[i].zfill(2)
                 
             formatDate = '-'.join(splitDate)
             
-            if len(raw_data) < 10:
+            if len(formatDate) < 10:
                 return '1985-09-13'
             
             return formatDate

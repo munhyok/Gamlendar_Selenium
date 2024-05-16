@@ -50,7 +50,9 @@ def detail_scrap(driver, driver_eng, url, url_eng):
     
     
     
-    autokwd.append(dc.cleanKeyword(engTitle))
+    if engTitle != None:
+        autokwd.append(dc.cleanKeyword(engTitle))
+    
     autokwd.append(dc.cleanKeyword(title))
         
     autokwd = sorted(set(autokwd), key=lambda x: autokwd.index(x))
@@ -73,6 +75,7 @@ def detail_scrap(driver, driver_eng, url, url_eng):
                 'platform': "playstation"
             }
             
+            print(detail_dict)
             return detail_dict
         
     
@@ -87,16 +90,7 @@ def detail_scrap(driver, driver_eng, url, url_eng):
         'platform': "playstation"
     }
     
-    print('-'*20)
-    print(tags)
-    print(thum)
-    print(company)
-    print(description)
-    print(releaseDate)
-    print(dc.formatDate(releaseDate))
-    print()
-    print(title)
-    print(engTitle)
+    print(detail_dict)
     
     return detail_dict
         
