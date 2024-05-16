@@ -16,6 +16,17 @@
 ## Architecture
 ![](/image/Pipeline.png)
 
+**ETL 패턴**
+
+**E: Data 수집**
+  - Selenium으로 데이터 수집
+  
+**T: Data Cleansing**
+  - 필요없는 문자를 정리하고 정해진 CSV형식에 맞게 저장
+
+**L: Save in MariaDB**
+  - 정리된 CSV 파일을 DB에 저장
+
 ## CheckList Table
 
 ### 수집 페이지
@@ -67,7 +78,7 @@
 
 ### Bug Note
 - 2023-11-29 **[Critical]** **FIXED!**
-  - 성인 게임 인식 후 None으로 생략해버려 생긴 gameList와 detailList 싱크 오류 수정
+  - 성인 게임 인식 후 None으로 생략해버려 생긴 gameList와 detailList 싱크 오류 수정 ✅
 
 ---
 
@@ -91,6 +102,8 @@
 - 2023-12-10 백업 및 Log 기록 성공
 
 ### Bug Note
+- 2024-05-17 **[Critical]** **FIXED!**
+  - 처음 게임 리스트 수집 시 다음 페이지로 넘어가지 못해 일부 게임 수집이 누락되는 버그 ✅
 
 ---
 
@@ -149,6 +162,7 @@
 
 
 여러가지 난제로 인해 한국어 페이지부터 수집
+
 ### 차선책
 일부 게임 타이틀에 한국어와 영어를 합쳐 나온 타이틀이 있다.
 
@@ -158,6 +172,8 @@ Ex. 유니콘 오버로드 (Unicorn Overlord)
 
 하지만 완벽하진 않다...
 
+### Progress
+- 2024-05-17 홈페이지 리뉴얼로 인한 이미지 수집 로직 재작성 ✅
 
 
 
