@@ -43,7 +43,8 @@
 |:---:|:---:|:---:|
 |concatData|✅|
 |failedLog|✅|각 플랫폼별로 로그 생성 추후 코드 Refactoring하기
-|Database|⛔️|DB 테이블 생성 완료
+|Database|✅|DB 테이블 생성 완료
+|        |✅|자원 공유를 위해 싱글톤 패턴으로 제작
 |DataCleaning|✅|겜린더에 맞는 Date형태로 완성
 |DataCleaning|🟡|게임 이름 통일시키기
 
@@ -189,7 +190,15 @@ Data Cleaning Text Data를 겜린더에 맞게 수정하는 과정
 - 날짜, 특정 단어 수정 및 제외 같은 필터링 작업 ✅
 
 ### Database
-통합한 데이터를 MariaDB에 전송
+1. 통합한 데이터를 MariaDB에 전송
+
+2. MariaDB에 있는 데이터를 MongoDB로 전송
+
+3. 싱글톤 패턴 이용
+   - [concatData.py](/core/data/concatData.py)에서 Database 인스턴스를 생성하는 부분과
+   - [main.py](/main.py) 부분의 Database 인스턴스 생성을 각각 하다보니 서로 값 공유가 되지 않는다.
+   - Database 클래스는 하나의 인스턴스만 생성해 사용해야하기 때문에 간단하게 싱글톤 패턴으로 구현하였다.
+  ![](/image/SingletonPattern.png)
 
 #### DB ERD
 ![](/image/DB_ERD.png)

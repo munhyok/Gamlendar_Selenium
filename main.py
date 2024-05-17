@@ -24,8 +24,8 @@ driver = webdriver.Chrome(options=options)
 driver_eng = webdriver.Chrome(options=options)
 
 #steam_upcoming(driver, driver_eng)
-#playstation_upcoming(driver, driver_eng)
-xbox_upcoming(driver, driver_eng)
+playstation_upcoming(driver, driver_eng)
+#xbox_upcoming(driver, driver_eng)
 #switch_upcoming(driver, driver_eng)
 
 db.migrateMongo()

@@ -33,11 +33,11 @@ def steam_upcoming(driver, driver_eng):
     
     
     # 인기 찜 목록
-    driver.get("https://store.steampowered.com//search/?supportedlang=koreana%2Cenglish&category1=998&filter=popularwishlist&ndl=1")
+    driver.get("https://store.steampowered.com/search/?filter=popularcomingsoon&os=win")
     driver.execute_script('ChangeLanguage("koreana")')
     
     wait = WebDriverWait(driver, 10)
-    wait.until(EC.text_to_be_present_in_element((By.XPATH, "/html/body/div[1]/div[7]/div[6]/div/div[2]/h2"),"인기 찜 목록"))
+    wait.until(EC.text_to_be_present_in_element((By.XPATH, "/html/body/div[1]/div[7]/div[6]/div[3]/div[2]/h2"),"인기 출시 예정 제품"))
     
     print("Text Changed, Scroll Down Start")
     time.sleep(1)

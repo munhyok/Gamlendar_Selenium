@@ -18,16 +18,28 @@ import pandas as pd
 #   Commit후의 테이블 ROW 수집
 #   그 다음 업로드
 
+#   concatData 부분에서 Database 인스턴스를 생성하는 부분과
+#   main.py 부분의 Database 인스턴스 생성을 각각 하다보니 서로 값 공유가 되지 않는다.
+#   Database 클래스는 하나의 인스턴스만 생성해 사용해야한다.
+#   간단한 싱글톤 패턴으로 구현해보자
+
 
 class Database:
     load_dotenv()
     
+    _instance = None
+    
+    def __new__(cls, *args, **kwargs):
+        if cls._instance is None:
+            cls._instance = super(Database, cls).__new__(cls)
+        
+        return cls._instance
     
     def __init__(self):
         
         self.before_count = 0
         self.after_count = 0
-
+        self.url = os.getenv("APILOCAL_POST")
         try:
             self.connection = pymysql.connect(
                 host= os.getenv('DBHOST'),
@@ -49,7 +61,10 @@ class Database:
         
         sql_tableRow = """SELECT COUNT(*) FROM gamlendarDB.v_gameData"""
         
-        self.before_count = self.curr.execute(sql_tableRow)
+        
+        self.curr.execute(sql_tableRow)
+        beforeCount = self.curr.fetchone()
+        self.before_count = beforeCount["COUNT(*)"]
         
         self.df = pd.read_csv(csv, encoding='utf-8', header=0)
         
@@ -91,52 +106,51 @@ class Database:
                     for platform in platforms:
                         cursor.execute(sql_platform, (row['title'], platform))
                
-        self.connection.commit()
-        print('OK')
-        
-        self.after_count = self.curr.execute(sql_tableRow)
-        
-        cursor.close()
-        
 
+            try:
+                response = requests.get(url= self.url+"/gamlendar")
+                response.raise_for_status()
+
+
+                self.connection.commit()
+                print('Commit Complete')
+                
+                cursor.execute(sql_tableRow)
+                afterCount = cursor.fetchone()
+                self.after_count = afterCount["COUNT(*)"]
+                
+                
+            except requests.exceptions.RequestException as e:
+                print("에러 발생 FastAPI 확인 필요: ", e)
+                self.connection.rollback()
+
+            except pymysql.ProgrammingError as e:
+                print("cursor 에러발생: ", e)
+                self.connection.rollback()
         
-    #def __saveIndex__(self,index, filename):
-    #    with open(filename, 'r+') as file:
-    #        data = json.load(file)
-    #        data["index"] = index
-#
-    #    
-    #    json_file = open(filename, 'w', encoding='utf-8')
-    #    json.dump(data, json_file)
-    #    json_file.close()
-    #        
-    #    
-    #def __loadIndex__(self, filename):
-    #    with open(filename, 'r') as f:
-    #        data = json.load(f)
-    #    return data["index"]
+        
+        
+        
+        
     
     
     def __migrateMongo__(self):
         
-        #self.index = self.__loadIndex__('./core/database/db_index.json')
+        print(self.after_count)
+        
+        index = self.after_count - self.before_count
 
-        self.index = self.after_count - self.before_count
-        
-        
         cursor = self.connection.cursor()
         
-        new_game_sql = f"SELECT name, date, company, description, imageurl, tag, screenshots, autokwd, platform FROM v_gameData ORDER BY id DESC LIMIT {self.index}"
-        
-        new_data = cursor.execute(new_game_sql)
-        
-        cursor.close()
-
+        new_game_sql = """SELECT name, date, company, description, imageurl, tag, screenshots, autokwd, platform FROM gamlendarDB.v_gameData ORDER BY id DESC LIMIT """ + str(index)
+        cursor.execute(new_game_sql)
+        new_data = cursor.fetchall()
 
         result_raw = json.dumps(new_data, ensure_ascii=False)
         result = json.loads(result_raw)
 
-
+        #print(index)
+        #print(result)
         for i in range(len(result)):
             screenshot_list = result[i]['screenshots'].split(', ')
             platform_list = result[i]['platform'].split(', ')
@@ -158,7 +172,7 @@ class Database:
         
         
         #self.__saveIndex__(len(result), './core/database/db_index.json')
-
+        cursor.close()
         
         
         return result
@@ -168,7 +182,7 @@ class Database:
         
     def __postMongo__(self, raw_json):
         #index = self.index
-        url = os.getenv("APILOCAL_POST")
+        
         headers = {"Content-Type": "Application/json"}
 
         
@@ -176,7 +190,7 @@ class Database:
         for i in range(len(raw_json)):
             data = json.dumps(raw_json[i])
             
-            response = requests.post(url = url, data = data, headers=headers)
+            response = requests.post(url = self.url, data = data, headers=headers)
 
             print(response)
     
