@@ -6,6 +6,7 @@ import json
 import requests
 from dotenv import load_dotenv
 import pandas as pd
+import time
 
 
 #   Workflow
@@ -23,11 +24,13 @@ import pandas as pd
 #   Database 클래스는 하나의 인스턴스만 생성해 사용해야한다.
 #   간단한 싱글톤 패턴으로 구현해보자
 
+COUNT_TABLE_ROW = """SELECT COUNT(*) FROM gamlendarDB.v_gameData"""
 
 class Database:
     load_dotenv()
     
     _instance = None
+    _initialized = False
     
     def __new__(cls, *args, **kwargs):
         if cls._instance is None:
@@ -37,34 +40,44 @@ class Database:
     
     def __init__(self):
         
-        self.before_count = 0
-        self.after_count = 0
-        self.url = os.getenv("APILOCAL_POST")
-        try:
-            self.connection = pymysql.connect(
-                host= os.getenv('DBHOST'),
-                port=int(os.getenv('DBPORT')),
-                user=os.getenv('DBUSER'),
-                password=os.getenv('DBPASSWORD'),
-                database=os.getenv('DATABASE'),
-                charset='utf8mb4',
-                cursorclass=pymysql.cursors.DictCursor)
-        except mariadb.Error as e:
-            print(f"Error connecting to MariaDB: {e}")
+        if not self._initialized:
+            self.url = os.getenv("APILOCAL_POST")
+            try:
+                self.connection = pymysql.connect(
+                    host= os.getenv('DBHOST'),
+                    port=int(os.getenv('DBPORT')),
+                    user=os.getenv('DBUSER'),
+                    password=os.getenv('DBPASSWORD'),
+                    database=os.getenv('DATABASE'),
+                    charset='utf8mb4',
+                    cursorclass=pymysql.cursors.DictCursor)
+            except pymysql.MySQLError as e:
+                print(f"Error connecting to MariaDB: {e}")
+
+            self.before_count = self.tableCount()
+            self.after_count = 0
+
+            print(f"{self.before_count} 현재 DB 게임 수")
             
-        self.curr = self.connection.cursor()
+            #중복 init 방지
+            self._initialized = True
+        
+
+
+    def tableCount(self):
+
+        with self.connection.cursor() as cursor:
+            cursor.execute(COUNT_TABLE_ROW)
+            rowNumber = cursor.fetchone()
+            rowCount = rowNumber["COUNT(*)"]
+            
+        return rowCount
         
     
-    def __insert__(self, csv):
+    def __insert(self, csv):
         
         filterList = ['Adult Game', 'Old Steam Page']
-        
-        sql_tableRow = """SELECT COUNT(*) FROM gamlendarDB.v_gameData"""
-        
-        
-        self.curr.execute(sql_tableRow)
-        beforeCount = self.curr.fetchone()
-        self.before_count = beforeCount["COUNT(*)"]
+
         
         self.df = pd.read_csv(csv, encoding='utf-8', header=0)
         
@@ -76,7 +89,7 @@ class Database:
         sql_platform = """INSERT INTO platform_table(title, platform) values(%s, %s)"""
         
         
-        with self.curr as cursor:
+        with self.connection.cursor() as cursor:
             
             
             for index, row in df.iterrows():
@@ -111,13 +124,10 @@ class Database:
                 response = requests.get(url= self.url+"/gamlendar")
                 response.raise_for_status()
 
-
                 self.connection.commit()
                 print('Commit Complete')
                 
-                cursor.execute(sql_tableRow)
-                afterCount = cursor.fetchone()
-                self.after_count = afterCount["COUNT(*)"]
+                
                 
                 
             except requests.exceptions.RequestException as e:
@@ -134,54 +144,50 @@ class Database:
         
     
     
-    def __migrateMongo__(self):
+    def __migrateMongo(self):
         
-        print(self.after_count)
         
+        self.after_count = self.tableCount()
         index = self.after_count - self.before_count
 
-        cursor = self.connection.cursor()
-        
-        new_game_sql = """SELECT name, date, company, description, imageurl, tag, screenshots, autokwd, platform FROM gamlendarDB.v_gameData ORDER BY id DESC LIMIT """ + str(index)
-        cursor.execute(new_game_sql)
-        new_data = cursor.fetchall()
+        print(f"업로드할 게임 수 {index}")
+        print("10초 뒤에 데이터 이동")
+        time.sleep(10)
 
-        result_raw = json.dumps(new_data, ensure_ascii=False)
-        result = json.loads(result_raw)
+        with self.connection.cursor() as cursor:
 
-        #print(index)
-        #print(result)
+            new_game_sql = """SELECT name, date, company, description, imageurl, tag, screenshots, autokwd, platform FROM gamlendarDB.v_gameData ORDER BY id DESC LIMIT """ + str(index)
+            cursor.execute(new_game_sql)
+            new_data = cursor.fetchall()
+
+            result_raw = json.dumps(new_data, ensure_ascii=False)
+            result = json.loads(result_raw)
+
+
         for i in range(len(result)):
+            
             screenshot_list = result[i]['screenshots'].split(', ')
             platform_list = result[i]['platform'].split(', ')
             autokwd_list = result[i]['autokwd'].split(', ')
+            
             result[i]["screenshots"] = screenshot_list
             result[i]['platform'] = platform_list
             result[i]['autokwd'] = autokwd_list
-
+            
             result[i]['path'] = 'games'
             result[i]['gindie'] = 'game'
             result[i]['yearmonth'] = result[i]['date'][:-3]
             result[i]['gameurl'] = ''
             result[i]['yturl'] = ''
             result[i]['adult'] = False
-
-
-        
-        #games = json.dumps(result, ensure_ascii=False)
-        
-        
-        #self.__saveIndex__(len(result), './core/database/db_index.json')
-        cursor.close()
-        
-        
+  
+        print(f"{index}개 게임 업로드 완료")
         return result
         
         
         
         
-    def __postMongo__(self, raw_json):
-        #index = self.index
+    def __postMongo(self, raw_json):
         
         headers = {"Content-Type": "Application/json"}
 
@@ -193,16 +199,36 @@ class Database:
             response = requests.post(url = self.url, data = data, headers=headers)
 
             print(response)
+            
+     
+            
+    def findGame(self, name):
+        name = f"%{name}%"
+        sql_findGame = """SELECT name FROM gamlendarDB.v_gameData WHERE autokwd LIKE %s"""
+        
+        
+        
+        with self.connection.cursor() as cursor:
+            
+            cursor.execute(sql_findGame, name)
+            sql_fetch = cursor.fetchone()
+            
+            print(sql_fetch)
+            if sql_fetch == None:
+                return None
+            
+            result = sql_fetch['name']
+        
+        return result
+        
     
     
     def migrateMongo(self):
-        games = self.__migrateMongo__()
-        self.__postMongo__(games)
+        games = self.__migrateMongo()
+        self.__postMongo(games)
     
     def insert(self, csv):
-        self.__insert__(csv)
+        self.__insert(csv)
         
         
-        #self.connection.close()
-        
-        
+

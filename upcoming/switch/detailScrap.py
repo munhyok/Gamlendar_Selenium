@@ -8,6 +8,14 @@ import re
 
 from core.logs.failedLog import failed_log
 from core.data_cleaning.DataCleaning import DataCleaning
+from core.database.Database import Database
+
+# 스위치 영문이름 데이터 통합 해결 방안
+# 게임 데이터를 DB에 Autokwd 기준으로 검색
+# 데이터가 검색이 되면 DB에 있는 영문이름을 스위치 name 변수에 덮어 씌우기
+# 그러면 이름이 통합된다!
+
+    
 
 def extract_title(raw_title):
     raw_title = raw_title.replace('（','(').replace('）',')')
@@ -85,6 +93,7 @@ def get_tag(driver):
     
     tagRaw = driver.find_element(By.CLASS_NAME,'product-attribute.game_category').find_element(By.CLASS_NAME, 'product-attribute-val').text
     
+    print(tagRaw)
     try:
         tagRaw = tagRaw.replace(' ','')
         tagList = tagRaw.split(',')
@@ -97,6 +106,8 @@ def get_tag(driver):
 def detail_scrap(driver, driver_eng, url, url_eng):
     # 스위치의 상세 정보 페이지의 첫 스크린샷 이미지는 썸네일
     
+    db = Database()
+    
     dc = DataCleaning('switch')
     
     autokwd = list()
@@ -105,28 +116,34 @@ def detail_scrap(driver, driver_eng, url, url_eng):
     
     driver.get(url)
     
-    #wait = WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.CLASS_NAME, "fotorama__stage__frame fotorama__active fotorama_vertical_ratio fotorama__loaded fotorama__loaded--img")))
-    #wait = WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.CLASS_NAME, "fotorama__nav__shaft")))
-    
     title = driver.find_element(By.CLASS_NAME, 'page-title').find_element(By.TAG_NAME,'span').find_element(By.TAG_NAME,'span').text
+    
+    filter_title = dc.cleanKeyword(title)
+    print(filter_title)
+    search_title = db.findGame(filter_title)
+    
+    print(search_title)
     
     eng_title, kor_title = extract_title(title)
     
-    autokwd.append(eng_title)
-    autokwd.append(kor_title)
+    if search_title != None:
+        autokwd.append(search_title)
+        
+    autokwd.append(dc.cleanKeyword(eng_title))
+    autokwd.append(dc.cleanKeyword(kor_title))
     
     autokwd = sorted(set(autokwd), key= lambda x: autokwd.index(x))
     
-    #gameDetailSector = driver.find_elements(By.CLASS_NAME, 'product-attributes-all-item')
     
     releaseDate = driver.find_element(By.CLASS_NAME, 'product-attribute.release_date').find_element(By.CLASS_NAME, 'product-attribute-val').text
     print(releaseDate)
     description = get_description(driver)
+    tagList = get_tag(driver)
     company = driver.find_element(By.CLASS_NAME,'product-attribute.publisher').find_element(By.CLASS_NAME, 'product-attribute-val').text
     screenList = get_image(driver)
     
     thum = screenList[0]
-    tagList = get_tag(driver)
+    
     
     
     

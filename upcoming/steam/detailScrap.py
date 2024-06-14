@@ -17,12 +17,6 @@ import time
 # 무지성으로 사용하면 코드가 더러워보여서.. 최대한 통제 가능한 부분은 None으로 처리
 
 
-
-
-
-
-
-
 def pass_adult(driver, driver_english):
     # 한 번만 인증하면 되기 때문에 GTA5에서 미리 인증을 거치고
     # 추후 게임 데이터 수집을 시작
@@ -165,21 +159,7 @@ def detail_scrap(driver, driver_eng, url):
     
     print(detail_dict)
 
-    #Log TestMode
-    #f = open('./upcoming/steam/log/tested_failed_log.txt','w')
-    #for i in FAILEDLIST:
-    #    data = "%s\n" % i
-    #    f.write(data)
-    #f.close()
-
     
     return detail_dict
     
     
-# testMode
-#driver = webdriver.Chrome()
-#driver_english = webdriver.Chrome()
-#
-#detail_scrap(driver,driver_english, 'https://store.steampowered.com/app/1781190/IMMORTAL_And_the_Death_that_Follows/')
-#detail_scrap(driver,driver_english, 'https://store.steampowered.com/app/1737960/Old_steam_page/')
-#pass_adult(driver, driver_english)
