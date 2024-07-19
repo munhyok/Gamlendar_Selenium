@@ -7,6 +7,7 @@ import requests
 from dotenv import load_dotenv
 import pandas as pd
 import time
+from datetime import datetime
 
 
 #   Workflow
@@ -39,7 +40,7 @@ class Database:
         return cls._instance
     
     def __init__(self):
-        
+
         if not self._initialized:
             self.url = os.getenv("APILOCAL_POST")
             try:
@@ -59,6 +60,8 @@ class Database:
 
             print(f"{self.before_count} 현재 DB 게임 수")
             
+            self.timestamp = int(datetime.now().timestamp()) #타임스탬프 생성
+            print(f"{self.timestamp}")
             #중복 init 방지
             self._initialized = True
         
@@ -144,7 +147,7 @@ class Database:
         
     
     
-    def __migrateMongo(self):
+    def __transferMongo(self):
         
         
         self.after_count = self.tableCount()
@@ -223,12 +226,15 @@ class Database:
         
     
     
-    def migrateMongo(self):
-        games = self.__migrateMongo()
+    def transferMongo(self):
+        games = self.__transferMongo()
         self.__postMongo(games)
     
     def insert(self, csv):
         self.__insert(csv)
         
+        
+    def getTimestamp(self):
+        return str(self.timestamp)
         
 

@@ -11,6 +11,8 @@ def concat_data(gameList, detailList, date, platform):
     
     db = Database()
      
+    timestamp = db.getTimestamp()
+     
     gameList_df = pd.DataFrame(gameList)
     detailList_df = pd.DataFrame(detailList)
     
@@ -21,9 +23,9 @@ def concat_data(gameList, detailList, date, platform):
         
         concatResult['title'][i] = concatResult['autokwd'][i].split(',')[0]
     
-    concatResult.to_csv('./upcoming/'+platform+'/backup/'+date+'_backup'+ '.csv', index=False)
+    concatResult.to_csv('./upcoming/'+platform+'/backup/'+{timestamp}+'.csv', index=False)
     
     
-    db.insert('./upcoming/'+platform+'/backup/'+date+'_backup'+ '.csv')
+    #db.insert('./upcoming/'+platform+'/backup/'+date+'_backup'+ '.csv')
     
     return concatResult

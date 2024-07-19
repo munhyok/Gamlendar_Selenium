@@ -14,7 +14,9 @@
 [약 2300개의 게임을 수집해 DB에 저장하기](https://velog.io/@grit_munhyeok/약-2300개의-게임을-수집해-DB에-저장하기)
 
 ## Architecture
+
 ![](/image/Pipeline.png)
+
 
 **ETL 패턴**
 
@@ -26,6 +28,9 @@
 
 **L: Save in MariaDB**
   - 정리된 CSV 파일을 DB에 저장
+
+## V2
+![](/image/V2.png)
 
 ## CheckList Table
 
@@ -127,6 +132,9 @@
 3. Upcoming 리스트, 상세 페이지(detail) 수집 ✅
 4. 스크린샷 수집 로직 작성 ✅
 
+### Bundle Detector 알고리즘
+![](/image/Xbox_Detect_DLC.png)
+
 
 ## 4. Nintendo Switch ✅
 
@@ -199,19 +207,12 @@ Data Cleaning Text Data를 겜린더에 맞게 수정하는 과정
 
 2. MariaDB에 있는 데이터를 MongoDB로 전송
 
-3. 싱글톤 패턴 이용
-   - [concatData.py](/core/data/concatData.py)에서 Database 인스턴스를 생성하는 부분과
-   - [main.py](/main.py) 부분의 Database 인스턴스 생성을 각각 하다보니 서로 값 공유가 되지 않는다.
-   - Database 클래스는 하나의 인스턴스만 생성해 사용해야하기 때문에 간단하게 싱글톤 패턴으로 구현하였다.
-  ![](/image/SingletonPattern.png)
+3. 싱글톤 패턴 적용: Database 클래스는 하나의 인스턴스만 생성해 사용하도록 구현
+
 
 #### DB ERD
 ![](/image/DB_ERD.png)
-title에 의존하는 관계...
-
-어차피 MongoDB에 저장하기 때문에
-
-일종의 백업과 파편화된 데이터 정리를 위한 DB
+title에 의존하는 관계
 
 
 최적화 할 부분이 있다면 적극적으로 할 예정

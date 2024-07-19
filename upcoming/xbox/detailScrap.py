@@ -8,54 +8,59 @@ import time
 from core.data_cleaning.DataCleaning import DataCleaning
 
 
-# 태그 관련 함수 제작
-# 고해상도의 이미지 링크를 얻기 위한 작업이 복잡해
-# 별도의 get_image 함수로 분류
-# 번들 중에 게임 이름이 제일 짧
-
 def find_bundle(driver, driver_eng):
-    bundleList = []
-    tmp_title = ''
-    tmp_url = ''
+    isBundle = False
+    bundleList = None
+    
     try:
-        bundleList = driver.find_element(By.CSS_SELECTOR,"section[aria-label='이 번들']").find_element(By.CSS_SELECTOR, "div[class='ModuleRow-module__row___N1V3E']").find_element(By.CSS_SELECTOR, "ol[class='ItemsSlider-module__wrapper___nAi6y']").find_elements(By.TAG_NAME, 'li')
-
-        bundleList.pop()
-        print(bundleList)
         
-        print(len(bundleList))
-        for titles in bundleList:
-            title = titles.find_element(By.TAG_NAME, 'span').find_element(By.TAG_NAME,'div').find_element(By.TAG_NAME,'a').get_attribute('title')
-            link = titles.find_element(By.TAG_NAME, 'span').find_element(By.TAG_NAME,'div').find_element(By.TAG_NAME,'a').get_attribute('href')
-
-
-            title = title.replace('Xbox Series X|S용 ','').replace('Xbox One용 ','').replace(' Xbox One', '').replace(' Xbox Series X|S','')
-
-            print(title)
-            if tmp_title == '':
-                tmp_title = title
-                tmp_url = link
-                
-
-            elif len(title) < len(tmp_title):
-                
-                tmp_title = title
-                tmp_url = link
+        bundleText = driver.find_element(By.CSS_SELECTOR, "section[aria-label='이 번들']").get_attribute("aria-label")
+        
+        if bundleText == '이 번들':
+            isBundle = True
+            print("find bundle")
             
-            print(tmp_title)
             
-        print(tmp_title)
-        print(tmp_url)
-        driver.get(tmp_url)
-        driver_eng.get(tmp_url.replace('ko-KR', 'en-us'))
-        time.sleep(10)
-        
-        
-        
+        if isBundle:
+            bundleList = driver.find_element(By.CSS_SELECTOR, "section[aria-label='이 번들']").find_element(By.CSS_SELECTOR, "div[class='ModuleRow-module__row___N1V3E']").find_element(By.CSS_SELECTOR, "ol[class='ItemsSlider-module__wrapper___nAi6y']").find_elements(By.TAG_NAME, "li")
+            print(len(bundleList))
+            
+            for i in range(len(bundleList)):
+                bundleSector = bundleList[i].find_element(By.TAG_NAME, "span").find_element(By.TAG_NAME,'div').find_element(By.TAG_NAME, 'a')
+                try:
+                    info = bundleSector.find_element(By.CSS_SELECTOR, "div[class='ProductCard-module__infoBox___M5x18']").find_element(By.TAG_NAME, 'div').find_element(By.TAG_NAME, 'div').find_element(By.TAG_NAME, 'span').text
+                except:
+                    info = bundleSector.find_element(By.CSS_SELECTOR, "div[class='ProductCard-module__infoBox___M5x18']").find_element(By.CSS_SELECTOR, "span[class='typography-module__xdsBody2___RNdGY']").text
+                    
+                if info != '추가 기능 보기': # 얘는 오리지널 게임이 무조건 아닙니다.
+                    
+                    if info != '게임 보기': # 게임 보기 + 가격 같은 동시에 존재할 가능성이 있기 때문에 넣은 조건문
+                        kor = bundleList[i].find_element(By.TAG_NAME, "span").find_element(By.TAG_NAME,'div').find_element(By.TAG_NAME, 'a').get_attribute("href")
+                        eng = kor.replace('ko-kr', 'en-us')
+                    
+                        driver.get(kor)
+                        driver_eng.get(eng)
+                        return None
+                    
+                    kor = bundleList[i].find_element(By.TAG_NAME, "span").find_element(By.TAG_NAME,'div').find_element(By.TAG_NAME, 'a').get_attribute("href")
+                    eng = kor.replace('ko-kr', 'en-us')
+                
+                    driver.get(kor)
+                    driver_eng.get(eng)
+                    return None
+            
     except NoSuchElementException:
-        print("this is not bundle")
-        
+        print("can't find bundle area")
         return None
+    
+    
+    
+    
+
+    
+    
+    
+    
 
 def get_tag(driver):
     ele = driver.find_element(By.CSS_SELECTOR, "div[class='typography-module__xdsSubTitle1___N02-X ProductInfoLine-module__productInfoLine___Jw2cv']")
@@ -76,10 +81,10 @@ def get_tag(driver):
 def get_image(driver):
     imgList = []
     
-    #wait = WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button[class='ItemsSlider-module__arrowButton___ZH7Ek commonStyles-module__basicButton___go-bX Button-module__iconButtonBase___uzoKc Button-module__basicBorderRadius___TaX9J Button-module__sizeIconButtonMedium___WJrxo Button-module__buttonBase___olICK Button-module__textNoUnderline___kHdUB Button-module__typeBrand___MMuct Button-module__overlayModeSolid___v6EcO']")))
+    
     wait = WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "ol[class='ItemsSlider-module__wrapper___nAi6y']")))
     
-    gallery = driver.find_elements(By.CSS_SELECTOR, "ol[class='ItemsSlider-module__wrapper___nAi6y']")
+    gallery = driver.find_element(By.CSS_SELECTOR, "section[aria-label='갤러리']").find_element(By.CSS_SELECTOR, "div[class='ModuleRow-module__row___N1V3E']").find_elements(By.CSS_SELECTOR, "ol[class='ItemsSlider-module__wrapper___nAi6y']")
     
     
     imgClick = gallery[0].click()
