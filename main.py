@@ -28,13 +28,14 @@ driver_eng = webdriver.Chrome(options=options)
 
 
 # ---Collection---
-#steam_upcoming(driver, driver_eng)
-#playstation_upcoming(driver, driver_eng)
+steam_upcoming(driver, driver_eng)
+playstation_upcoming(driver, driver_eng)
 xbox_upcoming(driver, driver_eng)
-#switch_upcoming(driver, driver_eng)
+switch_upcoming(driver, driver_eng)
 
 
-# ---Upload---
+
+# ---Upload---s
 dataInsert()
 db.transferMongo()
 

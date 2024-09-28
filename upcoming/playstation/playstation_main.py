@@ -22,16 +22,16 @@ def playstation_upcoming(driver, driver_eng):
     detailList = list()
     pageCount = 0
     
-    driver.get('https://store.playstation.com/ko-kr/category/82ced94c-ed3f-4d81-9b50-4d4cf1da170b/1?next_thirty_days=conceptReleaseDate')
+    driver.get('https://store.playstation.com/ko-kr/category/82ced94c-ed3f-4d81-9b50-4d4cf1da170b/1')
     
     wait = WebDriverWait(driver, 10)
     
     
     time.sleep(LOADING_PAGE)
     count = driver.find_element(By.CLASS_NAME, 'psw-t-body.psw-c-t-2').text
-    count = count.split('/')
-    count = count[1]
-    count = int(count[:2])
+    count = count.split('개')
+    count = count[0]
+    count = int(count)
     
     
     print(count)

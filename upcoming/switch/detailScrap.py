@@ -148,6 +148,7 @@ def detail_scrap(driver, driver_eng, url, url_eng):
     
     
     detail_dict = {
+        'title': search_title,
         'date': dc.formatDate(releaseDate),
         'imageurl': thum,
         'description': description,

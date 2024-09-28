@@ -36,14 +36,18 @@ def find_bundle(driver, driver_eng):
                     
                     if info != '게임 보기': # 게임 보기 + 가격 같은 동시에 존재할 가능성이 있기 때문에 넣은 조건문
                         kor = bundleList[i].find_element(By.TAG_NAME, "span").find_element(By.TAG_NAME,'div').find_element(By.TAG_NAME, 'a').get_attribute("href")
-                        eng = kor.replace('ko-kr', 'en-us')
+                        eng = kor.replace('ko-KR', 'en-us')
+                        
+                        print(eng)
                     
                         driver.get(kor)
                         driver_eng.get(eng)
                         return None
                     
                     kor = bundleList[i].find_element(By.TAG_NAME, "span").find_element(By.TAG_NAME,'div').find_element(By.TAG_NAME, 'a').get_attribute("href")
-                    eng = kor.replace('ko-kr', 'en-us')
+                    eng = kor.replace('ko-KR', 'en-us')
+                    
+                    print(eng)
                 
                     driver.get(kor)
                     driver_eng.get(eng)
@@ -99,8 +103,12 @@ def get_image(driver):
     
     
     for _ in range(0, imgNumber):
-        img = driver.find_element(By.CSS_SELECTOR, "img[class='MediaItem-module__image___VlVzn']").get_attribute('src')
-        imgList.append(img)
+        
+        try:
+            img = driver.find_element(By.CSS_SELECTOR, "img[class='WrappedResponsiveImage-module__image___QvkuN MediaItem-module__image___VlVzn']").get_attribute('src')
+            imgList.append(img)
+        except:
+            pass
         time.sleep(1)
         nextBtn = driver.find_element(By.CSS_SELECTOR, "button[class='glyph-prepend glyph-prepend-chevron-right MediaViewerSlider-module__arrowButton___pc-7m Button-module__basicBorderRadius___TaX9J Button-module__defaultBase___c7wIT Button-module__buttonBase___olICK Button-module__textNoUnderline___kHdUB Button-module__typeTertiary___wNh6R Button-module__sizeMedium___T+8s+ Button-module__overlayModeSolid___v6EcO']")
         nextBtn.click()

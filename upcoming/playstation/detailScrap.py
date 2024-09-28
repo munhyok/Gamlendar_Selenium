@@ -12,6 +12,9 @@ LOADING_PAGE = 2
 # playstation은 스크린샷이 따로 존재하지 않아서
 # 스크린샷은 썸네일 이미지로 대체
 
+def scrap_module(driver):
+    pass
+
 
 def detail_scrap(driver, driver_eng, url, url_eng):
     
@@ -31,10 +34,22 @@ def detail_scrap(driver, driver_eng, url, url_eng):
     
     
     
-    thum = driver.find_element(By.XPATH, '/html/body/div[3]/main/div/div[1]/div[1]/div/div/div/div/span/img[2]').get_attribute('src')
-    description = driver.find_element(By.CSS_SELECTOR, "div[class='psw-l-w-1/1 psw-l-w-2/3@tablet-s psw-l-w-2/3@tablet-l psw-l-w-1/2@laptop psw-l-w-1/2@desktop psw-l-w-1/2@max']").find_element(By.TAG_NAME, 'p').text
-    company = driver.find_element(By.CSS_SELECTOR, "dd[data-qa='gameInfo#releaseInformation#publisher-value']").text
-    releaseDate = driver.find_element(By.CSS_SELECTOR, "dd[data-qa='gameInfo#releaseInformation#releaseDate-value']").text
+    
+    
+    try:
+        thum = driver.find_element(By.XPATH, '/html/body/div[3]/main/div/div[1]/div[1]/div/div/div/div/span/img[2]').get_attribute('src')
+        description = driver.find_element(By.CSS_SELECTOR, "div[class='psw-l-w-1/1 psw-l-w-2/3@tablet-s psw-l-w-2/3@tablet-l psw-l-w-1/2@laptop psw-l-w-1/2@desktop psw-l-w-1/2@max']").find_element(By.TAG_NAME, 'p').text
+        company = driver.find_element(By.CSS_SELECTOR, "dd[data-qa='gameInfo#releaseInformation#publisher-value']").text
+        releaseDate = driver.find_element(By.CSS_SELECTOR, "dd[data-qa='gameInfo#releaseInformation#releaseDate-value']").text
+        
+    except NoSuchElementException:
+        
+        thum = '-'
+        description = '-'
+        company = '-'
+        releaseDate = '-'
+        
+        
     
     # 한국에는 출시하지만 미국에선 출시하지 않을 때의 예외 처리
     try:

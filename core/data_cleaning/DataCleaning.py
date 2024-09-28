@@ -26,6 +26,7 @@ class DataCleaning:
             'for',
             'Pre-order',
             '®',
+            '®',
             
             
         ]
@@ -37,6 +38,7 @@ class DataCleaning:
         
         re_str = re.sub(r'\([^()]*\)', '', raw_data) 
         re_str = re.sub(r'\([^()]*\)', '', re_str)
+        re_str = re.sub(r'^-+|-+$', '', re_str)
         
         for word in wordList:
             re_str = re_str.replace(word,'')
@@ -44,6 +46,8 @@ class DataCleaning:
         for speWord in specialWord:
             re_str = re_str.replace(speWord, ' ')
         
+        
+       
         result = re_str.strip()
         
         return result
@@ -113,7 +117,7 @@ class DataCleaning:
         
         
     def cleanCompany(self, raw_data):
-        cleanComp = self.__company_clean
+        cleanComp = self.__company_clean(raw_data)
         return cleanComp
         
     def formatDate(self, date):

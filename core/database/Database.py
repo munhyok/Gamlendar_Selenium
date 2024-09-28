@@ -79,7 +79,7 @@ class Database:
     
     def __insert(self, csv):
         
-        filterList = ['Adult Game', 'Old Steam Page']
+        filterList = ['Adult Game', 'Old Steam Page',]
 
         
         self.df = pd.read_csv(csv, encoding='utf-8', header=0)
@@ -98,9 +98,9 @@ class Database:
             for index, row in df.iterrows():
                 
                 if row['description'] not in filterList: 
-                    autokwds = row['autokwd'].split(',')
-                    screenshots = row['screenshot'].split(',')
-                    platforms = row['platform'].split(',')
+                    autokwds = str(row['autokwd']).split(',')
+                    screenshots = str(row['screenshot']).split(',')
+                    platforms = str(row['platform']).split(',')
 
                     print(autokwds)
 

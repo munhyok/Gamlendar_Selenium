@@ -33,7 +33,7 @@ def page_scrap(driver, driver_eng):
         if filter_words[0] not in title:
         
             pageGame = {
-                'title': title,
+                #'title': title,
                 'url': url,
 
             }

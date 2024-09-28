@@ -46,6 +46,10 @@ def pass_adult(driver, driver_english):
     
 
 
+    
+    
+
+
 def detail_scrap(driver, driver_eng, url):
     
     dc = DataCleaning('steam')
@@ -70,17 +74,21 @@ def detail_scrap(driver, driver_eng, url):
     # 태그 수집
     try:
         tags = driver.find_element(By.CLASS_NAME, 'glance_tags.popular_tags').find_elements(By.CLASS_NAME,'app_tag')
+        for tag in tags:
+            plain = tag.text
+            if not plain == '':
+                tagList.append(plain)
+        tagList.remove('+')
     except NoSuchElementException:
-        tags = None
-    
-    for tag in tags:
-        plain = tag.text
-        if not plain == '':
-            tagList.append(plain)
-    tagList.remove('+')
- 
         
-    title = driver.find_element(By.ID, 'appHubAppName').text
+        tagList.append("-")
+    
+    
+ 
+    try:       
+        title = driver.find_element(By.ID, 'appHubAppName').text
+    except: 
+        title = ''
     
     for adult in adultTag:
         if adult in tagList:
@@ -119,7 +127,7 @@ def detail_scrap(driver, driver_eng, url):
     # 썸네일, 개발사
     thum = driver.find_element(By.CLASS_NAME, 'game_header_image_full').get_attribute('src')
     company = driver.find_element(By.ID, 'developers_list').text
-    
+    company = dc.cleanCompany(company)
     
     # 게임 상세 정보
     try:
@@ -132,18 +140,24 @@ def detail_scrap(driver, driver_eng, url):
         
         
     # 스크린샷
-    screenshot = driver.find_elements(By.CLASS_NAME, 'highlight_strip_item.highlight_strip_screenshot')
-    for scr in screenshot:
-        screenList.append(scr.find_element(By.TAG_NAME, 'img').get_attribute('src'))
+    # 스크린샷 현재 흐린 이미지로 가져와서 고화질 원본 가져오는 작업 해야함
+    #screenshot = driver.find_elements(By.CLASS_NAME, 'highlight_strip_item.highlight_strip_screenshot')
+    #for scr in screenshot:
+    #    screenList.append(scr.find_element(By.TAG_NAME, 'img').get_attribute('src'))
     
+    
+    screenshot = driver.find_elements(By.CLASS_NAME, 'highlight_screenshot_link')
+    
+    for scr in screenshot:
+        screenList.append(scr.get_attribute('href'))
     
     
     
     # 영문 이름
     engTitle = driver_eng.find_element(By.ID, 'appHubAppName').text
     
-    autokwd.append(engTitle)
-    autokwd.append(title)
+    autokwd.append(dc.cleanKeyword(engTitle))
+    autokwd.append(dc.cleanKeyword(title))
     
     autokwd = sorted(set(autokwd), key=lambda x: autokwd.index(x))
     
