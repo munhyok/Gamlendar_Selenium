@@ -11,6 +11,7 @@ from datetime import datetime
 
 from core.logs.failedLog import failed_log
 from core.data.concatData import concat_data
+from core.Webdriver import Webdriver
 
 from upcoming.switch.pageScrap import page_scrap
 from upcoming.switch.detailScrap import detail_scrap
@@ -29,21 +30,26 @@ def popup_close(driver): #팝업 닫기 함수
     
     print('popup closed')
 
-def switch_upcoming(driver, driver_eng):
+def switch_upcoming():
+    
+    wd = Webdriver()
+    
+    
+    
     gameList = []
     detailList = []
     
-    driver.get("https://store.nintendo.co.kr/games/all-released-games")
+    wd.driver.get("https://store.nintendo.co.kr/games/all-released-games")
 
-    popup_close(driver)
+    popup_close(wd.driver)
     
     
     #여기부터 코드 작성
-    gameList = page_scrap(driver,None)
+    gameList = page_scrap()
     
     for count in range(len(gameList)):
         
-        result = detail_scrap(driver,None,gameList[count]['url'],None)
+        result = detail_scrap(gameList[count]['url'],None)
         detailList.append(result)
         
     

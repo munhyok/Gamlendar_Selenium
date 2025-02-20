@@ -19,6 +19,7 @@ class DataCleaning:
             'PS4&PS5',
             'PS4 & PS5',
             'PS4® & PS5®',
+            'PS4™ & PS5™',
             'Xbox Series X|S용',
             'Xbox One용',
             'Xbox Series X|S',
@@ -127,3 +128,6 @@ class DataCleaning:
     def cleanKeyword(self, raw_data):
         cleanKwd = self.__title_clean(raw_data)
         return cleanKwd
+    
+    def cleanTag(self, raw_data):
+        pass

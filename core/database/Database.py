@@ -60,7 +60,8 @@ class Database:
 
             print(f"{self.before_count} 현재 DB 게임 수")
             
-            self.timestamp = int(datetime.now().timestamp()) #타임스탬프 생성
+            self.timestamp = 1739501901
+            #self.timestamp = int(datetime.now().timestamp()) #타임스탬프 생성
             print(f"{self.timestamp}")
             #중복 init 방지
             self._initialized = True
@@ -124,8 +125,8 @@ class Database:
                
 
             try:
-                response = requests.get(url= self.url+"/gamlendar")
-                response.raise_for_status()
+                #response = requests.get(url= self.url+"/gamlendar",verify=False)
+                #response.raise_for_status()
 
                 self.connection.commit()
                 print('Commit Complete')
@@ -151,7 +152,9 @@ class Database:
         
         
         self.after_count = self.tableCount()
+        #index = self.after_count
         index = self.after_count - self.before_count
+        #index = 1705
 
         print(f"업로드할 게임 수 {index}")
         print("10초 뒤에 데이터 이동")
@@ -166,16 +169,23 @@ class Database:
             result_raw = json.dumps(new_data, ensure_ascii=False)
             result = json.loads(result_raw)
 
-
+            
         for i in range(len(result)):
             
             screenshot_list = result[i]['screenshots'].split(', ')
             platform_list = result[i]['platform'].split(', ')
-            autokwd_list = result[i]['autokwd'].split(', ')
+            try:
+                autokwd_list = result[i]['autokwd'].split(', ')
+            except:
+                autokwd_list = ''
+            tag_list = result[i]['tag'].split(',')
+            
             
             result[i]["screenshots"] = screenshot_list
             result[i]['platform'] = platform_list
+            
             result[i]['autokwd'] = autokwd_list
+            result[i]['tag']= list(set(tag_list))
             
             result[i]['path'] = 'games'
             result[i]['gindie'] = 'game'
@@ -183,8 +193,11 @@ class Database:
             result[i]['gameurl'] = ''
             result[i]['yturl'] = ''
             result[i]['adult'] = False
-  
+
+            #print(result)
         print(f"{index}개 게임 업로드 완료")
+        
+        
         return result
         
         
@@ -192,16 +205,19 @@ class Database:
         
     def __postMongo(self, raw_json):
         
-        headers = {"Content-Type": "Application/json"}
+        headers = {"Content-Type": "application/json"}
 
         
         
         for i in range(len(raw_json)):
-            data = json.dumps(raw_json[i])
             
-            response = requests.post(url = self.url, data = data, headers=headers)
-
-            print(response)
+            response = requests.post(url = self.url, json=raw_json[i], headers=headers,)# verify=False)
+            
+            print(response.status_code)
+            print(response.text)
+            time.sleep(0.5)
+            
+            
             
      
             

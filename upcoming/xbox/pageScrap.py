@@ -4,6 +4,7 @@ from selenium.webdriver.common.by import By
 import time
 
 from core.logs.failedLog import failed_log
+from core.Webdriver import Webdriver
 
 FILTERWORDS = [
     '디럭스','Deluxe',
@@ -15,16 +16,19 @@ FILTERWORDS = [
     '다운로드', 'Download',
     '스페셜', 'Special',
     '번들', 'Bundle',
-    '애드온', 'Add-On'
+    '애드온', 'Add-On',
+    '파운더스', 'Founders'
     
     ]
 
-def page_scrap(driver):
+def page_scrap():
+    wd = Webdriver()
+    
     gameList = []
-    wait = WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "a[class='gameDivLink']")))
+    wait = WebDriverWait(wd.driver, 60).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "a[class='gameDivLink']")))
     print('Loading Done, Scrap start')
     
-    games = driver.find_elements(By.CSS_SELECTOR, "div[class='m-product-placement-item f-size-medium context-game gameDiv']")
+    games = wd.driver.find_elements(By.CSS_SELECTOR, "div[class='m-product-placement-item f-size-medium context-game gameDiv']")
     
     for game in games:
         filterCheck = False

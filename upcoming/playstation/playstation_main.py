@@ -8,7 +8,7 @@ from upcoming.playstation.pageScrap import page_scrap
 from upcoming.playstation.detailScrap import detail_scrap
 from core.data.concatData import concat_data
 from core.logs.failedLog import failed_log
-from selenium import webdriver
+from core.Webdriver import Webdriver
 from datetime import datetime
 
 
@@ -17,18 +17,21 @@ LOADING_PAGE = 2
 NOW = time.time()
 DATE = datetime.fromtimestamp(NOW).strftime('%Y-%m-%d %H:%M:%S')
 
-def playstation_upcoming(driver, driver_eng):
+def playstation_upcoming():
+    wd = Webdriver()
+    
+    
     
     detailList = list()
     pageCount = 0
     
-    driver.get('https://store.playstation.com/ko-kr/category/82ced94c-ed3f-4d81-9b50-4d4cf1da170b/1')
+    wd.driver.get('https://store.playstation.com/ko-kr/category/82ced94c-ed3f-4d81-9b50-4d4cf1da170b/1')
     
-    wait = WebDriverWait(driver, 10)
+    wait = WebDriverWait(wd.driver, 10)
     
     
     time.sleep(LOADING_PAGE)
-    count = driver.find_element(By.CLASS_NAME, 'psw-t-body.psw-c-t-2').text
+    count = wd.driver.find_element(By.CLASS_NAME, 'psw-t-body.psw-c-t-2').text
     count = count.split('개')
     count = count[0]
     count = int(count)
@@ -45,10 +48,10 @@ def playstation_upcoming(driver, driver_eng):
     print(f'총 {count}개 게임 수집 시작')
     
     
-    gameList = page_scrap(driver, driver_eng, pageCount)
+    gameList = page_scrap(pageCount)
     
     for i in range(0, len(gameList)):
-        result = detail_scrap(driver, driver_eng, gameList[i]['url'], gameList[i]['url'].replace('ko-kr','en-us'))
+        result = detail_scrap(gameList[i]['url'], gameList[i]['url'].replace('ko-kr','en-us'))
         detailList.append(result)
     
     failedList = failed_log(False, None, None, 'playstation')

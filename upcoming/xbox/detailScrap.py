@@ -6,6 +6,7 @@ from selenium.common.exceptions import NoSuchElementException
 #from core.logs.failedLog import failed_log
 import time
 from core.data_cleaning.DataCleaning import DataCleaning
+from core.Webdriver import Webdriver
 
 
 def find_bundle(driver, driver_eng):
@@ -105,12 +106,12 @@ def get_image(driver):
     for _ in range(0, imgNumber):
         
         try:
-            img = driver.find_element(By.CSS_SELECTOR, "img[class='WrappedResponsiveImage-module__image___QvkuN MediaItem-module__image___VlVzn']").get_attribute('src')
+            img = driver.find_element(By.CSS_SELECTOR,"div[class='MediaViewer-module__viewMedia___5xlQv']").find_element(By.CSS_SELECTOR, "img[class='WrappedResponsiveImage-module__image___QvkuN MediaItem-module__image___VlVzn']").get_attribute('src')
             imgList.append(img)
         except:
             pass
         time.sleep(1)
-        nextBtn = driver.find_element(By.CSS_SELECTOR, "button[class='glyph-prepend glyph-prepend-chevron-right MediaViewerSlider-module__arrowButton___pc-7m Button-module__basicBorderRadius___TaX9J Button-module__defaultBase___c7wIT Button-module__buttonBase___olICK Button-module__textNoUnderline___kHdUB Button-module__typeTertiary___wNh6R Button-module__sizeMedium___T+8s+ Button-module__overlayModeSolid___v6EcO']")
+        nextBtn = driver.find_element(By.CSS_SELECTOR, "button[class='glyphs-module__glyph-prepend___3JVuT glyphs-module__glyph-prepend-chevron-right___i5kNz MediaViewerSlider-module__arrowButton___pc-7m Button-module__basicBorderRadius___TaX9J Button-module__defaultBase___c7wIT Button-module__buttonBase___olICK Button-module__textNoUnderline___kHdUB Button-module__typeTertiary___wNh6R Button-module__sizeMedium___T+8s+ Button-module__overlayModeSolid___v6EcO']")
         nextBtn.click()
     
     #print(imgNumber)
@@ -119,28 +120,29 @@ def get_image(driver):
 
 
 
-def detail_scrap(driver, driver_eng, url, url_eng):
+def detail_scrap(url, url_eng):
+    wd = Webdriver()
     
     dc = DataCleaning('xbox')
     
     autokwd = list()
     
-    driver.implicitly_wait(10)
-    driver_eng.implicitly_wait(10)
+    wd.driver.implicitly_wait(10)
+    wd.driver_eng.implicitly_wait(10)
     
     
-    driver.get(url)
-    driver_eng.get(url_eng)
+    wd.driver.get(url)
+    wd.driver_eng.get(url_eng)
     
     
-    find_bundle(driver,driver_eng)
+    find_bundle(wd.driver,wd.driver_eng)
     
-    title = driver.find_element(By.CSS_SELECTOR, "h1[data-testid='ProductDetailsHeaderProductTitle']").text
+    title = wd.driver.find_element(By.CSS_SELECTOR, "h1[data-testid='ProductDetailsHeaderProductTitle']").text
     
     
     
     try:
-        engTitle = driver_eng.find_element(By.CSS_SELECTOR, "h1[data-testid='ProductDetailsHeaderProductTitle']").text
+        engTitle = wd.driver_eng.find_element(By.CSS_SELECTOR, "h1[data-testid='ProductDetailsHeaderProductTitle']").text
     except NoSuchElementException:
         engTitle = title
 
@@ -154,13 +156,13 @@ def detail_scrap(driver, driver_eng, url, url_eng):
     
     
         
-    description = driver.find_element(By.CSS_SELECTOR, "p[class='Description-module__description___ylcn4 typography-module__xdsBody2___RNdGY ExpandableText-module__container___Uc17O']").text
-    company = driver.find_element(By.CSS_SELECTOR, "div[class='typography-module__xdsBody2___RNdGY']").text
-    tagList = get_tag(driver)
-    screenList = get_image(driver)
+    description = wd.driver.find_element(By.CSS_SELECTOR, "p[class='Description-module__description___ylcn4 typography-module__xdsBody2___RNdGY ExpandableText-module__container___Uc17O']").text
+    company = wd.driver.find_element(By.CSS_SELECTOR, "div[class='typography-module__xdsBody2___RNdGY']").text
+    tagList = get_tag(wd.driver)
+    screenList = get_image(wd.driver)
     
     try:
-        thum = driver.find_element(By.CSS_SELECTOR, "img[class='ProductDetailsHeader-module__backgroundImage___34Nro img-fluid']").get_attribute('src')
+        thum = wd.driver.find_element(By.CSS_SELECTOR, "img[class='ProductDetailsHeader-module__backgroundImage___34Nro img-fluid']").get_attribute('src')
     except NoSuchElementException:
         thum = screenList[0]
         

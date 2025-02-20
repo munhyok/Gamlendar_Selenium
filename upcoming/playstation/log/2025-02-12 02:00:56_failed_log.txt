@@ -1,0 +1,3 @@
+['Hentai Shop Simulator (영어)', 'filtering Adult game']
+['Sex Shop Simulator (영어)', 'filtering Adult game']
+['Moe Waifu H Fantasy', 'filtering Adult game']

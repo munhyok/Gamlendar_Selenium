@@ -14,6 +14,7 @@ from upcoming.xbox.pageScrap import page_scrap
 from upcoming.xbox.detailScrap import detail_scrap
 from core.logs.failedLog import failed_log
 from core.data.concatData import concat_data
+from core.Webdriver import Webdriver
 
 
 load_dotenv()
@@ -78,24 +79,27 @@ def xbox_login(driver):
     driver.implicitly_wait(10)
         
 
-def xbox_upcoming(driver, driver_eng):
+def xbox_upcoming():
+    wd = Webdriver()
+    
+    
     gameList = []
     detailList = []
-    xbox_login(driver)
-    pageList = driver.find_element(By.CSS_SELECTOR, "button[id='unique-id-for-paglist-generated-select-menu-trigger']")
+    xbox_login(wd.driver)
+    pageList = wd.driver.find_element(By.CSS_SELECTOR, "button[id='unique-id-for-paglist-generated-select-menu-trigger']")
     pageList.click()
     time.sleep(0.5)
-    menu = driver.find_element(By.CSS_SELECTOR, "li[id='unique-id-for-paglist-generated-select-menu-3']")
+    menu = wd.driver.find_element(By.CSS_SELECTOR, "li[id='unique-id-for-paglist-generated-select-menu-3']")
     menu.click()
     print("Xbox Login Complete")
     
-    gameList = page_scrap(driver)
+    gameList = page_scrap()
     
     for count in range(len(gameList)):
         kor = gameList[count]['url']
         eng = gameList[count]['url'].replace('ko-kr','en-us')
         
-        result = detail_scrap(driver, driver_eng, kor, eng)
+        result = detail_scrap(kor, eng)
         detailList.append(result)
         
 
@@ -114,7 +118,3 @@ def xbox_upcoming(driver, driver_eng):
         
     
     
-    
-
-
-

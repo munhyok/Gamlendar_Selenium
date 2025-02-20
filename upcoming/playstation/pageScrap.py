@@ -2,19 +2,20 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from core.data_cleaning.DataCleaning import DataCleaning
+from core.Webdriver import Webdriver
 import time
 
 LOADING_PAGE = 2
 
-def page_scrap(driver, driver_english, pageNumber):
-    
+def page_scrap(pageNumber):
+    wd = Webdriver()
     dc = DataCleaning('playstation')
     pageList = list()
     
     for _ in range(1, pageNumber+1):
         time.sleep(LOADING_PAGE)
         
-        gameGrid = driver.find_element(By.CLASS_NAME, 'psw-grid-list.psw-l-grid')
+        gameGrid = wd.driver.find_element(By.CLASS_NAME, 'psw-grid-list.psw-l-grid')
         
         games = gameGrid.find_elements(By.TAG_NAME, 'li')
         
@@ -34,7 +35,7 @@ def page_scrap(driver, driver_english, pageNumber):
         print(len(pageList))
         
         
-        nextBtn = driver.find_element(By.CLASS_NAME, 'psw-icon.psw-icon--chevron-right.psw-icon.psw-icon-size-2.psw-icon--chevron-right').click()
+        nextBtn = wd.driver.find_element(By.CLASS_NAME, 'psw-icon.psw-icon--chevron-right.psw-icon.psw-icon-size-2.psw-icon--chevron-right').click()
         print('nextBtn clicked!')
         
             

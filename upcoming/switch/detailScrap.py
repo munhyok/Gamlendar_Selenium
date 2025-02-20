@@ -9,7 +9,9 @@ import re
 from core.logs.failedLog import failed_log
 from core.data_cleaning.DataCleaning import DataCleaning
 from core.database.Database import Database
+from core.data.csvSearch import csvSearch
 
+from core.Webdriver import Webdriver
 # 스위치 영문이름 데이터 통합 해결 방안
 # 게임 데이터를 DB에 Autokwd 기준으로 검색
 # 데이터가 검색이 되면 DB에 있는 영문이름을 스위치 name 변수에 덮어 씌우기
@@ -103,44 +105,44 @@ def get_tag(driver):
         
     return tagList
 
-def detail_scrap(driver, driver_eng, url, url_eng):
+def detail_scrap(url, url_eng):
     # 스위치의 상세 정보 페이지의 첫 스크린샷 이미지는 썸네일
-    
+    wd = Webdriver()
     db = Database()
     
     dc = DataCleaning('switch')
     
-    autokwd = list()
+    autokwd = []
     
-    driver.implicitly_wait(60)
+    wd.driver.implicitly_wait(60)
     
-    driver.get(url)
+    wd.driver.get(url)
     
-    title = driver.find_element(By.CLASS_NAME, 'page-title').find_element(By.TAG_NAME,'span').find_element(By.TAG_NAME,'span').text
+    title = wd.driver.find_element(By.CLASS_NAME, 'page-title').find_element(By.TAG_NAME,'span').find_element(By.TAG_NAME,'span').text
     
     filter_title = dc.cleanKeyword(title)
-    print(filter_title)
-    search_title = db.findGame(filter_title)
-    
+    print("filter"+filter_title)
+    search_title = csvSearch(filter_title)
     print(search_title)
+    if search_title != None:
+        autokwd.append(search_title) #db에 없는데 무슨 db에 검색을해 멍청아... csv검색으로 바꾸자
+    
+    
     
     eng_title, kor_title = extract_title(title)
-    
-    if search_title != None:
-        autokwd.append(search_title)
-        
+
     autokwd.append(dc.cleanKeyword(eng_title))
     autokwd.append(dc.cleanKeyword(kor_title))
-    
+
     autokwd = sorted(set(autokwd), key= lambda x: autokwd.index(x))
     
     
-    releaseDate = driver.find_element(By.CLASS_NAME, 'product-attribute.release_date').find_element(By.CLASS_NAME, 'product-attribute-val').text
+    releaseDate = wd.driver.find_element(By.CLASS_NAME, 'product-attribute.release_date').find_element(By.CLASS_NAME, 'product-attribute-val').text
     print(releaseDate)
-    description = get_description(driver)
-    tagList = get_tag(driver)
-    company = driver.find_element(By.CLASS_NAME,'product-attribute.publisher').find_element(By.CLASS_NAME, 'product-attribute-val').text
-    screenList = get_image(driver)
+    description = get_description(wd.driver)
+    tagList = get_tag(wd.driver)
+    company = wd.driver.find_element(By.CLASS_NAME,'product-attribute.publisher').find_element(By.CLASS_NAME, 'product-attribute-val').text
+    screenList = get_image(wd.driver)
     
     thum = screenList[0]
     
@@ -148,7 +150,7 @@ def detail_scrap(driver, driver_eng, url, url_eng):
     
     
     detail_dict = {
-        'title': search_title,
+        'title': autokwd[0],
         'date': dc.formatDate(releaseDate),
         'imageurl': thum,
         'description': description,

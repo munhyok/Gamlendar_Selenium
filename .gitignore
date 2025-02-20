@@ -11,4 +11,6 @@ db_index.json
 
 #
 ./test
+.csv
 
+serviceAccountKey.json

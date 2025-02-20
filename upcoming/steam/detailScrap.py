@@ -5,8 +5,9 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 from core.logs.failedLog import failed_log
 
+from core.Webdriver import Webdriver
 from core.data_cleaning.DataCleaning import DataCleaning
-
+from core.Webdriver import Webdriver
 import time
 
 
@@ -17,29 +18,32 @@ import time
 # 무지성으로 사용하면 코드가 더러워보여서.. 최대한 통제 가능한 부분은 None으로 처리
 
 
-def pass_adult(driver, driver_english):
+
+def pass_adult():
     # 한 번만 인증하면 되기 때문에 GTA5에서 미리 인증을 거치고
     # 추후 게임 데이터 수집을 시작
     
+    wd = Webdriver()
     
-    
-    driver.get('https://store.steampowered.com/agecheck/app/271590/')
-    driver_english.get('https://store.steampowered.com/agecheck/app/271590/')
+    wd.driver.get('https://store.steampowered.com/agecheck/app/271590/')
+    wd.driver_eng.get('https://store.steampowered.com/agecheck/app/271590/')
 
-    time.sleep(1)
-    driver.find_element(By.ID, 'ageYear').click()
-    driver_english.find_element(By.ID, 'ageYear').click()
-    time.sleep(0.5)
+    try:
+        time.sleep(1)
+        wd.driver.find_element(By.ID, 'ageYear').click()
+        wd.driver_eng.find_element(By.ID, 'ageYear').click()
+        time.sleep(0.5)
+
+
+        wd.driver.find_element(By.XPATH, '/html/body/div[1]/div[7]/div[6]/div[3]/div[2]/div/div[1]/div[2]/select[3]/option[63]').click()
+        wd.driver_eng.find_element(By.XPATH, '/html/body/div[1]/div[7]/div[6]/div[3]/div[2]/div/div[1]/div[2]/select[3]/option[63]').click()
+
+
+        time.sleep(0.5)
+    except: pass
     
-    
-    driver.find_element(By.XPATH, '/html/body/div[1]/div[7]/div[6]/div/div[2]/div/div[1]/div[3]/select[3]/option[91]').click()
-    driver_english.find_element(By.XPATH, '/html/body/div[1]/div[7]/div[6]/div/div[2]/div/div[1]/div[3]/select[3]/option[91]').click()
-    
-    
-    time.sleep(0.5)
-    
-    driver.find_element(By.ID, 'view_product_page_btn').click()
-    driver_english.find_element(By.ID, 'view_product_page_btn').click()
+    wd.driver.find_element(By.ID, 'view_product_page_btn').click()
+    wd.driver_eng.find_element(By.ID, 'view_product_page_btn').click()
 
     time.sleep(3)
     
@@ -50,12 +54,13 @@ def pass_adult(driver, driver_english):
     
 
 
-def detail_scrap(driver, driver_eng, url):
+def detail_scrap(url):
+    
     
     dc = DataCleaning('steam')
-    
+    wd = Webdriver()
     # 이 태그가 들어간 친구들은 수집 금지
-    adultTag = ['헨타이','후방주의','선정적인 내용']
+    adultTag = ['헨타이','후방주의','선정적인 내용',]
     
     autokwd = list()
     screenList = []
@@ -64,16 +69,16 @@ def detail_scrap(driver, driver_eng, url):
     
     
     
-    driver.implicitly_wait(10)
-    driver_eng.implicitly_wait(10)
+    wd.driver.implicitly_wait(10)
+    wd.driver_eng.implicitly_wait(10)
     
-    driver.get(url)
-    driver_eng.get(url)
+    wd.driver.get(url)
+    wd.driver_eng.get(url)
 
     
     # 태그 수집
     try:
-        tags = driver.find_element(By.CLASS_NAME, 'glance_tags.popular_tags').find_elements(By.CLASS_NAME,'app_tag')
+        tags = wd.driver.find_element(By.CLASS_NAME, 'glance_tags.popular_tags').find_elements(By.CLASS_NAME,'app_tag')
         for tag in tags:
             plain = tag.text
             if not plain == '':
@@ -82,11 +87,14 @@ def detail_scrap(driver, driver_eng, url):
     except NoSuchElementException:
         
         tagList.append("-")
+        
+
+        
     
     
  
     try:       
-        title = driver.find_element(By.ID, 'appHubAppName').text
+        title = wd.driver.find_element(By.ID, 'appHubAppName').text
     except: 
         title = ''
     
@@ -125,13 +133,17 @@ def detail_scrap(driver, driver_eng, url):
         return detail_dict
     
     # 썸네일, 개발사
-    thum = driver.find_element(By.CLASS_NAME, 'game_header_image_full').get_attribute('src')
-    company = driver.find_element(By.ID, 'developers_list').text
-    company = dc.cleanCompany(company)
+    try:
+        thum = wd.driver.find_element(By.CLASS_NAME, 'game_header_image_full').get_attribute('src')
+        company = wd.driver.find_element(By.ID, 'developers_list').text
+        company = dc.cleanCompany(company)
+    except:
+        failed_log(True, '페이지 오픈 에러(thum, company)', '페이지가 제대로 열리지 않아서 생긴 오류입니다.', 'pc')
+    
     
     # 게임 상세 정보
     try:
-        description = driver.find_element(By.ID, 'game_area_description').text
+        description = wd.driver.find_element(By.ID, 'game_area_description').text
     except NoSuchElementException:
         description = 'description parsing failed :('
         
@@ -146,7 +158,7 @@ def detail_scrap(driver, driver_eng, url):
     #    screenList.append(scr.find_element(By.TAG_NAME, 'img').get_attribute('src'))
     
     
-    screenshot = driver.find_elements(By.CLASS_NAME, 'highlight_screenshot_link')
+    screenshot = wd.driver.find_elements(By.CLASS_NAME, 'highlight_screenshot_link')
     
     for scr in screenshot:
         screenList.append(scr.get_attribute('href'))
@@ -154,7 +166,7 @@ def detail_scrap(driver, driver_eng, url):
     
     
     # 영문 이름
-    engTitle = driver_eng.find_element(By.ID, 'appHubAppName').text
+    engTitle = wd.driver_eng.find_element(By.ID, 'appHubAppName').text
     
     autokwd.append(dc.cleanKeyword(engTitle))
     autokwd.append(dc.cleanKeyword(title))
@@ -171,7 +183,7 @@ def detail_scrap(driver, driver_eng, url):
         'platform': "steam"
     }
     
-    print(detail_dict)
+    #print(detail_dict)
 
     
     return detail_dict
