@@ -3,6 +3,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver import ActionChains
+from selenium.webdriver.common.keys import Keys
 import time
 import re
 
@@ -12,6 +13,7 @@ from core.database.Database import Database
 from core.data.csvSearch import csvSearch
 
 from core.Webdriver import Webdriver
+
 # 스위치 영문이름 데이터 통합 해결 방안
 # 게임 데이터를 DB에 Autokwd 기준으로 검색
 # 데이터가 검색이 되면 DB에 있는 영문이름을 스위치 name 변수에 덮어 씌우기
@@ -45,7 +47,10 @@ def extract_title(raw_title):
 def get_description(driver):
     rawTextList = []
     description = None
-    descRaw = driver.find_element(By.CLASS_NAME, 'product-attribute-content.expanded').find_elements(By.TAG_NAME,'p')
+    try:
+        descRaw = driver.find_element(By.CSS_SELECTOR, "div[class='product-attribute-content expanded']").find_elements(By.TAG_NAME,'p')
+    except NoSuchElementException:
+        descRaw = driver.find_element(By.CSS_SELECTOR, "div[class='product-attribute-content']").find_elements(By.TAG_NAME,'p')
     
     
     if descRaw != []:
@@ -55,7 +60,10 @@ def get_description(driver):
         
         return description
     else:
-        description = driver.find_element(By.CLASS_NAME, 'product-attribute-content.expanded').text
+        try:
+            description = driver.find_element(By.CSS_SELECTOR, "div[class='product-attribute-content expanded']").text
+        except NoSuchElementException:
+            description = driver.find_element(By.CSS_SELECTOR, "div[class='product-attribute-content']").text
         return description
     
 
@@ -79,13 +87,16 @@ def get_image(driver):
         imgList.append(img)
         return imgList
         
-    nextBtn = driver.find_element(By.CLASS_NAME, 'fotorama__arr.fotorama__arr--next')
-    action = ActionChains(driver)
+    #nextBtn = driver.find_element(By.CLASS_NAME, 'fotorama__arr.fotorama__arr--next')
+    #action = ActionChains(driver)
+    body = driver.find_element(By.TAG_NAME, "body")
     for _ in range(len(imgNumber)):
         img = driver.find_element(By.CLASS_NAME, 'fotorama__img--full').get_attribute('src')
         imgList.append(img)
-        action.move_to_element(nextBtn).perform()
-        nextBtn.click()
+        
+        body.send_keys(Keys.ARROW_RIGHT)
+        #action.move_to_element(nextBtn).perform()
+        #nextBtn.click()
         time.sleep(2)
     
     return imgList
@@ -105,6 +116,14 @@ def get_tag(driver):
         
     return tagList
 
+def popup_close(driver): #팝업 닫기 함수
+    
+    wait = WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button[class='popup-close']")))
+    popupClose = driver.find_element(By.CSS_SELECTOR, "button[class='popup-close']")
+    popupClose.click()
+    
+    print('popup closed')
+
 def detail_scrap(url, url_eng):
     # 스위치의 상세 정보 페이지의 첫 스크린샷 이미지는 썸네일
     wd = Webdriver()
@@ -114,9 +133,19 @@ def detail_scrap(url, url_eng):
     
     autokwd = []
     
+    wait = WebDriverWait(wd.driver, 60)
+    
     wd.driver.implicitly_wait(60)
     
     wd.driver.get(url)
+    
+    
+    
+    try:
+        popup_close(wd.driver)
+    except: pass 
+    
+    #element = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "div[class='product-attribute-content expanded']")))
     
     title = wd.driver.find_element(By.CLASS_NAME, 'page-title').find_element(By.TAG_NAME,'span').find_element(By.TAG_NAME,'span').text
     

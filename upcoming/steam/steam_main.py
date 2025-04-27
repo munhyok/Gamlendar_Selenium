@@ -115,7 +115,10 @@ def steam_upcoming():
             steam_login(wd.driver_eng, 'eng')
             time.sleep(5)
             pass_adult()
+            
             result = detail_scrap(gameList[i]['url'])
+            
+                
             
         if result != None:
             detailList.append(result)

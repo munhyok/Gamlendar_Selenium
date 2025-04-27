@@ -68,6 +68,7 @@ def find_bundle(driver, driver_eng):
     
 
 def get_tag(driver):
+    tagFilterList = []
     ele = driver.find_element(By.CSS_SELECTOR, "div[class='typography-module__xdsSubTitle1___N02-X ProductInfoLine-module__productInfoLine___Jw2cv']")
     tagRaw = ele.find_element(By.TAG_NAME, "span").text
     
@@ -77,8 +78,12 @@ def get_tag(driver):
     
     del tagList[0]
     
+    for tag in tagList:
+        text = tag.replace('\n','').strip()
+        tagFilterList.append(text)
+    
     #print(tagList)
-    return tagList
+    return tagFilterList
     
     
     
@@ -124,16 +129,21 @@ def detail_scrap(url, url_eng):
     wd = Webdriver()
     
     dc = DataCleaning('xbox')
+    wait = WebDriverWait(wd.driver, 60)
+    wait_eng = WebDriverWait(wd.driver_eng, 60)
     
     autokwd = list()
     
-    wd.driver.implicitly_wait(10)
-    wd.driver_eng.implicitly_wait(10)
+    wd.driver.implicitly_wait(60)
+    wd.driver_eng.implicitly_wait(60)
     
     
     wd.driver.get(url)
     wd.driver_eng.get(url_eng)
     
+    
+    element = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "h1[data-testid='ProductDetailsHeaderProductTitle']")))
+    element_eng = wait_eng.until(EC.presence_of_element_located((By.CSS_SELECTOR, "h1[data-testid='ProductDetailsHeaderProductTitle']")))
     
     find_bundle(wd.driver,wd.driver_eng)
     

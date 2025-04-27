@@ -60,8 +60,9 @@ class Database:
 
             print(f"{self.before_count} 현재 DB 게임 수")
             
-            self.timestamp = 1739501901
-            #self.timestamp = int(datetime.now().timestamp()) #타임스탬프 생성
+            
+            self.timestamp = int(datetime.now().timestamp()) #타임스탬프 생성
+            #self.timestamp = 1743702772
             print(f"{self.timestamp}")
             #중복 init 방지
             self._initialized = True
@@ -154,7 +155,7 @@ class Database:
         self.after_count = self.tableCount()
         #index = self.after_count
         index = self.after_count - self.before_count
-        #index = 1705
+        #index = 1739
 
         print(f"업로드할 게임 수 {index}")
         print("10초 뒤에 데이터 이동")
@@ -215,7 +216,7 @@ class Database:
             
             print(response.status_code)
             print(response.text)
-            time.sleep(0.5)
+            time.sleep(0.3)
             
             
             

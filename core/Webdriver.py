@@ -22,8 +22,13 @@ class Webdriver:
         self.options.add_argument("lang=ko_KR")
         self.options.add_argument("--disable-gpu")
         self.options.add_argument('--no-sandbox')
+        self.options.add_argument('--window-size=1280,1280')
         self.options.add_argument('--disable-dev-shm-usage')
-        #options.add_argument('--headless=new')
+        self.options.add_argument('--headless=new')
+        
+        # 이미지 로딩 유무... 빠른 페이지 로드를 위해 나중에 테스트 할 예정 
+        #self.options.add_argument('--blink-settings=imagesEnabled=false')
+        
 
         
         
@@ -60,6 +65,8 @@ class Webdriver:
         self.options.add_argument("--disable-gpu")
         self.options.add_argument('--no-sandbox')
         self.options.add_argument('--disable-dev-shm-usage')
+        self.options.add_argument('--window-size=1280,1280')
+        self.options.add_argument('--headless=new')
         self.startDriver()
 
     def refreshPage(self):

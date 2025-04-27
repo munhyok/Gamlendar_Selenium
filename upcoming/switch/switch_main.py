@@ -49,8 +49,15 @@ def switch_upcoming():
     
     for count in range(len(gameList)):
         
-        result = detail_scrap(gameList[count]['url'],None)
-        detailList.append(result)
+        try:
+            result = detail_scrap(gameList[count]['url'],None)
+            detailList.append(result)
+        except:
+            wd.quitDriver()
+            wd.restartDriver()
+            
+            result = detail_scrap(gameList[count]['url'],None)
+            detailList.append(result)
         
     
     failedList = failed_log(False, None, None, 'switch')

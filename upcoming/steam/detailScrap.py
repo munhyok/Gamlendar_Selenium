@@ -96,7 +96,20 @@ def detail_scrap(url):
     try:       
         title = wd.driver.find_element(By.ID, 'appHubAppName').text
     except: 
-        title = ''
+        print('adult game')
+        failed_log(True, '페이지 오픈 에러(성인 인증 필요 구간)', '페이지가 제대로 열리지 않아서 생긴 오류입니다.', 'pc')
+        
+        detail_dict = {
+                'imageurl': '',
+                'description': "Adult Game",
+                'autokwd': 'Adult Game',
+                'company': "",
+                'screenshot': '',
+                'tag':'',
+                'platform': 'steam'
+            }
+            
+        return detail_dict
     
     for adult in adultTag:
         if adult in tagList:

@@ -16,6 +16,8 @@ class DataCleaning:
     def __title_clean(self, raw_data):
         
         wordList = [
+            'Standard Edition',
+            'standard Edition',
             'PS4&PS5',
             'PS4 & PS5',
             'PS4® & PS5®',
@@ -28,7 +30,7 @@ class DataCleaning:
             'Pre-order',
             '®',
             '®',
-            
+            '™',
             
         ]
         
