@@ -13,7 +13,7 @@ from core.notification.push_notification import send_message
 
 import time
 
-# ---Init---
+## ---Init---
 db = Database()
 wd = Webdriver()
 

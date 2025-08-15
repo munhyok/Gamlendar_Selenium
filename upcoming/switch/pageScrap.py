@@ -32,14 +32,15 @@ def page_scrap():
         url = game.find_element(By.CLASS_NAME, 'product-item-link').get_attribute('href')
         
         if filter_words[0] not in title:
+            if '업그레이드 패스' not in title: #스위치 2 업그레이드 패스는 제외
         
-            pageGame = {
-                #'title': title,
-                'url': url,
+                pageGame = {
+                    #'title': title,
+                    'url': url,
 
-            }
+                }
             
-        pageList.append(pageGame)
+                pageList.append(pageGame)
         
     
         

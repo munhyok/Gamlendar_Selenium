@@ -32,6 +32,8 @@ def playstation_upcoming():
     
     time.sleep(LOADING_PAGE)
     count = wd.driver.find_element(By.CLASS_NAME, 'psw-t-body.psw-c-t-2').text
+    count = count.split('/')
+    count = count[1]
     count = count.split('개')
     count = count[0]
     count = int(count)

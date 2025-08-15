@@ -5,6 +5,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import NoSuchElementException, ElementNotInteractableException
 
 from selenium import webdriver
 from datetime import datetime
@@ -24,11 +25,19 @@ DATE = datetime.fromtimestamp(NOW).strftime('%Y-%m-%d %H:%M:%S')
 
 def popup_close(driver): #팝업 닫기 함수
     
-    wait = WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button[class='popup-close']")))
-    popupClose = driver.find_element(By.CSS_SELECTOR, "button[class='popup-close']")
-    popupClose.click()
+    #wait = WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button[class='popup-close']")))
+    time.sleep(5)
+    try:
+        popupClose = driver.find_element(By.CSS_SELECTOR, "button[class='popup-close']")
+        popupClose.click()
+        print('popup closed')
+    except ElementNotInteractableException:
+        print('no popup')
+        return
     
-    print('popup closed')
+    
+    
+    
 
 def switch_upcoming():
     
@@ -39,9 +48,11 @@ def switch_upcoming():
     gameList = []
     detailList = []
     
-    wd.driver.get("https://store.nintendo.co.kr/games/all-released-games")
+    wd.driver.get("https://store.nintendo.co.kr/games/all-released-games?product_list_limit=48")
 
     popup_close(wd.driver)
+    
+    
     
     
     #여기부터 코드 작성

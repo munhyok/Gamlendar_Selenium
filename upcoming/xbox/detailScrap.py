@@ -91,8 +91,8 @@ def get_tag(driver):
 def get_image(driver):
     imgList = []
     
-    
-    wait = WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "ol[class='ItemsSlider-module__wrapper___nAi6y']")))
+    time.sleep(5)
+    #wait = WebDriverWait(driver, 60).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "ol[class='ItemsSlider-module__wrapper___nAi6y']")))
     
     gallery = driver.find_element(By.CSS_SELECTOR, "section[aria-label='갤러리']").find_element(By.CSS_SELECTOR, "div[class='ModuleRow-module__row___N1V3E']").find_elements(By.CSS_SELECTOR, "ol[class='ItemsSlider-module__wrapper___nAi6y']")
     
@@ -129,27 +129,57 @@ def detail_scrap(url, url_eng):
     wd = Webdriver()
     
     dc = DataCleaning('xbox')
-    wait = WebDriverWait(wd.driver, 60)
-    wait_eng = WebDriverWait(wd.driver_eng, 60)
+    wait = WebDriverWait(wd.driver, 30)
+    wait_eng = WebDriverWait(wd.driver_eng, 30)
     
     autokwd = list()
     
-    wd.driver.implicitly_wait(60)
-    wd.driver_eng.implicitly_wait(60)
+    #wd.driver.implicitly_wait(30)
+    #wd.driver_eng.implicitly_wait(30)
     
     
     wd.driver.get(url)
     wd.driver_eng.get(url_eng)
     
+    releaseDate = ''
+    publisher = ''
+    company = ''
+    
+    infoSection = wd.driver.find_elements(By.CSS_SELECTOR, "div[class='ModuleRow-module__row___N1V3E Description-module__details___34Tnw']")
+    infoSection = infoSection[0].find_elements(By.CSS_SELECTOR, "div[class='ModuleColumn-module__col___StJzB']")
+    
+    for info in infoSection:
+        infoTitle = info.find_element(By.TAG_NAME, 'h3').text
+        print(infoTitle)
+        
+        
+        
+        if infoTitle == '출시 날짜':
+            releaseDate = info.find_element(By.TAG_NAME, 'div').text
+            releaseDate = dc.formatDate(releaseDate)
+            print(f"출시 날짜: {releaseDate}")
+            
+        if infoTitle == '개발자':
+            company = info.find_element(By.TAG_NAME, 'div').text
+            print(f"company: {company}")
+            
+        if infoTitle == '게시자':
+            publisher = info.find_element(By.TAG_NAME, 'div').text
+            print(f"company: {publisher}")
+            
+        
+        if company == '': company = publisher # 개발사가 없을 땐 company를 Publisher로
     
     element = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "h1[data-testid='ProductDetailsHeaderProductTitle']")))
     element_eng = wait_eng.until(EC.presence_of_element_located((By.CSS_SELECTOR, "h1[data-testid='ProductDetailsHeaderProductTitle']")))
+
     
+    #print(releaseDate)
     find_bundle(wd.driver,wd.driver_eng)
     
     title = wd.driver.find_element(By.CSS_SELECTOR, "h1[data-testid='ProductDetailsHeaderProductTitle']").text
     
-    
+    current_url = wd.driver.current_url
     
     try:
         engTitle = wd.driver_eng.find_element(By.CSS_SELECTOR, "h1[data-testid='ProductDetailsHeaderProductTitle']").text
@@ -160,16 +190,23 @@ def detail_scrap(url, url_eng):
     autokwd.append(dc.cleanKeyword(engTitle))
     autokwd.append(dc.cleanKeyword(title))
     
-    
-    
     autokwd = sorted(set(autokwd), key= lambda x: autokwd.index(x))
     
     
-        
     description = wd.driver.find_element(By.CSS_SELECTOR, "p[class='Description-module__description___ylcn4 typography-module__xdsBody2___RNdGY ExpandableText-module__container___Uc17O']").text
-    company = wd.driver.find_element(By.CSS_SELECTOR, "div[class='typography-module__xdsBody2___RNdGY']").text
     tagList = get_tag(wd.driver)
+    
+    
+    
+    
+    
+    
+    
+    
+    
     screenList = get_image(wd.driver)
+    
+    
     
     try:
         thum = wd.driver.find_element(By.CSS_SELECTOR, "img[class='ProductDetailsHeader-module__backgroundImage___34Nro img-fluid']").get_attribute('src')
@@ -177,7 +214,10 @@ def detail_scrap(url, url_eng):
         thum = screenList[0]
         
     
+    
     detail_dict = {
+        'url': current_url,
+        'date': releaseDate,
         'imageurl': thum,
         'description': description,
         'autokwd': ",".join(autokwd),

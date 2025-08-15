@@ -37,20 +37,20 @@ def detail_scrap(url, url_eng):
     
     
     
-    
+    try:
+        thum = wd.driver.find_element(By.CSS_SELECTOR, "img[data-qa='gameBackgroundImage#heroImage#image']").get_attribute('src')
+    except NoSuchElementException:
+        thum = wd.driver.find_element(By.CSS_SELECTOR, "img[data-qa='gameBackgroundImage#tileImage#image']").get_attribute('src')
+        
+    description = wd.driver.find_element(By.CSS_SELECTOR, "div[class='psw-l-w-1/1 psw-l-w-2/3@tablet-s psw-l-w-2/3@tablet-l psw-l-w-1/2@laptop psw-l-w-1/2@desktop psw-l-w-1/2@max']").find_element(By.TAG_NAME, 'p').text
+    company = wd.driver.find_element(By.CSS_SELECTOR, "dd[data-qa='gameInfo#releaseInformation#publisher-value']").text
     
     try:
-        thum = wd.driver.find_element(By.XPATH, '/html/body/div[3]/main/div/div[1]/div[1]/div/div/div/div/span/img[2]').get_attribute('src')
-        description = wd.driver.find_element(By.CSS_SELECTOR, "div[class='psw-l-w-1/1 psw-l-w-2/3@tablet-s psw-l-w-2/3@tablet-l psw-l-w-1/2@laptop psw-l-w-1/2@desktop psw-l-w-1/2@max']").find_element(By.TAG_NAME, 'p').text
-        company = wd.driver.find_element(By.CSS_SELECTOR, "dd[data-qa='gameInfo#releaseInformation#publisher-value']").text
         releaseDate = wd.driver.find_element(By.CSS_SELECTOR, "dd[data-qa='gameInfo#releaseInformation#releaseDate-value']").text
-        
     except NoSuchElementException:
+        releaseDate = '1985-09-13'
         
-        thum = '-'
-        description = '-'
-        company = '-'
-        releaseDate = '-'
+    
         
         
     

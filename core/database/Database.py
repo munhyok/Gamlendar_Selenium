@@ -56,13 +56,14 @@ class Database:
                 print(f"Error connecting to MariaDB: {e}")
 
             self.before_count = self.tableCount()
+            #self.before_count = 12592
             self.after_count = 0
 
             print(f"{self.before_count} 현재 DB 게임 수")
             
             
             self.timestamp = int(datetime.now().timestamp()) #타임스탬프 생성
-            #self.timestamp = 1743702772
+            #self.timestamp = 1754934825
             print(f"{self.timestamp}")
             #중복 init 방지
             self._initialized = True
@@ -88,53 +89,67 @@ class Database:
         
         df = self.df
         
-        sql_game = """INSERT INTO game_table (title, release_date, company, description, thumbnail_image, tag) values(%s,%s,%s,%s,%s,%s)"""
+        sql_game = """INSERT INTO game_table (title, release_date, company, description, thumbnail_image, tag) values(%s,%s,%s,%s,%s,%s) ON DUPLICATE KEY UPDATE release_date= VALUES(release_date), company=VALUES(company), description=VALUES(description), thumbnail_image=VALUES(thumbnail_image), tag=VALUES(tag)"""
+        #sql_game = """INSERT INTO game_table (title, release_date, company, description, thumbnail_image, tag) values(%s,%s,%s,%s,%s,%s)"""
         sql_screenshot = """INSERT INTO screenshot_table (title, image) values(%s, %s)"""
         sql_autokwd = """INSERT INTO autokwd_table (title, autokwd) values(%s, %s)"""
         sql_platform = """INSERT INTO platform_table(title, platform) values(%s, %s)"""
+        
+        sql_originalURL = """INSERT INTO originalURL_table(title, platform, url) values(%s, %s, %s)"""
         
         
         with self.connection.cursor() as cursor:
             
             
             for index, row in df.iterrows():
-                
                 if row['description'] not in filterList: 
                     autokwds = str(row['autokwd']).split(',')
                     screenshots = str(row['screenshot']).split(',')
                     platforms = str(row['platform']).split(',')
-
                     print(autokwds)
-
+                    
                     try:
                         cursor.execute(sql_game,(row['title'], row['date'], row['company'], row['description'], row['imageurl'], row['tag']))
                     except pymysql.err.IntegrityError as e:
                         print(e)
-
+                        
+                    # cursor.rowcount 값으로 작업 유형 확인
+                    if cursor.rowcount == 1:
+                        print(f"새로운 게임이 성공적으로 삽입되었습니다: {row['title']}")
+                    elif cursor.rowcount == 2:
+                        print(f"기존 게임이 업데이트되었습니다: {row['title']}")
+                    else: # cursor.rowcount가 0일 경우
+                        print(f"기존 게임의 데이터에 변경사항이 없습니다: {row['title']}") 
+                        
+                    try:
+                        cursor.execute(sql_originalURL, (row['title'], row['platform'], row['url']))
+                    except pymysql.err.IntegrityError as e:
+                        print(e)
+                    
                     try:
                         for autokwd in autokwds:
                             cursor.execute(sql_autokwd, (row['title'], autokwd))
                     except pymysql.err.IntegrityError as e:
                         print(e)
-
+                        
                     for screenshot in screenshots:
                         cursor.execute(sql_screenshot, (row['title'], screenshot))
-
-
+                        
                     for platform in platforms:
                         cursor.execute(sql_platform, (row['title'], platform))
-               
-
-            try:
+                        
+                    
                 #response = requests.get(url= self.url+"/gamlendar",verify=False)
                 #response.raise_for_status()
-
+                    
+            try:         
                 self.connection.commit()
+                
                 print('Commit Complete')
+
                 
                 
-                
-                
+              
             except requests.exceptions.RequestException as e:
                 print("에러 발생 FastAPI 확인 필요: ", e)
                 self.connection.rollback()
@@ -142,8 +157,11 @@ class Database:
             except pymysql.ProgrammingError as e:
                 print("cursor 에러발생: ", e)
                 self.connection.rollback()
-        
-        
+  
+            except Exception as e:
+                print(e)
+                
+                
         
         
         
@@ -151,56 +169,60 @@ class Database:
     
     def __transferMongo(self):
         
-        
-        self.after_count = self.tableCount()
-        #index = self.after_count
-        index = self.after_count - self.before_count
-        #index = 1739
+        try:
+            self.after_count = self.tableCount()
+            #index = self.after_count - 1
+            index = self.after_count - self.before_count
+            #index = 1739
 
-        print(f"업로드할 게임 수 {index}")
-        print("10초 뒤에 데이터 이동")
-        time.sleep(10)
+            print(f"업로드할 게임 수 {index}")
+            print("10초 뒤에 데이터 이동")
+            time.sleep(10)
 
-        with self.connection.cursor() as cursor:
+            with self.connection.cursor() as cursor:
 
-            new_game_sql = """SELECT name, date, company, description, imageurl, tag, screenshots, autokwd, platform FROM gamlendarDB.v_gameData ORDER BY id DESC LIMIT """ + str(index)
-            cursor.execute(new_game_sql)
-            new_data = cursor.fetchall()
+                new_game_sql = """SELECT * FROM gamlendarDB.v_gameData_new ORDER BY id DESC LIMIT """ + str(index)
+                #new_game_sql = """SELECT * FROM gamlendarDB.v_gameData_new WHERE name = '18th Floor'"""
+                cursor.execute(new_game_sql)
+                new_data = cursor.fetchall()
 
-            result_raw = json.dumps(new_data, ensure_ascii=False)
-            result = json.loads(result_raw)
+                result_raw = json.dumps(new_data, ensure_ascii=False)
+                result = json.loads(result_raw)
 
-            
-        for i in range(len(result)):
-            
-            screenshot_list = result[i]['screenshots'].split(', ')
-            platform_list = result[i]['platform'].split(', ')
-            try:
-                autokwd_list = result[i]['autokwd'].split(', ')
-            except:
-                autokwd_list = ''
-            tag_list = result[i]['tag'].split(',')
-            
-            
-            result[i]["screenshots"] = screenshot_list
-            result[i]['platform'] = platform_list
-            
-            result[i]['autokwd'] = autokwd_list
-            result[i]['tag']= list(set(tag_list))
-            
-            result[i]['path'] = 'games'
-            result[i]['gindie'] = 'game'
-            result[i]['yearmonth'] = result[i]['date'][:-3]
-            result[i]['gameurl'] = ''
-            result[i]['yturl'] = ''
-            result[i]['adult'] = False
 
-            #print(result)
-        print(f"{index}개 게임 업로드 완료")
-        
-        
-        return result
-        
+            for i in range(len(result)):
+
+                screenshot_list = result[i]['screenshots'].split(', ')
+                platform_list = result[i]['platform'].split(', ')
+                try:
+                    autokwd_list = result[i]['autokwd'].split(', ')
+                except:
+                    autokwd_list = ''
+                tag_list = result[i]['tag'].split(',')
+
+
+                result[i]["screenshots"] = screenshot_list
+                result[i]['platform'] = platform_list
+
+                result[i]['autokwd'] = autokwd_list
+                result[i]['tag']= list(set(tag_list))
+
+                result[i]['path'] = 'games'
+                result[i]['gindie'] = 'game'
+                result[i]['yearmonth'] = result[i]['date'][:-3]
+                #result[i]['gameurl'] = result[i]['gameurl']
+                result[i]['yturl'] = ''
+                result[i]['adult'] = False
+
+
+                print(result)
+            print(f"{index}개 게임 업로드 완료")
+
+
+            return result
+    
+        except Exception as e:
+            self.connection.rollback()
         
         
         
@@ -245,7 +267,7 @@ class Database:
     
     def transferMongo(self):
         games = self.__transferMongo()
-        self.__postMongo(games)
+        #self.__postMongo(games)
     
     def insert(self, csv):
         self.__insert(csv)

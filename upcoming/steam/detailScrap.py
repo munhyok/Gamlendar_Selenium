@@ -66,6 +66,7 @@ def detail_scrap(url):
     screenList = []
     tagList = []
     detailList = []
+    supportLangList = []
     
     
     
@@ -164,12 +165,18 @@ def detail_scrap(url):
         
         
         
-    # 스크린샷
-    # 스크린샷 현재 흐린 이미지로 가져와서 고화질 원본 가져오는 작업 해야함
-    #screenshot = driver.find_elements(By.CLASS_NAME, 'highlight_strip_item.highlight_strip_screenshot')
-    #for scr in screenshot:
-    #    screenList.append(scr.find_element(By.TAG_NAME, 'img').get_attribute('src'))
-    
+    # 언어 지원
+    try:
+        raw = wd.driver.find_element(By.CSS_SELECTOR, "table[class='game_language_options']").find_element(By.TAG_NAME, 'tbody')
+        raw = raw.find_elements(By.TAG_NAME, 'tr')
+        
+        raw.pop(0)
+        for supportLang in raw:
+            lang = supportLang.find_element(By.CLASS_NAME, 'ellipsis').text
+            supportLangList.append(lang)
+    except NoSuchElementException as e:
+        print(f"language find err : {e}")
+        
     
     screenshot = wd.driver.find_elements(By.CLASS_NAME, 'highlight_screenshot_link')
     
@@ -193,7 +200,8 @@ def detail_scrap(url):
         'company': company,
         'screenshot': ",".join(screenList),
         'tag':",".join(tagList),
-        'platform': "steam"
+        'platform': "steam",
+        'languages': ','.join(supportLangList)
     }
     
     #print(detail_dict)

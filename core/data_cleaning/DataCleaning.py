@@ -32,6 +32,7 @@ class DataCleaning:
             '®',
             '™',
             
+            
         ]
         
         specialWord = [
@@ -95,8 +96,19 @@ class DataCleaning:
         
         elif self._platform == 'xbox':
             # xbox는 겜린더에 맞는 date형태로 되어있어 일단 보류..
-            if len(raw_data) < 10:
+            raw_date = raw_data.replace('. ','-').replace('.','')
+            
+            splitDate = raw_date.split('-')
+            
+            for i in range(len(splitDate)):
+                splitDate[i] = splitDate[i].zfill(2)
+            
+            formatDate = '-'.join(splitDate)
+            
+            if len(formatDate) < 10:
                 return '1985-09-13'
+            
+            return formatDate
         
         elif self._platform == 'switch':
             
@@ -113,9 +125,9 @@ class DataCleaning:
             return formatDate
         
         
-    def __company_clean(self, raw_data):
+    def __company_clean(self, raw_data: str):
         
-        cleanText = raw_data.replace('.','')
+        cleanText = raw_data.replace('.','').replace('n/a', '"na"').replace('null', '"null"')
         return cleanText
         
         

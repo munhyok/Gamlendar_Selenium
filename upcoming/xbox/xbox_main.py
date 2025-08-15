@@ -56,12 +56,14 @@ def xbox_login(driver):
         
         
         time.sleep(3)
-        driver.get("https://www.xbox.com/ko-kr/games/all-games?cat=upcoming")
+        driver.get('https://www.xbox.com/ko-KR/games/browse/DynamicChannel.GamesComingSoon')
+        #driver.get("https://www.xbox.com/ko-kr/games/all-games?cat=upcoming")
         #loginState = driver.find_element(By.CSS_SELECTOR, "input[id='idBtn_Back']")
         #loginState.click()
         
 
-    driver.get("https://www.xbox.com/ko-kr/games/all-games?cat=upcoming")
+    #driver.get("https://www.xbox.com/ko-kr/games/all-games?cat=upcoming")
+    driver.get('https://www.xbox.com/ko-KR/games/browse/DynamicChannel.GamesComingSoon')
     time.sleep(5)
     driver.find_element(By.CLASS_NAME, 'mectrl_topHeader').click()
     
@@ -86,19 +88,19 @@ def xbox_upcoming():
     gameList = []
     detailList = []
     xbox_login(wd.driver)
-    pageList = wd.driver.find_element(By.CSS_SELECTOR, "button[id='unique-id-for-paglist-generated-select-menu-trigger']")
-    pageList.click()
-    time.sleep(0.5)
-    menu = wd.driver.find_element(By.CSS_SELECTOR, "li[id='unique-id-for-paglist-generated-select-menu-3']")
-    menu.click()
+    #pageList = wd.driver.find_element(By.CSS_SELECTOR, "button[id='unique-id-for-paglist-generated-select-menu-trigger']")
+    #pageList.click()
+    #time.sleep(0.5)
+    #menu = wd.driver.find_element(By.CSS_SELECTOR, "li[id='unique-id-for-paglist-generated-select-menu-3']")
+    #menu.click()
     print("Xbox Login Complete")
     
     gameList = page_scrap()
     
     
     for count in range(len(gameList)):
-        kor = gameList[count]['url']
-        eng = gameList[count]['url'].replace('ko-kr','en-us')
+        kor = gameList[count]['pageUrl']
+        eng = gameList[count]['pageUrl'].replace('ko-kr','en-us')
         
         try:
             result = detail_scrap(kor, eng)

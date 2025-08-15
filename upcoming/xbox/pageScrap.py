@@ -1,6 +1,7 @@
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+from selenium.common.exceptions import NoSuchElementException
 import time
 
 from core.logs.failedLog import failed_log
@@ -21,22 +22,49 @@ FILTERWORDS = [
     
     ]
 
+def scroll_page():
+    wd = Webdriver()
+    
+    doScroll = True
+    
+    while(doScroll):
+        try:
+            wd.driver.execute_script('window.scrollTo(0, document.body.scrollHeight);')
+        
+            moreBtn = wd.driver.find_element(By.CSS_SELECTOR, "div[class='typography-module__xdsButtonText___T7YHc']" )
+            moreBtn.click()
+            
+            time.sleep(2)
+        except NoSuchElementException:
+            doScroll = False
+            print('scroll complete')
+
+    return
+        
+        
+        
 def page_scrap():
+    
     wd = Webdriver()
     
     gameList = []
-    wait = WebDriverWait(wd.driver, 60).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "a[class='gameDivLink']")))
+    
     print('Loading Done, Scrap start')
     
-    games = wd.driver.find_elements(By.CSS_SELECTOR, "div[class='m-product-placement-item f-size-medium context-game gameDiv']")
+    scroll_page()
+    
+    #games = wd.driver.find_elements(By.CSS_SELECTOR, "div[class='m-product-placement-item f-size-medium context-game gameDiv']")
+    games = wd.driver.find_elements(By.CSS_SELECTOR, "div[class='ProductCard-module__cardWrapper___6Ls86 shadow']")
     
     for game in games:
         filterCheck = False
         
-        title = game.find_element(By.CSS_SELECTOR, "h3[itemprop='product name']").text
+        #title = game.find_element(By.CSS_SELECTOR, "h3[itemprop='product name']").text
+        title = game.find_element(By.TAG_NAME, 'a').get_attribute('title')
+        print(title)
         url = game.find_element(By.TAG_NAME, 'a').get_attribute('href')              
-        releaseDate = game.get_attribute('data-releasedate')
-        releaseDate = releaseDate[:10]
+        #releaseDate = game.get_attribute('data-releasedate')
+        #releaseDate = releaseDate[:10]
         
         for word in FILTERWORDS:
             if word in title:
@@ -46,8 +74,8 @@ def page_scrap():
             
             pageGame = {
                 'title': title,
-                'url': url,
-                'date': releaseDate
+                'pageUrl': url,
+                
             }
             
             gameList.append(pageGame)
