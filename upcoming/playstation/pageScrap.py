@@ -21,9 +21,10 @@ def page_scrap(pageNumber):
         
         for game in games:
             
-            title = game.find_element(By.TAG_NAME, 'div').find_element(By.TAG_NAME, 'a').find_element(By.TAG_NAME, 'div').find_element(By.TAG_NAME,'section').find_element(By.CLASS_NAME, 'psw-t-body.psw-c-t-1.psw-t-truncate-2.psw-m-b-2').text
+            
+            title = game.find_element(By.CSS_SELECTOR, "span[id='product-name']").text
             url = game.find_element(By.TAG_NAME, 'div').find_element(By.TAG_NAME, 'a').get_attribute('href')
-
+            
             pageGame = {
                 'title': dc.cleanKeyword(title),
                 'url': url,

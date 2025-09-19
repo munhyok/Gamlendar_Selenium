@@ -63,7 +63,7 @@ class Database:
             
             
             self.timestamp = int(datetime.now().timestamp()) #타임스탬프 생성
-            #self.timestamp = 1754934825
+            #self.timestamp = 1758132453
             print(f"{self.timestamp}")
             #중복 init 방지
             self._initialized = True
@@ -99,8 +99,7 @@ class Database:
         
         
         with self.connection.cursor() as cursor:
-            
-            
+
             for index, row in df.iterrows():
                 if row['description'] not in filterList: 
                     autokwds = str(row['autokwd']).split(',')
@@ -112,6 +111,9 @@ class Database:
                         cursor.execute(sql_game,(row['title'], row['date'], row['company'], row['description'], row['imageurl'], row['tag']))
                     except pymysql.err.IntegrityError as e:
                         print(e)
+                    except pymysql.err.ProgrammingError as e:
+                        print(f"{e} {row['title']} 생략")
+                        continue
                         
                     # cursor.rowcount 값으로 작업 유형 확인
                     if cursor.rowcount == 1:
@@ -139,17 +141,11 @@ class Database:
                         cursor.execute(sql_platform, (row['title'], platform))
                         
                     
-                #response = requests.get(url= self.url+"/gamlendar",verify=False)
-                #response.raise_for_status()
-                    
             try:         
                 self.connection.commit()
                 
                 print('Commit Complete')
 
-                
-                
-              
             except requests.exceptions.RequestException as e:
                 print("에러 발생 FastAPI 확인 필요: ", e)
                 self.connection.rollback()

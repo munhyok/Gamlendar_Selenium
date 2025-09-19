@@ -6,11 +6,14 @@
 # dotenv environment variable files
 .env
 
+/__pycache__
+
 #db_index
 db_index.json
 
 #
 ./test
-.csv
+*.csv
+*.pyc
 
 serviceAccountKey.json

@@ -127,7 +127,7 @@ class DataCleaning:
         
     def __company_clean(self, raw_data: str):
         
-        cleanText = raw_data.replace('.','').replace('n/a', '"na"').replace('null', '"null"')
+        cleanText = raw_data.replace('.','').replace('n/a', '"na"').replace('null', '"null"').replace('nan','"nan"')
         return cleanText
         
         

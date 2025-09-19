@@ -100,12 +100,13 @@ def xbox_upcoming():
     
     for count in range(len(gameList)):
         kor = gameList[count]['pageUrl']
-        eng = gameList[count]['pageUrl'].replace('ko-kr','en-us')
+        eng = gameList[count]['pageUrl'].replace('ko-KR','en-us')
         
         try:
             result = detail_scrap(kor, eng)
             
         except:
+            
             wd.quitDriver()
             wd.restartDriver()
             time.sleep(5)
